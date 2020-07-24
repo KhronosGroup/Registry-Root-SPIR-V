@@ -1,0 +1,4445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.9">
+<title>OpenCL.DebugInfo.100 Information Extended Instruction Set Specification</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Arial,sans-serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.25em;
+    font-weight: bold;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    margin-left: 1em;
+    color: #aaaaaa;
+  }
+
+  #toc .toclevel3 {
+    margin-top: 0.25em;
+    margin-left: 2em;
+    color: #aaaaaa;
+    font-size: smaller;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+/*
+ASCIIMathML.js
+==============
+This file contains JavaScript functions to convert ASCII math notation
+to Presentation MathML. The conversion is done while the (X)HTML page
+loads, and should work with Firefox/Mozilla/Netscape 7+ and Internet
+Explorer 6+MathPlayer (http://www.dessci.com/en/products/mathplayer/).
+Just add the next line to your (X)HTML page with this file in the same folder:
+This is a convenient and inexpensive solution for authoring MathML.
+
+Version 1.4.7 Dec 15, 2005, (c) Peter Jipsen http://www.chapman.edu/~jipsen
+Latest version at http://www.chapman.edu/~jipsen/mathml/ASCIIMathML.js
+For changes see http://www.chapman.edu/~jipsen/mathml/asciimathchanges.txt
+If you use it on a webpage, please send the URL to jipsen@chapman.edu
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License (at http://www.gnu.org/copyleft/gpl.html)
+for more details.
+*/
+
+var checkForMathML = true;   // check if browser can display MathML
+var notifyIfNoMathML = true; // display note if no MathML capability
+var alertIfNoMathML = false;  // show alert box if no MathML capability
+var mathcolor = "";       // change it to "" (to inherit) or any other color
+var mathfontfamily = "serif"; // change to "" to inherit (works in IE)
+                              // or another family (e.g. "arial")
+var displaystyle = true;      // puts limits above and below large operators
+var showasciiformulaonhover = true; // helps students learn ASCIIMath
+var decimalsign = ".";        // change to "," if you like, beware of `(1,2)`!
+var AMdelimiter1 = "`", AMescape1 = "\\\\`"; // can use other characters
+var AMdelimiter2 = "$", AMescape2 = "\\\\\\$", AMdelimiter2regexp = "\\$";
+var doubleblankmathdelimiter = false; // if true,  x+1  is equal to `x+1`
+                                      // for IE this works only in <!--   -->
+//var separatetokens;// has been removed (email me if this is a problem)
+var isIE = document.createElementNS==null;
+
+if (document.getElementById==null)
+  alert("This webpage requires a recent browser such as\
+\nMozilla/Netscape 7+ or Internet Explorer 6+MathPlayer")
+
+// all further global variables start with "AM"
+
+function AMcreateElementXHTML(t) {
+  if (isIE) return document.createElement(t);
+  else return document.createElementNS("http://www.w3.org/1999/xhtml",t);
+}
+
+function AMnoMathMLNote() {
+  var nd = AMcreateElementXHTML("h3");
+  nd.setAttribute("align","center")
+  nd.appendChild(AMcreateElementXHTML("p"));
+  nd.appendChild(document.createTextNode("To view the "));
+  var an = AMcreateElementXHTML("a");
+  an.appendChild(document.createTextNode("ASCIIMathML"));
+  an.setAttribute("href","http://www.chapman.edu/~jipsen/asciimath.html");
+  nd.appendChild(an);
+  nd.appendChild(document.createTextNode(" notation use Internet Explorer 6+"));
+  an = AMcreateElementXHTML("a");
+  an.appendChild(document.createTextNode("MathPlayer"));
+  an.setAttribute("href","http://www.dessci.com/en/products/mathplayer/download.htm");
+  nd.appendChild(an);
+  nd.appendChild(document.createTextNode(" or Netscape/Mozilla/Firefox"));
+  nd.appendChild(AMcreateElementXHTML("p"));
+  return nd;
+}
+
+function AMisMathMLavailable() {
+  if (navigator.appName.slice(0,8)=="Netscape")
+    if (navigator.appVersion.slice(0,1)>="5") return null;
+    else return AMnoMathMLNote();
+  else if (navigator.appName.slice(0,9)=="Microsoft")
+    try {
+        var ActiveX = new ActiveXObject("MathPlayer.Factory.1");
+        return null;
+    } catch (e) {
+        return AMnoMathMLNote();
+    }
+  else return AMnoMathMLNote();
+}
+
+// character lists for Mozilla/Netscape fonts
+var AMcal = [0xEF35,0x212C,0xEF36,0xEF37,0x2130,0x2131,0xEF38,0x210B,0x2110,0xEF39,0xEF3A,0x2112,0x2133,0xEF3B,0xEF3C,0xEF3D,0xEF3E,0x211B,0xEF3F,0xEF40,0xEF41,0xEF42,0xEF43,0xEF44,0xEF45,0xEF46];
+var AMfrk = [0xEF5D,0xEF5E,0x212D,0xEF5F,0xEF60,0xEF61,0xEF62,0x210C,0x2111,0xEF63,0xEF64,0xEF65,0xEF66,0xEF67,0xEF68,0xEF69,0xEF6A,0x211C,0xEF6B,0xEF6C,0xEF6D,0xEF6E,0xEF6F,0xEF70,0xEF71,0x2128];
+var AMbbb = [0xEF8C,0xEF8D,0x2102,0xEF8E,0xEF8F,0xEF90,0xEF91,0x210D,0xEF92,0xEF93,0xEF94,0xEF95,0xEF96,0x2115,0xEF97,0x2119,0x211A,0x211D,0xEF98,0xEF99,0xEF9A,0xEF9B,0xEF9C,0xEF9D,0xEF9E,0x2124];
+
+var CONST = 0, UNARY = 1, BINARY = 2, INFIX = 3, LEFTBRACKET = 4,
+    RIGHTBRACKET = 5, SPACE = 6, UNDEROVER = 7, DEFINITION = 8,
+    LEFTRIGHT = 9, TEXT = 10; // token types
+
+var AMsqrt = {input:"sqrt", tag:"msqrt", output:"sqrt", tex:null, ttype:UNARY},
+  AMroot  = {input:"root", tag:"mroot", output:"root", tex:null, ttype:BINARY},
+  AMfrac  = {input:"frac", tag:"mfrac", output:"/",    tex:null, ttype:BINARY},
+  AMdiv   = {input:"/",    tag:"mfrac", output:"/",    tex:null, ttype:INFIX},
+  AMover  = {input:"stackrel", tag:"mover", output:"stackrel", tex:null, ttype:BINARY},
+  AMsub   = {input:"_",    tag:"msub",  output:"_",    tex:null, ttype:INFIX},
+  AMsup   = {input:"^",    tag:"msup",  output:"^",    tex:null, ttype:INFIX},
+  AMtext  = {input:"text", tag:"mtext", output:"text", tex:null, ttype:TEXT},
+  AMmbox  = {input:"mbox", tag:"mtext", output:"mbox", tex:null, ttype:TEXT},
+  AMquote = {input:"\"",   tag:"mtext", output:"mbox", tex:null, ttype:TEXT};
+
+var AMsymbols = [
+//some greek symbols
+{input:"alpha",  tag:"mi", output:"\u03B1", tex:null, ttype:CONST},
+{input:"beta",   tag:"mi", output:"\u03B2", tex:null, ttype:CONST},
+{input:"chi",    tag:"mi", output:"\u03C7", tex:null, ttype:CONST},
+{input:"delta",  tag:"mi", output:"\u03B4", tex:null, ttype:CONST},
+{input:"Delta",  tag:"mo", output:"\u0394", tex:null, ttype:CONST},
+{input:"epsi",   tag:"mi", output:"\u03B5", tex:"epsilon", ttype:CONST},
+{input:"varepsilon", tag:"mi", output:"\u025B", tex:null, ttype:CONST},
+{input:"eta",    tag:"mi", output:"\u03B7", tex:null, ttype:CONST},
+{input:"gamma",  tag:"mi", output:"\u03B3", tex:null, ttype:CONST},
+{input:"Gamma",  tag:"mo", output:"\u0393", tex:null, ttype:CONST},
+{input:"iota",   tag:"mi", output:"\u03B9", tex:null, ttype:CONST},
+{input:"kappa",  tag:"mi", output:"\u03BA", tex:null, ttype:CONST},
+{input:"lambda", tag:"mi", output:"\u03BB", tex:null, ttype:CONST},
+{input:"Lambda", tag:"mo", output:"\u039B", tex:null, ttype:CONST},
+{input:"mu",     tag:"mi", output:"\u03BC", tex:null, ttype:CONST},
+{input:"nu",     tag:"mi", output:"\u03BD", tex:null, ttype:CONST},
+{input:"omega",  tag:"mi", output:"\u03C9", tex:null, ttype:CONST},
+{input:"Omega",  tag:"mo", output:"\u03A9", tex:null, ttype:CONST},
+{input:"phi",    tag:"mi", output:"\u03C6", tex:null, ttype:CONST},
+{input:"varphi", tag:"mi", output:"\u03D5", tex:null, ttype:CONST},
+{input:"Phi",    tag:"mo", output:"\u03A6", tex:null, ttype:CONST},
+{input:"pi",     tag:"mi", output:"\u03C0", tex:null, ttype:CONST},
+{input:"Pi",     tag:"mo", output:"\u03A0", tex:null, ttype:CONST},
+{input:"psi",    tag:"mi", output:"\u03C8", tex:null, ttype:CONST},
+{input:"Psi",    tag:"mi", output:"\u03A8", tex:null, ttype:CONST},
+{input:"rho",    tag:"mi", output:"\u03C1", tex:null, ttype:CONST},
+{input:"sigma",  tag:"mi", output:"\u03C3", tex:null, ttype:CONST},
+{input:"Sigma",  tag:"mo", output:"\u03A3", tex:null, ttype:CONST},
+{input:"tau",    tag:"mi", output:"\u03C4", tex:null, ttype:CONST},
+{input:"theta",  tag:"mi", output:"\u03B8", tex:null, ttype:CONST},
+{input:"vartheta", tag:"mi", output:"\u03D1", tex:null, ttype:CONST},
+{input:"Theta",  tag:"mo", output:"\u0398", tex:null, ttype:CONST},
+{input:"upsilon", tag:"mi", output:"\u03C5", tex:null, ttype:CONST},
+{input:"xi",     tag:"mi", output:"\u03BE", tex:null, ttype:CONST},
+{input:"Xi",     tag:"mo", output:"\u039E", tex:null, ttype:CONST},
+{input:"zeta",   tag:"mi", output:"\u03B6", tex:null, ttype:CONST},
+
+//binary operation symbols
+{input:"*",  tag:"mo", output:"\u22C5", tex:"cdot", ttype:CONST},
+{input:"**", tag:"mo", output:"\u22C6", tex:"star", ttype:CONST},
+{input:"//", tag:"mo", output:"/",      tex:null, ttype:CONST},
+{input:"\\\\", tag:"mo", output:"\\",   tex:"backslash", ttype:CONST},
+{input:"setminus", tag:"mo", output:"\\", tex:null, ttype:CONST},
+{input:"xx", tag:"mo", output:"\u00D7", tex:"times", ttype:CONST},
+{input:"-:", tag:"mo", output:"\u00F7", tex:"divide", ttype:CONST},
+{input:"@",  tag:"mo", output:"\u2218", tex:"circ", ttype:CONST},
+{input:"o+", tag:"mo", output:"\u2295", tex:"oplus", ttype:CONST},
+{input:"ox", tag:"mo", output:"\u2297", tex:"otimes", ttype:CONST},
+{input:"o.", tag:"mo", output:"\u2299", tex:"odot", ttype:CONST},
+{input:"sum", tag:"mo", output:"\u2211", tex:null, ttype:UNDEROVER},
+{input:"prod", tag:"mo", output:"\u220F", tex:null, ttype:UNDEROVER},
+{input:"^^",  tag:"mo", output:"\u2227", tex:"wedge", ttype:CONST},
+{input:"^^^", tag:"mo", output:"\u22C0", tex:"bigwedge", ttype:UNDEROVER},
+{input:"vv",  tag:"mo", output:"\u2228", tex:"vee", ttype:CONST},
+{input:"vvv", tag:"mo", output:"\u22C1", tex:"bigvee", ttype:UNDEROVER},
+{input:"nn",  tag:"mo", output:"\u2229", tex:"cap", ttype:CONST},
+{input:"nnn", tag:"mo", output:"\u22C2", tex:"bigcap", ttype:UNDEROVER},
+{input:"uu",  tag:"mo", output:"\u222A", tex:"cup", ttype:CONST},
+{input:"uuu", tag:"mo", output:"\u22C3", tex:"bigcup", ttype:UNDEROVER},
+
+//binary relation symbols
+{input:"!=",  tag:"mo", output:"\u2260", tex:"ne", ttype:CONST},
+{input:":=",  tag:"mo", output:":=",     tex:null, ttype:CONST},
+{input:"lt",  tag:"mo", output:"<",      tex:null, ttype:CONST},
+{input:"<=",  tag:"mo", output:"\u2264", tex:"le", ttype:CONST},
+{input:"lt=", tag:"mo", output:"\u2264", tex:"leq", ttype:CONST},
+{input:">=",  tag:"mo", output:"\u2265", tex:"ge", ttype:CONST},
+{input:"geq", tag:"mo", output:"\u2265", tex:null, ttype:CONST},
+{input:"-<",  tag:"mo", output:"\u227A", tex:"prec", ttype:CONST},
+{input:"-lt", tag:"mo", output:"\u227A", tex:null, ttype:CONST},
+{input:">-",  tag:"mo", output:"\u227B", tex:"succ", ttype:CONST},
+{input:"-<=", tag:"mo", output:"\u2AAF", tex:"preceq", ttype:CONST},
+{input:">-=", tag:"mo", output:"\u2AB0", tex:"succeq", ttype:CONST},
+{input:"in",  tag:"mo", output:"\u2208", tex:null, ttype:CONST},
+{input:"!in", tag:"mo", output:"\u2209", tex:"notin", ttype:CONST},
+{input:"sub", tag:"mo", output:"\u2282", tex:"subset", ttype:CONST},
+{input:"sup", tag:"mo", output:"\u2283", tex:"supset", ttype:CONST},
+{input:"sube", tag:"mo", output:"\u2286", tex:"subseteq", ttype:CONST},
+{input:"supe", tag:"mo", output:"\u2287", tex:"supseteq", ttype:CONST},
+{input:"-=",  tag:"mo", output:"\u2261", tex:"equiv", ttype:CONST},
+{input:"~=",  tag:"mo", output:"\u2245", tex:"cong", ttype:CONST},
+{input:"~~",  tag:"mo", output:"\u2248", tex:"approx", ttype:CONST},
+{input:"prop", tag:"mo", output:"\u221D", tex:"propto", ttype:CONST},
+
+//logical symbols
+{input:"and", tag:"mtext", output:"and", tex:null, ttype:SPACE},
+{input:"or",  tag:"mtext", output:"or",  tex:null, ttype:SPACE},
+{input:"not", tag:"mo", output:"\u00AC", tex:"neg", ttype:CONST},
+{input:"=>",  tag:"mo", output:"\u21D2", tex:"implies", ttype:CONST},
+{input:"if",  tag:"mo", output:"if",     tex:null, ttype:SPACE},
+{input:"<=>", tag:"mo", output:"\u21D4", tex:"iff", ttype:CONST},
+{input:"AA",  tag:"mo", output:"\u2200", tex:"forall", ttype:CONST},
+{input:"EE",  tag:"mo", output:"\u2203", tex:"exists", ttype:CONST},
+{input:"_|_", tag:"mo", output:"\u22A5", tex:"bot", ttype:CONST},
+{input:"TT",  tag:"mo", output:"\u22A4", tex:"top", ttype:CONST},
+{input:"|--",  tag:"mo", output:"\u22A2", tex:"vdash", ttype:CONST},
+{input:"|==",  tag:"mo", output:"\u22A8", tex:"models", ttype:CONST},
+
+//grouping brackets
+{input:"(", tag:"mo", output:"(", tex:null, ttype:LEFTBRACKET},
+{input:")", tag:"mo", output:")", tex:null, ttype:RIGHTBRACKET},
+{input:"[", tag:"mo", output:"[", tex:null, ttype:LEFTBRACKET},
+{input:"]", tag:"mo", output:"]", tex:null, ttype:RIGHTBRACKET},
+{input:"{", tag:"mo", output:"{", tex:null, ttype:LEFTBRACKET},
+{input:"}", tag:"mo", output:"}", tex:null, ttype:RIGHTBRACKET},
+{input:"|", tag:"mo", output:"|", tex:null, ttype:LEFTRIGHT},
+//{input:"||", tag:"mo", output:"||", tex:null, ttype:LEFTRIGHT},
+{input:"(:", tag:"mo", output:"\u2329", tex:"langle", ttype:LEFTBRACKET},
+{input:":)", tag:"mo", output:"\u232A", tex:"rangle", ttype:RIGHTBRACKET},
+{input:"<<", tag:"mo", output:"\u2329", tex:null, ttype:LEFTBRACKET},
+{input:">>", tag:"mo", output:"\u232A", tex:null, ttype:RIGHTBRACKET},
+{input:"{:", tag:"mo", output:"{:", tex:null, ttype:LEFTBRACKET, invisible:true},
+{input:":}", tag:"mo", output:":}", tex:null, ttype:RIGHTBRACKET, invisible:true},
+
+//miscellaneous symbols
+{input:"int",  tag:"mo", output:"\u222B", tex:null, ttype:CONST},
+{input:"dx",   tag:"mi", output:"{:d x:}", tex:null, ttype:DEFINITION},
+{input:"dy",   tag:"mi", output:"{:d y:}", tex:null, ttype:DEFINITION},
+{input:"dz",   tag:"mi", output:"{:d z:}", tex:null, ttype:DEFINITION},
+{input:"dt",   tag:"mi", output:"{:d t:}", tex:null, ttype:DEFINITION},
+{input:"oint", tag:"mo", output:"\u222E", tex:null, ttype:CONST},
+{input:"del",  tag:"mo", output:"\u2202", tex:"partial", ttype:CONST},
+{input:"grad", tag:"mo", output:"\u2207", tex:"nabla", ttype:CONST},
+{input:"+-",   tag:"mo", output:"\u00B1", tex:"pm", ttype:CONST},
+{input:"O/",   tag:"mo", output:"\u2205", tex:"emptyset", ttype:CONST},
+{input:"oo",   tag:"mo", output:"\u221E", tex:"infty", ttype:CONST},
+{input:"aleph", tag:"mo", output:"\u2135", tex:null, ttype:CONST},
+{input:"...",  tag:"mo", output:"...",    tex:"ldots", ttype:CONST},
+{input:":.",  tag:"mo", output:"\u2234",  tex:"therefore", ttype:CONST},
+{input:"/_",  tag:"mo", output:"\u2220",  tex:"angle", ttype:CONST},
+{input:"\\ ",  tag:"mo", output:"\u00A0", tex:null, ttype:CONST},
+{input:"quad", tag:"mo", output:"\u00A0\u00A0", tex:null, ttype:CONST},
+{input:"qquad", tag:"mo", output:"\u00A0\u00A0\u00A0\u00A0", tex:null, ttype:CONST},
+{input:"cdots", tag:"mo", output:"\u22EF", tex:null, ttype:CONST},
+{input:"vdots", tag:"mo", output:"\u22EE", tex:null, ttype:CONST},
+{input:"ddots", tag:"mo", output:"\u22F1", tex:null, ttype:CONST},
+{input:"diamond", tag:"mo", output:"\u22C4", tex:null, ttype:CONST},
+{input:"square", tag:"mo", output:"\u25A1", tex:null, ttype:CONST},
+{input:"|__", tag:"mo", output:"\u230A",  tex:"lfloor", ttype:CONST},
+{input:"__|", tag:"mo", output:"\u230B",  tex:"rfloor", ttype:CONST},
+{input:"|~", tag:"mo", output:"\u2308",  tex:"lceiling", ttype:CONST},
+{input:"~|", tag:"mo", output:"\u2309",  tex:"rceiling", ttype:CONST},
+{input:"CC",  tag:"mo", output:"\u2102", tex:null, ttype:CONST},
+{input:"NN",  tag:"mo", output:"\u2115", tex:null, ttype:CONST},
+{input:"QQ",  tag:"mo", output:"\u211A", tex:null, ttype:CONST},
+{input:"RR",  tag:"mo", output:"\u211D", tex:null, ttype:CONST},
+{input:"ZZ",  tag:"mo", output:"\u2124", tex:null, ttype:CONST},
+{input:"f",   tag:"mi", output:"f",      tex:null, ttype:UNARY, func:true},
+{input:"g",   tag:"mi", output:"g",      tex:null, ttype:UNARY, func:true},
+
+//standard functions
+{input:"lim",  tag:"mo", output:"lim", tex:null, ttype:UNDEROVER},
+{input:"Lim",  tag:"mo", output:"Lim", tex:null, ttype:UNDEROVER},
+{input:"sin",  tag:"mo", output:"sin", tex:null, ttype:UNARY, func:true},
+{input:"cos",  tag:"mo", output:"cos", tex:null, ttype:UNARY, func:true},
+{input:"tan",  tag:"mo", output:"tan", tex:null, ttype:UNARY, func:true},
+{input:"sinh", tag:"mo", output:"sinh", tex:null, ttype:UNARY, func:true},
+{input:"cosh", tag:"mo", output:"cosh", tex:null, ttype:UNARY, func:true},
+{input:"tanh", tag:"mo", output:"tanh", tex:null, ttype:UNARY, func:true},
+{input:"cot",  tag:"mo", output:"cot", tex:null, ttype:UNARY, func:true},
+{input:"sec",  tag:"mo", output:"sec", tex:null, ttype:UNARY, func:true},
+{input:"csc",  tag:"mo", output:"csc", tex:null, ttype:UNARY, func:true},
+{input:"log",  tag:"mo", output:"log", tex:null, ttype:UNARY, func:true},
+{input:"ln",   tag:"mo", output:"ln",  tex:null, ttype:UNARY, func:true},
+{input:"det",  tag:"mo", output:"det", tex:null, ttype:UNARY, func:true},
+{input:"dim",  tag:"mo", output:"dim", tex:null, ttype:CONST},
+{input:"mod",  tag:"mo", output:"mod", tex:null, ttype:CONST},
+{input:"gcd",  tag:"mo", output:"gcd", tex:null, ttype:UNARY, func:true},
+{input:"lcm",  tag:"mo", output:"lcm", tex:null, ttype:UNARY, func:true},
+{input:"lub",  tag:"mo", output:"lub", tex:null, ttype:CONST},
+{input:"glb",  tag:"mo", output:"glb", tex:null, ttype:CONST},
+{input:"min",  tag:"mo", output:"min", tex:null, ttype:UNDEROVER},
+{input:"max",  tag:"mo", output:"max", tex:null, ttype:UNDEROVER},
+
+//arrows
+{input:"uarr", tag:"mo", output:"\u2191", tex:"uparrow", ttype:CONST},
+{input:"darr", tag:"mo", output:"\u2193", tex:"downarrow", ttype:CONST},
+{input:"rarr", tag:"mo", output:"\u2192", tex:"rightarrow", ttype:CONST},
+{input:"->",   tag:"mo", output:"\u2192", tex:"to", ttype:CONST},
+{input:"|->",  tag:"mo", output:"\u21A6", tex:"mapsto", ttype:CONST},
+{input:"larr", tag:"mo", output:"\u2190", tex:"leftarrow", ttype:CONST},
+{input:"harr", tag:"mo", output:"\u2194", tex:"leftrightarrow", ttype:CONST},
+{input:"rArr", tag:"mo", output:"\u21D2", tex:"Rightarrow", ttype:CONST},
+{input:"lArr", tag:"mo", output:"\u21D0", tex:"Leftarrow", ttype:CONST},
+{input:"hArr", tag:"mo", output:"\u21D4", tex:"Leftrightarrow", ttype:CONST},
+
+//commands with argument
+AMsqrt, AMroot, AMfrac, AMdiv, AMover, AMsub, AMsup,
+{input:"hat", tag:"mover", output:"\u005E", tex:null, ttype:UNARY, acc:true},
+{input:"bar", tag:"mover", output:"\u00AF", tex:"overline", ttype:UNARY, acc:true},
+{input:"vec", tag:"mover", output:"\u2192", tex:null, ttype:UNARY, acc:true},
+{input:"dot", tag:"mover", output:".",      tex:null, ttype:UNARY, acc:true},
+{input:"ddot", tag:"mover", output:"..",    tex:null, ttype:UNARY, acc:true},
+{input:"ul", tag:"munder", output:"\u0332", tex:"underline", ttype:UNARY, acc:true},
+AMtext, AMmbox, AMquote,
+{input:"bb", tag:"mstyle", atname:"fontweight", atval:"bold", output:"bb", tex:null, ttype:UNARY},
+{input:"mathbf", tag:"mstyle", atname:"fontweight", atval:"bold", output:"mathbf", tex:null, ttype:UNARY},
+{input:"sf", tag:"mstyle", atname:"fontfamily", atval:"sans-serif", output:"sf", tex:null, ttype:UNARY},
+{input:"mathsf", tag:"mstyle", atname:"fontfamily", atval:"sans-serif", output:"mathsf", tex:null, ttype:UNARY},
+{input:"bbb", tag:"mstyle", atname:"mathvariant", atval:"double-struck", output:"bbb", tex:null, ttype:UNARY, codes:AMbbb},
+{input:"mathbb", tag:"mstyle", atname:"mathvariant", atval:"double-struck", output:"mathbb", tex:null, ttype:UNARY, codes:AMbbb},
+{input:"cc",  tag:"mstyle", atname:"mathvariant", atval:"script", output:"cc", tex:null, ttype:UNARY, codes:AMcal},
+{input:"mathcal", tag:"mstyle", atname:"mathvariant", atval:"script", output:"mathcal", tex:null, ttype:UNARY, codes:AMcal},
+{input:"tt",  tag:"mstyle", atname:"fontfamily", atval:"monospace", output:"tt", tex:null, ttype:UNARY},
+{input:"mathtt", tag:"mstyle", atname:"fontfamily", atval:"monospace", output:"mathtt", tex:null, ttype:UNARY},
+{input:"fr",  tag:"mstyle", atname:"mathvariant", atval:"fraktur", output:"fr", tex:null, ttype:UNARY, codes:AMfrk},
+{input:"mathfrak",  tag:"mstyle", atname:"mathvariant", atval:"fraktur", output:"mathfrak", tex:null, ttype:UNARY, codes:AMfrk}
+];
+
+function compareNames(s1,s2) {
+  if (s1.input > s2.input) return 1
+  else return -1;
+}
+
+var AMnames = []; //list of input symbols
+
+function AMinitSymbols() {
+  var texsymbols = [], i;
+  for (i=0; i<AMsymbols.length; i++)
+    if (AMsymbols[i].tex)
+      texsymbols[texsymbols.length] = {input:AMsymbols[i].tex,
+        tag:AMsymbols[i].tag, output:AMsymbols[i].output, ttype:AMsymbols[i].ttype};
+  AMsymbols = AMsymbols.concat(texsymbols);
+  AMsymbols.sort(compareNames);
+  for (i=0; i<AMsymbols.length; i++) AMnames[i] = AMsymbols[i].input;
+}
+
+var AMmathml = "http://www.w3.org/1998/Math/MathML";
+
+function AMcreateElementMathML(t) {
+  if (isIE) return document.createElement("m:"+t);
+  else return document.createElementNS(AMmathml,t);
+}
+
+function AMcreateMmlNode(t,frag) {
+//  var node = AMcreateElementMathML(name);
+  if (isIE) var node = document.createElement("m:"+t);
+  else var node = document.createElementNS(AMmathml,t);
+  node.appendChild(frag);
+  return node;
+}
+
+function newcommand(oldstr,newstr) {
+  AMsymbols = AMsymbols.concat([{input:oldstr, tag:"mo", output:newstr,
+                                 tex:null, ttype:DEFINITION}]);
+}
+
+function AMremoveCharsAndBlanks(str,n) {
+//remove n characters and any following blanks
+  var st;
+  if (str.charAt(n)=="\\" && str.charAt(n+1)!="\\" && str.charAt(n+1)!=" ")
+    st = str.slice(n+1);
+  else st = str.slice(n);
+  for (var i=0; i<st.length && st.charCodeAt(i)<=32; i=i+1);
+  return st.slice(i);
+}
+
+function AMposition(arr, str, n) {
+// return position >=n where str appears or would be inserted
+// assumes arr is sorted
+  if (n==0) {
+    var h,m;
+    n = -1;
+    h = arr.length;
+    while (n+1<h) {
+      m = (n+h) >> 1;
+      if (arr[m]<str) n = m; else h = m;
+    }
+    return h;
+  } else
+    for (var i=n; i<arr.length && arr[i]<str; i++);
+  return i; // i=arr.length || arr[i]>=str
+}
+
+function AMgetSymbol(str) {
+//return maximal initial substring of str that appears in names
+//return null if there is none
+  var k = 0; //new pos
+  var j = 0; //old pos
+  var mk; //match pos
+  var st;
+  var tagst;
+  var match = "";
+  var more = true;
+  for (var i=1; i<=str.length && more; i++) {
+    st = str.slice(0,i); //initial substring of length i
+    j = k;
+    k = AMposition(AMnames, st, j);
+    if (k<AMnames.length && str.slice(0,AMnames[k].length)==AMnames[k]){
+      match = AMnames[k];
+      mk = k;
+      i = match.length;
+    }
+    more = k<AMnames.length && str.slice(0,AMnames[k].length)>=AMnames[k];
+  }
+  AMpreviousSymbol=AMcurrentSymbol;
+  if (match!=""){
+    AMcurrentSymbol=AMsymbols[mk].ttype;
+    return AMsymbols[mk];
+  }
+// if str[0] is a digit or - return maxsubstring of digits.digits
+  AMcurrentSymbol=CONST;
+  k = 1;
+  st = str.slice(0,1);
+  var integ = true;
+  while ("0"<=st && st<="9" && k<=str.length) {
+    st = str.slice(k,k+1);
+    k++;
+  }
+  if (st == decimalsign) {
+    st = str.slice(k,k+1);
+    if ("0"<=st && st<="9") {
+      integ = false;
+      k++;
+      while ("0"<=st && st<="9" && k<=str.length) {
+        st = str.slice(k,k+1);
+        k++;
+      }
+    }
+  }
+  if ((integ && k>1) || k>2) {
+    st = str.slice(0,k-1);
+    tagst = "mn";
+  } else {
+    k = 2;
+    st = str.slice(0,1); //take 1 character
+    tagst = (("A">st || st>"Z") && ("a">st || st>"z")?"mo":"mi");
+  }
+  if (st=="-" && AMpreviousSymbol==INFIX) {
+    AMcurrentSymbol = INFIX;  //trick "/" into recognizing "-" on second parse
+    return {input:st, tag:tagst, output:st, ttype:UNARY, func:true};
+  }
+  return {input:st, tag:tagst, output:st, ttype:CONST};
+}
+
+function AMremoveBrackets(node) {
+  var st;
+  if (node.nodeName=="mrow") {
+    st = node.firstChild.firstChild.nodeValue;
+    if (st=="(" || st=="[" || st=="{") node.removeChild(node.firstChild);
+  }
+  if (node.nodeName=="mrow") {
+    st = node.lastChild.firstChild.nodeValue;
+    if (st==")" || st=="]" || st=="}") node.removeChild(node.lastChild);
+  }
+}
+
+/*Parsing ASCII math expressions with the following grammar
+v ::= [A-Za-z] | greek letters | numbers | other constant symbols
+u ::= sqrt | text | bb | other unary symbols for font commands
+b ::= frac | root | stackrel         binary symbols
+l ::= ( | [ | { | (: | {:            left brackets
+r ::= ) | ] | } | :) | :}            right brackets
+S ::= v | lEr | uS | bSS             Simple expression
+I ::= S_S | S^S | S_S^S | S          Intermediate expression
+E ::= IE | I/I                       Expression
+Each terminal symbol is translated into a corresponding mathml node.*/
+
+var AMnestingDepth,AMpreviousSymbol,AMcurrentSymbol;
+
+function AMparseSexpr(str) { //parses str and returns [node,tailstr]
+  var symbol, node, result, i, st,// rightvert = false,
+    newFrag = document.createDocumentFragment();
+  str = AMremoveCharsAndBlanks(str,0);
+  symbol = AMgetSymbol(str);             //either a token or a bracket or empty
+  if (symbol == null || symbol.ttype == RIGHTBRACKET && AMnestingDepth > 0) {
+    return [null,str];
+  }
+  if (symbol.ttype == DEFINITION) {
+    str = symbol.output+AMremoveCharsAndBlanks(str,symbol.input.length);
+    symbol = AMgetSymbol(str);
+  }
+  switch (symbol.ttype) {
+  case UNDEROVER:
+  case CONST:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode(symbol.tag,        //its a constant
+                             document.createTextNode(symbol.output)),str];
+  case LEFTBRACKET:   //read (expr+)
+    AMnestingDepth++;
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseExpr(str,true);
+    AMnestingDepth--;
+    if (typeof symbol.invisible == "boolean" && symbol.invisible)
+      node = AMcreateMmlNode("mrow",result[0]);
+    else {
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      node.appendChild(result[0]);
+    }
+    return [node,result[1]];
+  case TEXT:
+      if (symbol!=AMquote) str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      if (str.charAt(0)=="{") i=str.indexOf("}");
+      else if (str.charAt(0)=="(") i=str.indexOf(")");
+      else if (str.charAt(0)=="[") i=str.indexOf("]");
+      else if (symbol==AMquote) i=str.slice(1).indexOf("\"")+1;
+      else i = 0;
+      if (i==-1) i = str.length;
+      st = str.slice(1,i);
+      if (st.charAt(0) == " ") {
+        node = AMcreateElementMathML("mspace");
+        node.setAttribute("width","1ex");
+        newFrag.appendChild(node);
+      }
+      newFrag.appendChild(
+        AMcreateMmlNode(symbol.tag,document.createTextNode(st)));
+      if (st.charAt(st.length-1) == " ") {
+        node = AMcreateElementMathML("mspace");
+        node.setAttribute("width","1ex");
+        newFrag.appendChild(node);
+      }
+      str = AMremoveCharsAndBlanks(str,i+1);
+      return [AMcreateMmlNode("mrow",newFrag),str];
+  case UNARY:
+      str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      result = AMparseSexpr(str);
+      if (result[0]==null) return [AMcreateMmlNode(symbol.tag,
+                             document.createTextNode(symbol.output)),str];
+      if (typeof symbol.func == "boolean" && symbol.func) { // functions hack
+        st = str.charAt(0);
+        if (st=="^" || st=="_" || st=="/" || st=="|" || st==",") {
+          return [AMcreateMmlNode(symbol.tag,
+                    document.createTextNode(symbol.output)),str];
+        } else {
+          node = AMcreateMmlNode("mrow",
+           AMcreateMmlNode(symbol.tag,document.createTextNode(symbol.output)));
+          node.appendChild(result[0]);
+          return [node,result[1]];
+        }
+      }
+      AMremoveBrackets(result[0]);
+      if (symbol.input == "sqrt") {           // sqrt
+        return [AMcreateMmlNode(symbol.tag,result[0]),result[1]];
+      } else if (typeof symbol.acc == "boolean" && symbol.acc) {   // accent
+        node = AMcreateMmlNode(symbol.tag,result[0]);
+        node.appendChild(AMcreateMmlNode("mo",document.createTextNode(symbol.output)));
+        return [node,result[1]];
+      } else {                        // font change command
+        if (!isIE && typeof symbol.codes != "undefined") {
+          for (i=0; i<result[0].childNodes.length; i++)
+            if (result[0].childNodes[i].nodeName=="mi" || result[0].nodeName=="mi") {
+              st = (result[0].nodeName=="mi"?result[0].firstChild.nodeValue:
+                              result[0].childNodes[i].firstChild.nodeValue);
+              var newst = [];
+              for (var j=0; j<st.length; j++)
+                if (st.charCodeAt(j)>64 && st.charCodeAt(j)<91) newst = newst +
+                  String.fromCharCode(symbol.codes[st.charCodeAt(j)-65]);
+                else newst = newst + st.charAt(j);
+              if (result[0].nodeName=="mi")
+                result[0]=AMcreateElementMathML("mo").
+                          appendChild(document.createTextNode(newst));
+              else result[0].replaceChild(AMcreateElementMathML("mo").
+          appendChild(document.createTextNode(newst)),result[0].childNodes[i]);
+            }
+        }
+        node = AMcreateMmlNode(symbol.tag,result[0]);
+        node.setAttribute(symbol.atname,symbol.atval);
+        return [node,result[1]];
+      }
+  case BINARY:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseSexpr(str);
+    if (result[0]==null) return [AMcreateMmlNode("mo",
+                           document.createTextNode(symbol.input)),str];
+    AMremoveBrackets(result[0]);
+    var result2 = AMparseSexpr(result[1]);
+    if (result2[0]==null) return [AMcreateMmlNode("mo",
+                           document.createTextNode(symbol.input)),str];
+    AMremoveBrackets(result2[0]);
+    if (symbol.input=="root" || symbol.input=="stackrel")
+      newFrag.appendChild(result2[0]);
+    newFrag.appendChild(result[0]);
+    if (symbol.input=="frac") newFrag.appendChild(result2[0]);
+    return [AMcreateMmlNode(symbol.tag,newFrag),result2[1]];
+  case INFIX:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode("mo",document.createTextNode(symbol.output)),str];
+  case SPACE:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    node = AMcreateElementMathML("mspace");
+    node.setAttribute("width","1ex");
+    newFrag.appendChild(node);
+    newFrag.appendChild(
+      AMcreateMmlNode(symbol.tag,document.createTextNode(symbol.output)));
+    node = AMcreateElementMathML("mspace");
+    node.setAttribute("width","1ex");
+    newFrag.appendChild(node);
+    return [AMcreateMmlNode("mrow",newFrag),str];
+  case LEFTRIGHT:
+//    if (rightvert) return [null,str]; else rightvert = true;
+    AMnestingDepth++;
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseExpr(str,false);
+    AMnestingDepth--;
+    var st = "";
+    if (result[0].lastChild!=null)
+      st = result[0].lastChild.firstChild.nodeValue;
+    if (st == "|") { // its an absolute value subterm
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      node.appendChild(result[0]);
+      return [node,result[1]];
+    } else { // the "|" is a \mid
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      return [node,str];
+    }
+  default:
+//alert("default");
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode(symbol.tag,        //its a constant
+                             document.createTextNode(symbol.output)),str];
+  }
+}
+
+function AMparseIexpr(str) {
+  var symbol, sym1, sym2, node, result, underover;
+  str = AMremoveCharsAndBlanks(str,0);
+  sym1 = AMgetSymbol(str);
+  result = AMparseSexpr(str);
+  node = result[0];
+  str = result[1];
+  symbol = AMgetSymbol(str);
+  if (symbol.ttype == INFIX && symbol.input != "/") {
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+//    if (symbol.input == "/") result = AMparseIexpr(str); else ...
+    result = AMparseSexpr(str);
+    if (result[0] == null) // show box in place of missing argument
+      result[0] = AMcreateMmlNode("mo",document.createTextNode("\u25A1"));
+    else AMremoveBrackets(result[0]);
+    str = result[1];
+//    if (symbol.input == "/") AMremoveBrackets(node);
+    if (symbol.input == "_") {
+      sym2 = AMgetSymbol(str);
+      underover = (sym1.ttype == UNDEROVER);
+      if (sym2.input == "^") {
+        str = AMremoveCharsAndBlanks(str,sym2.input.length);
+        var res2 = AMparseSexpr(str);
+        AMremoveBrackets(res2[0]);
+        str = res2[1];
+        node = AMcreateMmlNode((underover?"munderover":"msubsup"),node);
+        node.appendChild(result[0]);
+        node.appendChild(res2[0]);
+        node = AMcreateMmlNode("mrow",node); // so sum does not stretch
+      } else {
+        node = AMcreateMmlNode((underover?"munder":"msub"),node);
+        node.appendChild(result[0]);
+      }
+    } else {
+      node = AMcreateMmlNode(symbol.tag,node);
+      node.appendChild(result[0]);
+    }
+  }
+  return [node,str];
+}
+
+function AMparseExpr(str,rightbracket) {
+  var symbol, node, result, i, nodeList = [],
+  newFrag = document.createDocumentFragment();
+  do {
+    str = AMremoveCharsAndBlanks(str,0);
+    result = AMparseIexpr(str);
+    node = result[0];
+    str = result[1];
+    symbol = AMgetSymbol(str);
+    if (symbol.ttype == INFIX && symbol.input == "/") {
+      str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      result = AMparseIexpr(str);
+      if (result[0] == null) // show box in place of missing argument
+        result[0] = AMcreateMmlNode("mo",document.createTextNode("\u25A1"));
+      else AMremoveBrackets(result[0]);
+      str = result[1];
+      AMremoveBrackets(node);
+      node = AMcreateMmlNode(symbol.tag,node);
+      node.appendChild(result[0]);
+      newFrag.appendChild(node);
+      symbol = AMgetSymbol(str);
+    }
+    else if (node!=undefined) newFrag.appendChild(node);
+  } while ((symbol.ttype != RIGHTBRACKET &&
+           (symbol.ttype != LEFTRIGHT || rightbracket)
+           || AMnestingDepth == 0) && symbol!=null && symbol.output!="");
+  if (symbol.ttype == RIGHTBRACKET || symbol.ttype == LEFTRIGHT) {
+//    if (AMnestingDepth > 0) AMnestingDepth--;
+    var len = newFrag.childNodes.length;
+    if (len>0 && newFrag.childNodes[len-1].nodeName == "mrow" && len>1 &&
+      newFrag.childNodes[len-2].nodeName == "mo" &&
+      newFrag.childNodes[len-2].firstChild.nodeValue == ",") { //matrix
+      var right = newFrag.childNodes[len-1].lastChild.firstChild.nodeValue;
+      if (right==")" || right=="]") {
+        var left = newFrag.childNodes[len-1].firstChild.firstChild.nodeValue;
+        if (left=="(" && right==")" && symbol.output != "}" ||
+            left=="[" && right=="]") {
+        var pos = []; // positions of commas
+        var matrix = true;
+        var m = newFrag.childNodes.length;
+        for (i=0; matrix && i<m; i=i+2) {
+          pos[i] = [];
+          node = newFrag.childNodes[i];
+          if (matrix) matrix = node.nodeName=="mrow" &&
+            (i==m-1 || node.nextSibling.nodeName=="mo" &&
+            node.nextSibling.firstChild.nodeValue==",")&&
+            node.firstChild.firstChild.nodeValue==left &&
+            node.lastChild.firstChild.nodeValue==right;
+          if (matrix)
+            for (var j=0; j<node.childNodes.length; j++)
+              if (node.childNodes[j].firstChild.nodeValue==",")
+                pos[i][pos[i].length]=j;
+          if (matrix && i>1) matrix = pos[i].length == pos[i-2].length;
+        }
+        if (matrix) {
+          var row, frag, n, k, table = document.createDocumentFragment();
+          for (i=0; i<m; i=i+2) {
+            row = document.createDocumentFragment();
+            frag = document.createDocumentFragment();
+            node = newFrag.firstChild; // <mrow>(-,-,...,-,-)</mrow>
+            n = node.childNodes.length;
+            k = 0;
+            node.removeChild(node.firstChild); //remove (
+            for (j=1; j<n-1; j++) {
+              if (typeof pos[i][k] != "undefined" && j==pos[i][k]){
+                node.removeChild(node.firstChild); //remove ,
+                row.appendChild(AMcreateMmlNode("mtd",frag));
+                k++;
+              } else frag.appendChild(node.firstChild);
+            }
+            row.appendChild(AMcreateMmlNode("mtd",frag));
+            if (newFrag.childNodes.length>2) {
+              newFrag.removeChild(newFrag.firstChild); //remove <mrow>)</mrow>
+              newFrag.removeChild(newFrag.firstChild); //remove <mo>,</mo>
+            }
+            table.appendChild(AMcreateMmlNode("mtr",row));
+          }
+          node = AMcreateMmlNode("mtable",table);
+          if (typeof symbol.invisible == "boolean" && symbol.invisible) node.setAttribute("columnalign","left");
+          newFrag.replaceChild(node,newFrag.firstChild);
+        }
+       }
+      }
+    }
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    if (typeof symbol.invisible != "boolean" || !symbol.invisible) {
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      newFrag.appendChild(node);
+    }
+  }
+  return [newFrag,str];
+}
+
+function AMparseMath(str) {
+  var result, node = AMcreateElementMathML("mstyle");
+  if (mathcolor != "") node.setAttribute("mathcolor",mathcolor);
+  if (displaystyle) node.setAttribute("displaystyle","true");
+  if (mathfontfamily != "") node.setAttribute("fontfamily",mathfontfamily);
+  AMnestingDepth = 0;
+  node.appendChild(AMparseExpr(str.replace(/^\s+/g,""),false)[0]);
+  node = AMcreateMmlNode("math",node);
+  if (showasciiformulaonhover)                      //fixed by djhsu so newline
+    node.setAttribute("title",str.replace(/\s+/g," "));//does not show in Gecko
+  if (mathfontfamily != "" && (isIE || mathfontfamily != "serif")) {
+    var fnode = AMcreateElementXHTML("font");
+    fnode.setAttribute("face",mathfontfamily);
+    fnode.appendChild(node);
+    return fnode;
+  }
+  return node;
+}
+
+function AMstrarr2docFrag(arr, linebreaks) {
+  var newFrag=document.createDocumentFragment();
+  var expr = false;
+  for (var i=0; i<arr.length; i++) {
+    if (expr) newFrag.appendChild(AMparseMath(arr[i]));
+    else {
+      var arri = (linebreaks ? arr[i].split("\n\n") : [arr[i]]);
+      newFrag.appendChild(AMcreateElementXHTML("span").
+      appendChild(document.createTextNode(arri[0])));
+      for (var j=1; j<arri.length; j++) {
+        newFrag.appendChild(AMcreateElementXHTML("p"));
+        newFrag.appendChild(AMcreateElementXHTML("span").
+        appendChild(document.createTextNode(arri[j])));
+      }
+    }
+    expr = !expr;
+  }
+  return newFrag;
+}
+
+function AMprocessNodeR(n, linebreaks) {
+  var mtch, str, arr, frg, i;
+  if (n.childNodes.length == 0) {
+   if ((n.nodeType!=8 || linebreaks) &&
+    n.parentNode.nodeName!="form" && n.parentNode.nodeName!="FORM" &&
+    n.parentNode.nodeName!="textarea" && n.parentNode.nodeName!="TEXTAREA" &&
+    n.parentNode.nodeName!="pre" && n.parentNode.nodeName!="PRE") {
+    str = n.nodeValue;
+    if (!(str == null)) {
+      str = str.replace(/\r\n\r\n/g,"\n\n");
+      if (doubleblankmathdelimiter) {
+        str = str.replace(/\x20\x20\./g," "+AMdelimiter1+".");
+        str = str.replace(/\x20\x20,/g," "+AMdelimiter1+",");
+        str = str.replace(/\x20\x20/g," "+AMdelimiter1+" ");
+      }
+      str = str.replace(/\x20+/g," ");
+      str = str.replace(/\s*\r\n/g," ");
+      mtch = false;
+      str = str.replace(new RegExp(AMescape2, "g"),
+              function(st){mtch=true;return "AMescape2"});
+      str = str.replace(new RegExp(AMescape1, "g"),
+              function(st){mtch=true;return "AMescape1"});
+      str = str.replace(new RegExp(AMdelimiter2regexp, "g"),AMdelimiter1);
+      arr = str.split(AMdelimiter1);
+      for (i=0; i<arr.length; i++)
+        arr[i]=arr[i].replace(/AMescape2/g,AMdelimiter2).
+                      replace(/AMescape1/g,AMdelimiter1);
+      if (arr.length>1 || mtch) {
+        if (checkForMathML) {
+          checkForMathML = false;
+          var nd = AMisMathMLavailable();
+          AMnoMathML = nd != null;
+          if (AMnoMathML && notifyIfNoMathML)
+            if (alertIfNoMathML)
+              alert("To view the ASCIIMathML notation use Internet Explorer 6 +\nMathPlayer (free from www.dessci.com)\n\
+                or Firefox/Mozilla/Netscape");
+            else AMbody.insertBefore(nd,AMbody.childNodes[0]);
+        }
+        if (!AMnoMathML) {
+          frg = AMstrarr2docFrag(arr,n.nodeType==8);
+          var len = frg.childNodes.length;
+          n.parentNode.replaceChild(frg,n);
+          return len-1;
+        } else return 0;
+      }
+    }
+   } else return 0;
+  } else if (n.nodeName!="math") {
+    for (i=0; i<n.childNodes.length; i++)
+      i += AMprocessNodeR(n.childNodes[i], linebreaks);
+  }
+  return 0;
+}
+
+function AMprocessNode(n, linebreaks, spanclassAM) {
+  var frag,st;
+  if (spanclassAM!=null) {
+    frag = document.getElementsByTagName("span")
+    for (var i=0;i<frag.length;i++)
+      if (frag[i].className == "AM")
+        AMprocessNodeR(frag[i],linebreaks);
+  } else {
+    try {
+      st = n.innerHTML;
+    } catch(err) {}
+    if (st==null ||
+        st.indexOf(AMdelimiter1)!=-1 || st.indexOf(AMdelimiter2)!=-1)
+      AMprocessNodeR(n,linebreaks);
+  }
+  if (isIE) { //needed to match size and font of formula to surrounding text
+    frag = document.getElementsByTagName('math');
+    for (var i=0;i<frag.length;i++) frag[i].update()
+  }
+}
+
+var AMbody;
+var AMnoMathML = false, AMtranslated = false;
+
+function translate(spanclassAM) {
+  if (!AMtranslated) { // run this only once
+    AMtranslated = true;
+    AMinitSymbols();
+    AMbody = document.getElementsByTagName("body")[0];
+    AMprocessNode(AMbody, false, spanclassAM);
+  }
+}
+
+if (isIE) { // avoid adding MathPlayer info explicitly to each webpage
+  document.write("<object id=\"mathplayer\"\
+  classid=\"clsid:32F66A20-7614-11D4-BD11-00104BD3F987\"></object>");
+  document.write("<?import namespace=\"m\" implementation=\"#mathplayer\"?>");
+}
+
+// GO1.1 Generic onload by Brothercake
+// http://www.brothercake.com/
+//onload function (replaces the onload="translate()" in the <body> tag)
+function generic()
+{
+  translate();
+};
+//setup onload function
+if(typeof window.addEventListener != 'undefined')
+{
+  //.. gecko, safari, konqueror and standard
+  window.addEventListener('load', generic, false);
+}
+else if(typeof document.addEventListener != 'undefined')
+{
+  //.. opera 7
+  document.addEventListener('load', generic, false);
+}
+else if(typeof window.attachEvent != 'undefined')
+{
+  //.. win/ie
+  window.attachEvent('onload', generic);
+}
+//** remove this condition to degrade older browsers
+else
+{
+  //.. mac/ie5 and anything else that gets this far
+  //if there's an existing onload function
+  if(typeof window.onload == 'function')
+  {
+    //store it
+    var existing = onload;
+    //add new onload handler
+    window.onload = function()
+    {
+      //call existing onload function
+      existing();
+      //call generic onload function
+      generic();
+    };
+  }
+  else
+  {
+    //setup onload function
+    window.onload = generic;
+  }
+}
+/*]]>*/
+</script>
+<style>
+body {
+ /* Show logos before asciidoc title. */
+ background-image: url("images/SPIR_Nov14.svg"), url("images/Khronos_RGB_June18.svg");
+ background-size: 525px 125px, 525px 125px;
+ background-repeat: no-repeat, no-repeat;
+ background-position: center 0px, center 125px;
+ /* And margin-top so the logo is not covered by the asciidoc title. */
+ margin-top: 250px;
+}
+</style>
+
+</head>
+<body class="article">
+<div id="header">
+<h1>OpenCL.DebugInfo.100 Information Extended Instruction Set Specification</h1>
+<span id="author">Alexey Sotkin, Intel</span><br>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>&#169; Copyright 2019 The Khronos Group Inc. All Rights Reserved.</p></div>
+<div class="paragraph"><p>This specification is protected by copyright laws and contains material proprietary to the Khronos Group, Inc. It or any components may not be reproduced, republished, distributed, transmitted, displayed, broadcast, or otherwise exploited in any manner
+without the express prior written permission of Khronos Group. You may use this specification for implementing the functionality therein, without altering or removing any trademark, copyright or other notice from the specification, but the receipt or
+possession of this specification does not convey any rights to reproduce, disclose, or distribute its contents, or to manufacture,
+use, or sell anything that it may describe, in whole or in part.</p></div>
+<div class="paragraph"><p>Khronos Group grants express permission to any current Promoter, Contributor or Adopter member of Khronos to copy and
+redistribute UNMODIFIED versions of this specification in any fashion, provided that NO CHARGE is made for the specification
+and the latest available update of the specification for any version of the API is used whenever possible. Such distributed
+specification may be reformatted AS LONG AS the contents of the specification are not changed in any way. The specification
+may be incorporated into a product that is sold as long as such product includes significant independent work developed by the
+seller. A link to the current version of this specification on the Khronos Group website should be included whenever possible
+with specification distributions.</p></div>
+<div class="paragraph"><p>Khronos Group makes no, and expressly disclaims any, representations or warranties, express or implied, regarding this specification, including, without limitation, any implied warranties of merchantability or fitness for a particular purpose or noninfringement of any intellectual property. Khronos Group makes no, and expressly disclaims any, warranties, express or implied,
+regarding the correctness, accuracy, completeness, timeliness, and reliability of the specification. Under no circumstances will
+the Khronos Group, or any of its Promoters, Contributors or Members or their respective partners, officers, directors, employees,
+agents, or representatives be liable for any damages, whether direct, indirect, special or consequential damages for lost revenues,
+lost profits, or otherwise, arising from or in connection with these materials.
+Khronos, SYCL, SPIR, WebGL, EGL, COLLADA, StreamInput, OpenVX, OpenKCam, glTF, OpenKODE, OpenVG, OpenWF,
+OpenSL ES, OpenMAX, OpenMAX AL, OpenMAX IL and OpenMAX DL are trademarks and WebCL is a certification mark
+of the Khronos Group Inc. OpenCL is a trademark of Apple Inc. and OpenGL and OpenML are registered trademarks and the
+OpenGL ES and OpenGL SC logos are trademarks of Silicon Graphics International used under license by Khronos. All other
+product names, trademarks, and/or company names are used solely for identification and belong to their respective owners.</p></div>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+<h3 id="_contributors_and_acknowledgments" class="float">Contributors and Acknowledgments</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+Yaxun Liu, AMD
+</p>
+</li>
+<li>
+<p>
+Brian Sumner, AMD
+</p>
+</li>
+<li>
+<p>
+Ben Ashbaugh, Intel
+</p>
+</li>
+<li>
+<p>
+Alexey Bader, Intel
+</p>
+</li>
+<li>
+<p>
+Raun Krisch, Intel
+</p>
+</li>
+<li>
+<p>
+Pratik Ashar, Intel
+</p>
+</li>
+<li>
+<p>
+John Kessenich, Google
+</p>
+</li>
+<li>
+<p>
+David Neto, Google
+</p>
+</li>
+<li>
+<p>
+Neil Henning, Codeplay
+</p>
+</li>
+<li>
+<p>
+Kerch Holt, Nvidia
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This is the specification of <strong>OpenCL.DebugInfo.100</strong> extended instruction set.</p></div>
+<div class="paragraph"><p>The library is imported into a SPIR-V module in the following manner:</p></div>
+<div class="paragraph"><p><a id="OpExtInstImport"></a><span class="monospaced">&lt;extinst-id&gt; OpExtInstImport "OpenCL.DebugInfo.100"</span></p></div>
+<div class="paragraph"><p>The instructions below are capable to convey debug information of the source
+program.</p></div>
+<div class="paragraph"><p>The design guide lines for these instructions are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Sufficient for a backend to generate DWARF debug info for OpenCL C/C++
+  kernels
+</p>
+</li>
+<li>
+<p>
+Easy translation between SPIR-V/LLVM
+</p>
+</li>
+<li>
+<p>
+Clear
+</p>
+</li>
+<li>
+<p>
+Concise
+</p>
+</li>
+<li>
+<p>
+Extendable for other languages
+</p>
+</li>
+<li>
+<p>
+Capable of representing debug information for optimized IR
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_binary_form">2. Binary Form</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This section contains the semantics of the debug info extended instructions
+using the <strong>OpExtInst</strong> instruction.<br></p></div>
+<div class="paragraph"><p>All <em>Name</em> operands are id of <strong>OpString</strong> instruction, which represents the name
+of the entry (type, variable, function. etc) as it appears in the source
+program.<br>
+<br>
+<em>Result Type</em> of all instructions bellow is id of <strong>OpTypeVoid</strong><br>
+<br>
+<em>Set</em> operand in all instructions bellow is the result of an <strong>OpExtInstImport</strong>
+ instruction.<br>
+<br>
+All instructions in this extended set has no semantic impact and can be safely
+removed from the module all at once. Or a single debugging instruction can be
+removed from the module if all references, to the <em>Result &lt;id&gt;</em> of this
+instruction are replaced with id of <a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a>
+instruction.<br>
+<br>
+<a href="#DebugScope"><strong>DebugScope</strong></a>, <a href="#DebugNoScope"><strong>DebugNoScope</strong></a>,
+<a href="#DebugDeclare"><strong>DebugDeclare</strong></a>, <a href="#DebugValue"><strong>DebugValue</strong></a>
+instructions can interleave with instructions within a function body.
+All other debugging instructions should be located between section 9
+(All type declarations (OpTypeXXX instructions), all constant instructions, and
+all global variable declarations &#8230;) and section 10 (All function declaration)
+per the core SPIR-V specification.<br>
+<br>
+Debug info for source language opaque types is represented by
+<a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a> without <em>Members</em> operands.
+<em>Size</em> of the composite must be <a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a> and <em>Name</em>
+must start with <em>@</em> symbol to avoid clashes with user defined names.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enumerations">3. Enumerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_instruction_enumeration_a_id_instenum_a">3.1. Instruction Enumeration <a id="InstEnum"></a></h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:12%;">
+<col style="width:87%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" > Instruction<br>
+  number </th>
+<th class="tableblock halign-left valign-middle" > Instruction name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeBasic"><strong>DebugTypeBasic</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypePointer"><strong>DebugTypePointer</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeQualifier"><strong>DebugTypeQualifier</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeArray"><strong>DebugTypeArray</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeVector"><strong>DebugTypeVector</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypedef"><strong>DebugTypedef</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeFunction"><strong>DebugTypeFunction</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeEnum"><strong>DebugTypeEnum</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeMember"><strong>DebugTypeMember</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeInheritance"><strong>DebugTypeInheritance</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypePtrToMember"><strong>DebugTypePtrToMember</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeTemplate"><strong>DebugTypeTemplate</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeTemplateParameter"><strong>DebugTypeTemplateParameter</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeTemplateTemplateParameter"><strong>DebugTypeTemplateTemplateParameter</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugTypeTemplateParameterPack"><strong>DebugTypeTemplateParameterPack</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugGlobalVariable"><strong>DebugGlobalVariable</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFunctionDeclaration"><strong>DebugFunctionDeclaration</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFunction"><strong>DebugFunction</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugLexicalBlock"><strong>DebugLexicalBlock</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugLexicalBlockDiscriminator"><strong>DebugLexicalBlockDiscriminator</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugScope"><strong>DebugScope</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugNoScope"><strong>DebugNoScope</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugInlinedAt"><strong>DebugInlinedAt</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugLocalVariable"><strong>DebugLocalVariable</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugInlinedVariable"><strong>DebugInlinedVariable</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugDeclare"><strong>DebugDeclare</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugValue"><strong>DebugValue</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugOperation"><strong>DebugOperation</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugExpression"><strong>DebugExpression</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugMacroDef"><strong>DebugMacroDef</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">33</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugMacroUndef"><strong>DebugMacroUndef</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">34</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugImportedEntity"><strong>DebugImportedEntity</strong></a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">35</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugSource"><strong>DebugSource</strong></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_debug_info_flags_a_id_debugflags_a">3.2. Debug Info Flags <a id="DebugFlags"></a></h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:33%;">
+<col style="width:66%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" > Value </th>
+<th class="tableblock halign-left valign-middle" > Flag Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsProtected</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsPrivate</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1&lt;&lt;0 | 1&lt;&lt;1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsPublic</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsLocal</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsDefinition</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagFwdDecl</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagArtificial</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagExplicit</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagPrototyped</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagObjectPointer</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagStaticMember</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIndirectVariable</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagLValueReference</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagRValueReference</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsOptimized</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 14</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagIsEnumClass</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 15</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagTypePassByValue</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1 &lt;&lt; 16</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>FlagTypePassByReference</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_base_type_attribute_encodings_a_id_basetypeattributeencoding_a">3.3. Base Type Attribute Encodings <a id="BaseTypeAttributeEncoding"></a></h3>
+<div class="paragraph"><p>Used by <a href="#DebugTypeBasic"><strong>DebugTypeBasic</strong></a><br></p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:9%;">
+<col style="width:90%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" colspan="2" > Encoding code name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Unspecified</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Address</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Boolean</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Float</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Signed</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>SignedChar</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Unsigned</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>UnsignedChar</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_composite_types_a_id_compositetypes_a">3.4. Composite Types <a id="CompositeTypes"></a></h3>
+<div class="paragraph"><p>Used by <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a><br></p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:9%;">
+<col style="width:90%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" colspan="2" > Tag code name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Class</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Structure</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Union</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_type_qualifiers_a_id_typequalifiers_a">3.5. Type Qualifiers <a id="TypeQualifiers"></a></h3>
+<div class="paragraph"><p>Used by <a href="#DebugTypeQualifier"><strong>DebugTypeQualifier</strong></a><br></p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:9%;">
+<col style="width:90%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" colspan="2" > Qualifier tag code name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>ConstType</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>VolatileType</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>RestrictType</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>AtomicType</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_debug_operations_a_id_operation_a">3.6. Debug Operations <a id="Operation"></a></h3>
+<div class="paragraph"><p>These operations are used to form a DWARF expression.
+Such expressions provide information about the current location
+(described by <a href="#DebugDeclare"><strong>DebugDeclare</strong></a>) or value
+(described by <a href="#DebugValue"><strong>DebugValue</strong></a>) of a variable.
+Operations in an expression are to be applied on a stack.
+Initially the stack contains one element - address or value of the source variable.<br>
+Used by <a href="#DebugExpression"><strong>DebugExpression</strong></a><br></p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:9%;">
+<col style="width:27%;">
+<col style="width:9%;">
+<col style="width:54%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" colspan="2" > Operation encodings </th>
+<th class="tableblock halign-left valign-top" > No. of Operands </th>
+<th class="tableblock halign-left valign-top" > Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Deref</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pops the top stack entry, treats it as an address, pushes the value retrieved from that address.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Plus</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pops the top two entries from the stack, adds them together and push the result.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Minus</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pops the top two entries from the stack, subtracts the former top entry from the former second to top entry and push the result.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>PlusUconst</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pops the top stack entry, adds the <em>addend</em> operand to it, and pushes the result.
+                                             The operand must be a single word integer literal.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>BitPiece</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Describes an object or value which may be contained in part of a register or stored in more than one location.
+                                             The first operand is <em>offset</em> in bit from the location defined by the preceding operation.
+                                             The second operand is <em>size</em> of the piece in bits.
+                                             The operands must be a single word integer literals.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Swap</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Swaps the top two stack values.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Xderef</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pops the top two entries from the stack.
+                                             Treats the former top entry as an address and the former second to top entry as an address space.
+                                             The value retrieved from the address in the given address space is pushed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>StackValue</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Describes an object which doesn&#8217;t exist in memory but it&#8217;s value is known and is at the top of the DWARF expression stack.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Constu</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Pushes a constant <em>value</em> onto the stack. The <em>value</em> operand must be a single word integer literal.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Fragment</strong></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Has the same semantics as <strong>BitPiece</strong>, but the <em>offset</em> operand defines location within the source variable.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_imported_entities_a_id_importedentities_a">3.7. Imported Entities <a id="ImportedEntities"></a></h3>
+<div class="paragraph"><p>Used by <a href="#DebugImportedEntity"><strong>DebugImportedEntity</strong></a><br></p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:50%;
+">
+<col style="width:9%;">
+<col style="width:90%;">
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top" colspan="2" > Tag code name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>ImportedModule</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>ImportedDeclaration</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_instructions">4. Instructions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_missing_debugging_information">4.1. Missing Debugging Information</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:22%;">
+<col style="width:22%;">
+<col style="width:22%;">
+<col style="width:11%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="6" ><p class="tableblock"><a id="DebugInfoNone"></a><strong>DebugInfoNone</strong><br>
+<br>
+Other instructions can refer to this one in case the debugging information is
+unknown, not available or not applicable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_compilation_unit">4.2. Compilation Unit</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:4%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="10" ><p class="tableblock"><a id="DebugCompilationUnit"></a><strong>DebugCompilationUnit</strong><br>
+<br>
+ Describe the compilation unit. A SPIR-V module can possibly contain multiple
+ compilation units.<br>
+<br>
+ <em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Version</em> is version of the SPIRV debug information format.<br>
+<br>
+ <em>DWARF Version</em> is version of DWARF standard this specification is compatible
+ with.<br>
+<br>
+ <em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program.<br>
+<br>
+ <em>Language</em> is a source programming language of this particular compilation
+ unit. Possible values of this operand are described in the <em>Source Language</em>
+ section of the core SPIR-V specification.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Version</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>DWARF version</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Language</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugSource"></a><strong>DebugSource</strong><br>
+<br>
+ Describe the source program. It can be either the primary source file or a
+ file added via <span class="monospaced">#include</span> directive<br>
+<br>
+ <em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>File</em> is <strong>OpString</strong> holding the name of the source file including its full
+ path.<br>
+<br>
+ <em>Text</em> is <strong>OpString</strong> which contains text of the source program the SPIR-V
+  module is derived from.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">6+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">35</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>File</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional<br>
+  <em>&lt;id&gt;</em> <em>Text</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_type_instructions">4.3. Type instructions</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugTypeBasic"></a><strong>DebugTypeBasic</strong><br>
+<br>
+ Describe basic data types.<br>
+<br>
+ <em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Name</em> is an <strong>OpString</strong> representing the name of the type as it appears in the
+  source program. May be empty.<br>
+<br>
+ <em>Size</em> is an <strong>OpConstant</strong> with integral type and its value is amount of storage
+ in bits, needed to hold an instance of the type.<br>
+<br>
+ <a href="#BaseTypeAttributeEncoding"><em>Encoding</em></a> describes how the base type is
+ encoded.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Size</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#BaseTypeAttributeEncoding"><em>Encoding</em></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugTypePointer"></a><strong>DebugTypePointer</strong><br>
+<br>
+Describe pointer or reference data types.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong> <br>
+<br>
+<em>Base Type</em> is <em>&lt;id&gt;</em> of debugging instruction which represents the pointee
+ type.<br>
+<br>
+<em>Storage Class</em> is the class of the memory where the pointed object is allocated.
+ Possible values of this operand are described in the <em>Storage Class</em> section of
+ the core SPIR-V specification.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Base Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Storage Class</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em><br>
+  <em>Flags</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugTypeQualifier"></a><strong>DebugTypeQualifier</strong><br>
+<br>
+Describe <em>const</em>, <em>volatile</em> and <em>restrict</em> qualified data types.
+Types with multiple qualifiers are represented as a sequence of single qualified
+types.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Base Type</em> is debug instruction which represents the type being qualified.<br>
+<br>
+ <em>Type Qaulifier</em> is a literal value from the
+  <a href="#TypeQualifiers"><strong>TypeQualifiers</strong></a> table.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Base Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#TypeQualifiers"><em>Type Qaulifier</em></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugTypeArray"></a><strong>DebugTypeArray</strong><br>
+<br>
+ Describe array data types<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Base Type</em> is debugging instruction which describes type of element of the
+ array<br>
+<br>
+<em>Component Count</em> is an <strong>OpConstant</strong> with integral result type, and its value is
+ the number of elements in the corresponding dimension of the array. Number and
+ order of <em>Component Count</em> operands must match with number and order of array
+ dimensions as they appear in the source program.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Base Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Component Count</em>, &#8230;</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugTypeVector"></a><strong>DebugTypeVector</strong><br>
+<br>
+Describe vector data types<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Base Type</em> is id of debugging instruction which describes type of element of
+ the vector<br>
+<br>
+<em>Component Count</em> is a single <em>word</em> literal denoting number of elements in the
+ vector.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Base Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Component Count</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:3%;">
+<col style="width:3%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:3%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="12" ><p class="tableblock"><a id="DebugTypedef"></a><strong>DebugTypedef</strong><br>
+<br>
+Describe a C and C++ <em>typedef declaration</em><br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is <strong>OpString</strong> which is represents a new name for the <em>Base Type</em><br>
+<br>
+<em>Base Type</em> is a debugging instruction representing the type for which a new
+ name is being declared<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the typedef declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the declaration appears on the <em>Line</em>.<br>
+<br>
+<em>Parent</em> is a debug instruction which represents the parent lexical scope of the
+ declaration.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Base Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugTypeFunction"></a><strong>DebugTypeFunction</strong><br>
+<br>
+Describe a function type<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+<em>Return Type</em> is a debug instruction which represents type of return value of
+ the function. If the function has no return value, this operand is
+ <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Parameter Types</em> are debug instructions which describe type of parameters of
+ the function<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em><br>
+  <em>Flags</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Return Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt;, &lt;id&gt;, &#8230; Parameter Types</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:13%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="15" ><p class="tableblock"><a id="DebugTypeEnum"></a><strong>DebugTypeEnum</strong><br>
+<br>
+Describe enumeration types<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the enumeration as it appears in the
+ source program.<br>
+<br>
+<em>Underlying Type</em> is a debugging instruction which describes the underlying type
+ of the enum in the source program. If the underlying type is not specified in
+ the source program, this operand must refer to
+ <a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a>.<br>
+ <br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the <em>enum</em> declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ enumeration declaration appears in the <em>Source</em>.<br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the enumeration declaration appears on the <em>Line</em>.<br>
+<br>
+<em>Parent</em> is a debug instruction which represents a parent lexical scope.<br>
+<br>
+<em>Size</em> is an <strong>OpConstant</strong> with integral result type, and its value is the number
+ of bits required to hold an instance of the enumeration.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+Enumerators are encoded as trailing pairs of <em>Value</em> and corresponding <em>Name</em>.
+<em>Values</em> must be id of <strong>OpConstant</strong> instruction, with integer result type.
+<em>Name</em> must be id of <strong>OpString</strong> instruction.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">13+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Underlying Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;, Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Size</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em> <em>Flags</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Value</em>,<br>
+  <em>&lt;id&gt;</em> <em>Name</em>,<br>
+  <em>&lt;id&gt;</em> <em>Value</em>,<br>
+  <em>&lt;id&gt;</em> <em>Name</em>, &#8230;</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:2%;">
+<col style="width:2%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:2%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="16" ><p class="tableblock"><a id="DebugTypeComposite"></a><strong>DebugTypeComposite</strong><br>
+<br>
+Describe <em>structure</em>, <em>class</em> and <em>union</em> data types<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Tag</em> is a literal value from the  <a href="#CompositeTypes"><em>Composite Types</em></a> table
+ which specifies the kind of the composite type.<br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the type as it appears in the source
+ program<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the type declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ type declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the declaration appears on the <em>Line</em><br>
+<br>
+<em>Parent</em> is a debug instruction which represents parent lexical scope. Must be
+ one of the following: <a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a>,
+ <a href="#DebugFunction"><strong>DebugFunction</strong></a>,
+ <a href="#DebugLexicalBlock"><strong>DebugLexicalBlock</strong></a> or other
+ <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a><br>
+<br>
+<em>Linkage Name</em> is an <strong>OpString</strong>, holding the linkage name or mangled name of the
+ composite.<br>
+<br>
+<em>Size</em> is an <strong>OpConstant</strong> with integral type and its value is the number of
+ bits required to hold an instance of the composite type.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+<em>Members</em> must be ids of <a href="#DebugTypeMember"><strong>DebugTypeMember</strong></a>,
+ <a href="#DebugFunction"><strong>DebugFunction</strong></a>
+ or <a href="#DebugTypeInheritance"><strong>DebugTypeInheritance</strong></a>.<br></p>
+<p class="tableblock"><strong>Note:</strong> To represent a source language opaque type this instruction must have no
+<em>Members</em> operands, <em>Size</em> operand must be <a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a>
+ and <em>Name</em> must start with <em>@</em> symbol to avoid clashes with user defined names.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">14+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#CompositeTypes"><em>Tag</em></a></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Linkage Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Size</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em><br>
+  <em>Flags</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;, &lt;id&gt;, &#8230; Members</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:2%;">
+<col style="width:2%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:2%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="16" ><p class="tableblock"><a id="DebugTypeMember"></a><strong>DebugTypeMember</strong><br>
+<br>
+Describe a data member of a <em>structure</em>, <em>class</em> or <em>union</em>.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the member as it appears in the
+ source program<br>
+<br>
+<em>Type</em> is a debug type instruction which represents type of the member<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the member declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ member declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the member declaration appears on the <em>Line</em>.<br>
+<br>
+<em>Parent</em> is a debug instruction which represents a composite type containing
+ this member.<br>
+<br>
+<em>Offset</em> is an <strong>OpConstant</strong> with integral type and its value is offset in bits
+ from the beginning of the <em>Containig Type</em>.<br>
+<br>
+<em>Size</em> is an <strong>OpConstant</strong> with integral type and its value is the number of bits
+ the <em>Base type</em> occupies within the <em>Containig Type</em>.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+<em>Value</em> is an <strong>OpConstant</strong> representing initialization value in case of
+ <em>const static</em> qualified member in C++.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">14+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Offset</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Size</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFlags"><em>Flags</em></a></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt; Value</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:5%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:15%;">
+<col style="width:15%;">
+<col style="width:5%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="11" ><p class="tableblock"><a id="DebugTypeInheritance"></a><strong>DebugTypeInheritance</strong><br>
+<br>
+Describe inheritance relationship with a parent <em>class</em> or <em>structure</em>. Result
+ of this instruction should be used as a member of a composite type<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Child</em> is a debug instruction representing a derived <em>class</em> or <em>struct</em> in
+ C++.<br>
+<br>
+<em>Parent</em> is a debug instruction representing a class or structure the
+ <em>Child Type</em> is derived from.<br>
+<br>
+<em>Offset</em> is an <strong>OpConstant</strong> with integral type and its value is offset of the
+ <em>Parent Type</em> in bits in layout of the <em>Child Type</em><br>
+<br>
+<em>Size</em> is an <strong>OpConstant</strong> with integral type and its value is the number of bits
+ the <em>Parent type</em> occupies within the <em>Child Type</em>.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Child</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Offset</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Size</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFlags"><em>Flags</em></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugTypePtrToMember"></a><strong>DebugTypePtrToMember</strong><br>
+<br>
+Describe a type of an object that is a pointer to a structure or class member<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Member Type</em> is a debug instruction representing the type of the member<br>
+<br>
+<em>Parent</em> is a debug instruction, representing a structure or class type.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Member Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_templates">4.4. Templates</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugTypeTemplate"></a><strong>DebugTypeTemplate</strong><br>
+<br>
+Describe an instantiated template of <em>class</em>, <em>struct</em> or <em>function</em> in C++.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Target</em> is a debug instruction representing class, struct or function which has
+ template parameter(s).<br>
+<br>
+<em>Parameters</em> are debug instructions representing the template parameters for
+ this particular instantiation.<br>
+<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Target</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;&#8230;</em> <em>Parameters</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:3%;">
+<col style="width:3%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:3%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="12" ><p class="tableblock"><a id="DebugTypeTemplateParameter"></a><strong>DebugTypeTemplateParameter</strong><br>
+<br>
+Describe a formal parameter of a C++ template instantiation.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the template parameter<br>
+<br>
+<em>Actual Type</em> is a debug instruction representing the actual type of the formal
+ parameter for this particular instantiation.<br>
+<br>
+ If this instruction describes a template value parameter, the <em>Value</em> is
+ represented by an <strong>OpConstant</strong> with integer result type. For template type
+ parameter <em>Value</em> operand must not be used<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the template instantiation.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ template parameter declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the template parameter declaration appears on the <em>Line</em><br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Actual Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Value</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:4%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="11" ><p class="tableblock"><a id="DebugTypeTemplateTemplateParameter"></a><strong>DebugTypeTemplateTemplateParameter</strong><br>
+<br>
+Describe a template template parameter of a C++ template instantiation.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the template template parameter<br>
+<br>
+<em>Template Name</em> is an <strong>OpString</strong> holding the name of the template used as
+ template parameter in this particular instantiation.<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the template instantiation.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ template template parameter declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the template template parameter declaration appears on the <em>Line</em><br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Template Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:4%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="11" ><p class="tableblock"><a id="DebugTypeTemplateParameterPack"></a><strong>DebugTypeTemplateParameterPack</strong><br>
+<br>
+Describe expanded template parameter pack in a variadic template instantiation
+ in C++<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong> holding the name of the template parameter pack<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the template instantiation.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ template parameter pack declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the template parameter pack declaration appears on the <em>Line</em><br>
+<br>
+<em>Template parameters</em> are
+ <a href="#DebugTypeTemplateParameter"><strong>DebugTypeTemplateParameter</strong></a>s describing the
+ expanded parameter pack in the variadic template instantiation<br>
+<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">10+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;&#8230;</em> <em>Template parameters</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_global_variables">4.5. Global Variables</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:2%;">
+<col style="width:2%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:2%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="16" ><p class="tableblock"><a id="DebugGlobalVariable"></a><strong>DebugGlobalVariable</strong><br>
+<br>
+ Describe a global variable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong>, holding the name of the variable as it appears in the
+ source program<br>
+<br>
+<em>Type</em> is a debug instruction which represents type of the variable.<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the global variable declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ global variable declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the global variable declaration appears on the <em>Line</em><br>
+<br>
+<em>Parent</em> is a debug instruction which represents parent lexical scope. Must be
+ one of the following: <a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a>,
+ <a href="#DebugFunction"><strong>DebugFunction</strong></a>,
+ <a href="#DebugLexicalBlock"><strong>DebugLexicalBlock</strong></a> or
+ <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a><br>
+<br>
+<em>Linkage Name</em> is an <strong>OpString</strong>, holding the linkage name of the variable.<br>
+<br>
+<em>Variable</em> is id of the global variable or constant which is described by this
+ instruction. If the variable is optimized out, this operand must be
+ <a href="#DebugInfoNone"><strong>DebugInfoNone</strong></a>.<br>
+<br>
+<em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+If the global variable represents a defining declaration for C++ static data
+ member of a structure, class or union, the optional <em>Static Member Declaration</em>
+ operand refers to the debugging type of the previously declared variable, i.e.
+ <a href="#DebugTypeMember"><strong>DebugTypeMember</strong></a><br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">14+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Linkage Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Variable</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFlags"><em>Flags</em></a><br></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt; Static Member Declaration</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_functions">4.6. Functions</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:3%;">
+<col style="width:3%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:3%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="14" ><p class="tableblock"><a id="DebugFunctionDeclaration"></a><strong>DebugFunctionDeclaration</strong><br>
+<br>
+Describe function or method declaration.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong>, holding the name of the function as it appears in the
+ source program<br>
+<br>
+<em>Type</em> is an <a href="#DebugTypeFunction"><strong>DebugTypeFunction</strong></a> instruction which
+ represents type of the function.<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the function declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ function declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the function declaration appears on the <em>Line</em><br>
+<br>
+<em>Parent</em> is a debug instruction which represents parent lexical scope.<br>
+<br>
+<em>Linkage Name</em> is an <strong>OpString</strong>, holding the linkage name of the function<br>
+<br>
+ <em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+ <br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Linkage Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFlags"><em>Flags</em></a><br></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:2%;">
+<col style="width:2%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:2%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<col style="width:7%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="17" ><p class="tableblock"><a id="DebugFunction"></a><strong>DebugFunction</strong><br>
+<br>
+Describe function or method definition.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong>, holding the name of the function as it appears in the
+ source program<br>
+<br>
+<em>Type</em> is an <a href="#DebugTypeFunction"><strong>DebugTypeFunction</strong></a> instruction which
+ represents type of the function.<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the function definition.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ function declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the function declaration appears on the <em>Line</em><br>
+<br>
+<em>Parent</em> is a debug instruction which represents parent lexical scope.<br>
+<br>
+<em>Linkage Name</em> is an <strong>OpString</strong>, holding the linkage name of the function<br>
+<br>
+ <em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+ <br>
+<em>Scope Line</em> a single <em>word</em> literal denoting line number in the source program
+ at which the function scope begins.<br>
+<br>
+<em>Function</em> is an <strong>OpFunction</strong> which is described by this instruction.<br>
+ <br>
+<em>Declaration</em> is <a href="#DebugFunctionDeclaration"><strong>DebugFunctionDeclaration</strong></a>
+ which represents non-defining declaration of the function.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">15+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Linkage Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#DebugFlags"><em>Flags</em></a><br></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Scope Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Function</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt; Declaration</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_location_information">4.7. Location Information</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:4%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<col style="width:12%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="11" ><p class="tableblock"><a id="DebugLexicalBlock"></a><strong>DebugLexicalBlock</strong><br>
+<br>
+Describe a lexical block in the source program.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the lexical block.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ lexical block begins in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the lexical
+ block begins.<br>
+<br>
+ <em>Parent</em> is a debug instructions describing the scope containing the current
+ scope. Entities in the global scope should have <em>Parent</em> referring to
+ <a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a>.<br>
+<br>
+ Presence of the <em>Name</em> operand indicates that this instruction represents a
+ C++ namespace. This operand refers to <strong>OpString</strong> holding the name of the
+ namespace. For anonymous C++ namespaces the name must be an empty string.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">9+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt;</em> <em>Name</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugLexicalBlockDiscriminator"></a><strong>DebugLexicalBlockDiscriminator</strong><br>
+<br>
+Distinguish lexical blocks on a single line in the source program.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the lexical block.<br>
+<br>
+<em>Parent</em> is a debug instructions describing the scope containing the current
+ scope.<br>
+<br>
+<em>Discriminator</em> is a single <em>word</em> literal denoting DWARF discriminator value
+ for instructions in the lexical block.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Discriminator</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em> <em>Parent</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugScope"></a><strong>DebugScope</strong><br>
+<br>
+ Provide information about source-level scope.
+ This scope information applies to the instructions physically following this
+ instruction, up to the first occurrence of any of the following: the next end
+ of block, the next <strong>DebugScope</strong> instruction, or the next <strong>DebugNoScope</strong>
+ instruction.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Scope</em> is a debugging instruction which describes source-level scope.<br>
+<br>
+ <em>Inlined</em> is an <a href="#DebugInlinedAt"><strong>DebugInlinedAt</strong></a> instruction, which
+ represents source-level scope and line number at which all instructions from
+ the current scope were inlined.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">6+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Scope</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional<br>
+  <em>&lt;id&gt; Inlined At</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:22%;">
+<col style="width:22%;">
+<col style="width:22%;">
+<col style="width:11%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="6" ><p class="tableblock"><a id="DebugNoScope"></a><strong>DebugNoScope</strong><br>
+<br>
+Discontinue previously declared by <strong>DebugScope</strong> source-level scope.<br>
+<br>
+ <em>Result Type</em> must be <strong>OpTypeVoid</strong><br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">24</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugInlinedAt"></a><strong>DebugInlinedAt</strong><br>
+<br>
+Represent source-level scope and line number for the range of inlined
+ instructions grouped together by an <a href="#DebugScope"><strong>DebugScope</strong></a> instruction.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the line number in the source file
+ where the range of instructions were inlined.<br>
+<br>
+<em>Scope</em> is a debug instruction representing a source-level scope at which the
+ range of instructions were inlined.<br>
+<br>
+<em>Inlined</em> is a debug instruction representing the next level of inlining in case
+ of recursive inlining.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Scope</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt; Inlined</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_local_variables">4.8. Local Variables</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:3%;">
+<col style="width:3%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:3%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="14" ><p class="tableblock"><a id="DebugLocalVariable"></a><strong>DebugLocalVariable</strong><br>
+<br>
+ Describe a local variable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Name</em> is an <strong>OpString</strong>, holding the name of the variable as it appears in the
+ source program<br>
+<br>
+<em>Type</em> is a debugging instruction which represents type of the local variable.<br>
+<br>
+<em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program containing the local variable declaration.<br>
+<br>
+<em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ local variable declaration appears in the <em>Source</em><br>
+<br>
+<em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the local variable declaration appears on the <em>Line</em><br>
+<br>
+<em>Parent</em> id of a debug instruction which represents parent lexical scope.<br>
+<br>
+ <em>Flags</em> is a single <em>word</em> literal formed by bitwise OR-ing values from the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+<br>
+If <em>ArgNumber</em> operand is present, this instruction represents a function formal
+ parameter.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em><br>
+  <em>Flags</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional<br>
+  <em>Literal Number</em><br>
+  <em>ArgNumber</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugInlinedVariable"></a><strong>DebugInlinedVariable</strong><br>
+<br>
+ Describe an inlined local variable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Variable</em> is a debug instruction representing a local variable which is inlined.<br>
+<br>
+<em>Inlined</em> is an <a href="#DebugInlinedAt"><strong>DebugInlinedAt</strong></a> instruction representing
+ the inline location.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Variable</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Inlined</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugDeclare"></a><strong>DebugDeclare</strong><br>
+<br>
+Define point of declaration of a local variable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Local Variable</em> must be an id of <a href="#DebugLocalVariable"><strong>DebugLocalVariable</strong></a><br>
+<br>
+<em>Variable</em> must be an id of <strong>OpVariable</strong> instruction which defines the local
+ variable.<br>
+<br>
+<em>Expression</em> must be an id of a <a href="#DebugExpression"><strong>DebugExpression</strong></a>
+ instruction.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Local Variable</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Variable</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Expression</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:4%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="10" ><p class="tableblock"><a id="DebugValue"></a><strong>DebugValue</strong><br>
+<br>
+Represent changing of value of a local variable.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Local Variable</em> must be an id of <a href="#DebugLocalVariable"><strong>DebugLocalVariable</strong></a><br>
+<br>
+<em>Value</em> is id of instruction, result of which is the new value of the
+ <em>Local Variable</em>.<br>
+<br>
+<em>Expression</em> is id of an <a href="#DebugExpression"><strong>DebugExpression</strong></a> instruction.<br>
+<br>
+<em>Indexes</em> have the same semantics as corresponding operand(s) of
+ <strong>OpAccessChain</strong>.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Local Variable</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Value</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Expression</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;, &lt;id&gt;, &#8230; Indexes</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:13%;">
+<col style="width:6%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="8" ><p class="tableblock"><a id="DebugOperation"></a><strong>DebugOperation</strong><br>
+<br>
+Represent DWARF operation, that operate on a stack of values.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Operation</em> is a DWARF operation from the  <a href="#Operation"><em>DWARF Operations</em></a>
+ table.<br>
+<br>
+<em>Operands</em> are zero or more single <em>word</em> literals the <em>Operation</em> operates on.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">6+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><a href="#Operation"><em>OpCode</em></a></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>Literal</em><br>
+  <em>Operands &#8230;</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:8%;">
+<col style="width:8%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:8%;">
+<col style="width:25%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="7" ><p class="tableblock"><a id="DebugExpression"></a><strong>DebugExpression</strong><br>
+<br>
+ Represent DWARF expressions, which describe how to compute a value or name
+ location during debugging of a program. They are expressed in terms of DWARF
+ operations that operate on a stack of values.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Operation</em> is zero or more ids of <a href="#DebugOperation"><strong>DebugOperation</strong></a>.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">5+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>&lt;id&gt;&#8230;</em> <em>Operation</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_macros">4.9. Macros</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:4%;">
+<col style="width:4%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:9%;">
+<col style="width:4%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<col style="width:14%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="10" ><p class="tableblock"><a id="DebugMacroDef"></a><strong>DebugMacroDef</strong><br>
+<br>
+ Represents a macro definition<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+ <em>Source</em> is id of <strong>OpString</strong>, which contains the name of the file which
+ contains definition of the macro.<br>
+<br>
+ <em>Line</em> is line number in the source file at which the macro is defined. If
+ <em>Line</em> is zero the macro definition is provided by compiler&#8217;s command line
+ argument.<br>
+<br>
+ <em>Name</em> is id of <strong>OpString</strong>, which contains the name of the macro as it appears
+ in the source program. In the case of a function-like macro definition, no
+ whitespace characters appear between the name of the defined macro and the
+ following left parenthesis. Formal parameters are separated by a comma without
+ any whitespace. Right parenthesis terminates the formal parameter list<br>
+<br>
+<em>Value</em> is id of <strong>OpString</strong>, which contians text with definition of the macro.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">7+</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Optional <em>Value</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:5%;">
+<col style="width:5%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:11%;">
+<col style="width:5%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="9" ><p class="tableblock"><a id="DebugMacroUndef"></a><strong>DebugMacroUndef</strong><br>
+<br>
+ Discontinue previous macro definition.<br>
+<br>
+<em>Result Type</em> must be <strong>OpTypeVoid</strong><br>
+<br>
+<em>Source</em> is id of <strong>OpString</strong>, which contains the name of the file in which the
+ macro is undefined<br>
+<br>
+<em>Line</em> is line number in the source program at which the macro is rendered as
+ undefined<br>
+<br>
+<em>Macro</em> is id of <a href="#DebugMacroDef"><strong>DebugMacroDef</strong></a> which represent the macro
+ to be undefined<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">33</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Macro</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_imported_entities">4.10. Imported Entities</h3>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:3%;">
+<col style="width:3%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:6%;">
+<col style="width:3%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<col style="width:10%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="13" ><p class="tableblock"><a id="DebugImportedEntity"></a><strong>DebugImportedEntity</strong><br>
+<br>
+ Represents a C++ namespace <em>using-directive</em>, namespace alias or
+ <em>using-declaration</em>.<br>
+<br>
+ <em>Name</em> is an <strong>OpString</strong>, holding the name or alias for the imported entity.<br>
+<br>
+ <em>Tag</em> is a literal value from the  <a href="#ImportedEntity"><strong>Imported Entities</strong></a> table
+ which specifies the kind of the imported entity.<br>
+<br>
+ <em>Source</em> is a <strong>DebugSource</strong> instruction representing text of the source program the <em>Entity</em> is being imported from.<br>
+<br>
+ <em>Entity</em> is a debug instruction representing a namespace or declaration is
+  being imported.<br>
+<br>
+ <em>Line</em> is a single <em>word</em> literal denoting the source line number at which the
+ <em>using</em> declaration appears in the <em>Source</em>.<br>
+<br>
+ <em>Column</em> is a single <em>word</em> literal denoting column number at which the first
+ character of the <em>using</em> declaration appears on the <em>Line</em>.<br>
+<br>
+ <em>Parent</em> is id of a debug instruction which represents the parent lexical
+ scope.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Result &lt;id&gt;</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Set</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">34</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Name</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal</em><br>
+  <em>Tag</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Source</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Entity</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Line</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>Literal Number</em><br>
+  <em>Column</em></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><em>&lt;id&gt; Parent</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation_rules">5. Validation Rules</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>None.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_issues">6. Issues</h2>
+<div class="sectionbody">
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Does the ABI used for the OpenCL C 2.0 blocks feature have to be declared
+  somewhere else in the module?
+</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph"><p><strong>RESOLVED</strong>:
+  No. Block ABI is out of scope for this specification.</p></div>
+</div></div>
+</li>
+</ol></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_revision_history">7. Revision History</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-rows"
+style="
+width:100%;
+">
+<col style="width:14%;">
+<col style="width:12%;">
+<col style="width:10%;">
+<col style="width:64%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" >Rev         </th>
+<th class="tableblock halign-left valign-top" >Date      </th>
+<th class="tableblock halign-left valign-top" >Author             </th>
+<th class="tableblock halign-left valign-top" >Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2016-11-25</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock"><strong>Initial revision</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2016-12-08</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Added details for the type instructions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 3</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2016-12-14</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Added details for the rest of instructions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 4</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2016-12-21</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Applied comments after review</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 5</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-03-22</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Format the specification as extended instruction set</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 6</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-04-21</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Adding File and Line operands</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 7</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-06-05</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Moving Flags to operands. Adding several new instructions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 8</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-08-31</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Replacing File operand by Source operand. Fixing typos. Formatting</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 9</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-09-05</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Clarifying representation of opaque types</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-09-13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Support of multidimensional arrays. Adding DebugFunctionDeclaration. Updating debug operations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 11</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-12-13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Removing "Op" prefix</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">0.99 Rev 12</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-12-13</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Changing style of enum tokens to CamelCase</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">1.00 Rev 1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2017-12-14</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">David Neto</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Approved by SPIR WG on 2017-09-22. Change to 1.00 Rev 1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2.00 Rev 1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2018-12-05</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Changing the name string in <strong>OpExtInstImport</strong> instruction.<br>
+                                             Adding <a href="#DebugSource"><strong>DebugSource</strong></a> and <a href="#DebugImportedEntity"><strong>DebugImportedEntity</strong></a> instructions.<br>
+                                             Adding <em>AtomicType</em> to the <a href="#TypeQualifiers"><strong>Type Qualifiers</strong></a> table.<br>
+                                             Adding <em>FlagIsEnumClass</em>, <em>FlagTypePassByValue</em>, <em>FlagTypePassByReference</em> to the <a href="#DebugFlags"><strong>Debug Info Flags</strong></a> table.<br>
+                                             Adding <em>Fragment</em> to the <a href="#Operation"><strong>Debug Operations</strong></a> table.<br>
+                                             Adding <em>Linkage Name</em> operand to the <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a> instruction.<br>
+                                             Adding <em>Flags</em> operand to the <a href="#DebugTypeFunction"><strong>DebugTypeFunction</strong></a> and <a href="#DebugLocalVariable"><strong>DebugLocalVariable</strong></a> instructions.<br>
+                                             Adding <em>Language</em> operand to the <a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a><br>
+                                             instruction.<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2.00 Rev.2</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">2018-12-19</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Alexey Sotkin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Added description of <a href="#DebugOperation"><strong>DebugOperations</strong></a>.<br>
+                                             Fixed minor typos and grammatical errors.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-12-19 07:28:05 MST
+</div>
+</div>
+</body>
+</html>

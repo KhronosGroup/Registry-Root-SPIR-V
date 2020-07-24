@@ -1,0 +1,2575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.8">
+<title>SPIR-V</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Arial,sans-serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+/*
+ASCIIMathML.js
+==============
+This file contains JavaScript functions to convert ASCII math notation
+to Presentation MathML. The conversion is done while the (X)HTML page
+loads, and should work with Firefox/Mozilla/Netscape 7+ and Internet
+Explorer 6+MathPlayer (http://www.dessci.com/en/products/mathplayer/).
+Just add the next line to your (X)HTML page with this file in the same folder:
+This is a convenient and inexpensive solution for authoring MathML.
+
+Version 1.4.7 Dec 15, 2005, (c) Peter Jipsen http://www.chapman.edu/~jipsen
+Latest version at http://www.chapman.edu/~jipsen/mathml/ASCIIMathML.js
+For changes see http://www.chapman.edu/~jipsen/mathml/asciimathchanges.txt
+If you use it on a webpage, please send the URL to jipsen@chapman.edu
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License (at http://www.gnu.org/copyleft/gpl.html)
+for more details.
+*/
+
+var checkForMathML = true;   // check if browser can display MathML
+var notifyIfNoMathML = true; // display note if no MathML capability
+var alertIfNoMathML = false;  // show alert box if no MathML capability
+var mathcolor = "";       // change it to "" (to inherit) or any other color
+var mathfontfamily = "serif"; // change to "" to inherit (works in IE)
+                              // or another family (e.g. "arial")
+var displaystyle = true;      // puts limits above and below large operators
+var showasciiformulaonhover = true; // helps students learn ASCIIMath
+var decimalsign = ".";        // change to "," if you like, beware of `(1,2)`!
+var AMdelimiter1 = "`", AMescape1 = "\\\\`"; // can use other characters
+var AMdelimiter2 = "$", AMescape2 = "\\\\\\$", AMdelimiter2regexp = "\\$";
+var doubleblankmathdelimiter = false; // if true,  x+1  is equal to `x+1`
+                                      // for IE this works only in <!--   -->
+//var separatetokens;// has been removed (email me if this is a problem)
+var isIE = document.createElementNS==null;
+
+if (document.getElementById==null)
+  alert("This webpage requires a recent browser such as\
+\nMozilla/Netscape 7+ or Internet Explorer 6+MathPlayer")
+
+// all further global variables start with "AM"
+
+function AMcreateElementXHTML(t) {
+  if (isIE) return document.createElement(t);
+  else return document.createElementNS("http://www.w3.org/1999/xhtml",t);
+}
+
+function AMnoMathMLNote() {
+  var nd = AMcreateElementXHTML("h3");
+  nd.setAttribute("align","center")
+  nd.appendChild(AMcreateElementXHTML("p"));
+  nd.appendChild(document.createTextNode("To view the "));
+  var an = AMcreateElementXHTML("a");
+  an.appendChild(document.createTextNode("ASCIIMathML"));
+  an.setAttribute("href","http://www.chapman.edu/~jipsen/asciimath.html");
+  nd.appendChild(an);
+  nd.appendChild(document.createTextNode(" notation use Internet Explorer 6+"));
+  an = AMcreateElementXHTML("a");
+  an.appendChild(document.createTextNode("MathPlayer"));
+  an.setAttribute("href","http://www.dessci.com/en/products/mathplayer/download.htm");
+  nd.appendChild(an);
+  nd.appendChild(document.createTextNode(" or Netscape/Mozilla/Firefox"));
+  nd.appendChild(AMcreateElementXHTML("p"));
+  return nd;
+}
+
+function AMisMathMLavailable() {
+  if (navigator.appName.slice(0,8)=="Netscape")
+    if (navigator.appVersion.slice(0,1)>="5") return null;
+    else return AMnoMathMLNote();
+  else if (navigator.appName.slice(0,9)=="Microsoft")
+    try {
+        var ActiveX = new ActiveXObject("MathPlayer.Factory.1");
+        return null;
+    } catch (e) {
+        return AMnoMathMLNote();
+    }
+  else return AMnoMathMLNote();
+}
+
+// character lists for Mozilla/Netscape fonts
+var AMcal = [0xEF35,0x212C,0xEF36,0xEF37,0x2130,0x2131,0xEF38,0x210B,0x2110,0xEF39,0xEF3A,0x2112,0x2133,0xEF3B,0xEF3C,0xEF3D,0xEF3E,0x211B,0xEF3F,0xEF40,0xEF41,0xEF42,0xEF43,0xEF44,0xEF45,0xEF46];
+var AMfrk = [0xEF5D,0xEF5E,0x212D,0xEF5F,0xEF60,0xEF61,0xEF62,0x210C,0x2111,0xEF63,0xEF64,0xEF65,0xEF66,0xEF67,0xEF68,0xEF69,0xEF6A,0x211C,0xEF6B,0xEF6C,0xEF6D,0xEF6E,0xEF6F,0xEF70,0xEF71,0x2128];
+var AMbbb = [0xEF8C,0xEF8D,0x2102,0xEF8E,0xEF8F,0xEF90,0xEF91,0x210D,0xEF92,0xEF93,0xEF94,0xEF95,0xEF96,0x2115,0xEF97,0x2119,0x211A,0x211D,0xEF98,0xEF99,0xEF9A,0xEF9B,0xEF9C,0xEF9D,0xEF9E,0x2124];
+
+var CONST = 0, UNARY = 1, BINARY = 2, INFIX = 3, LEFTBRACKET = 4,
+    RIGHTBRACKET = 5, SPACE = 6, UNDEROVER = 7, DEFINITION = 8,
+    LEFTRIGHT = 9, TEXT = 10; // token types
+
+var AMsqrt = {input:"sqrt", tag:"msqrt", output:"sqrt", tex:null, ttype:UNARY},
+  AMroot  = {input:"root", tag:"mroot", output:"root", tex:null, ttype:BINARY},
+  AMfrac  = {input:"frac", tag:"mfrac", output:"/",    tex:null, ttype:BINARY},
+  AMdiv   = {input:"/",    tag:"mfrac", output:"/",    tex:null, ttype:INFIX},
+  AMover  = {input:"stackrel", tag:"mover", output:"stackrel", tex:null, ttype:BINARY},
+  AMsub   = {input:"_",    tag:"msub",  output:"_",    tex:null, ttype:INFIX},
+  AMsup   = {input:"^",    tag:"msup",  output:"^",    tex:null, ttype:INFIX},
+  AMtext  = {input:"text", tag:"mtext", output:"text", tex:null, ttype:TEXT},
+  AMmbox  = {input:"mbox", tag:"mtext", output:"mbox", tex:null, ttype:TEXT},
+  AMquote = {input:"\"",   tag:"mtext", output:"mbox", tex:null, ttype:TEXT};
+
+var AMsymbols = [
+//some greek symbols
+{input:"alpha",  tag:"mi", output:"\u03B1", tex:null, ttype:CONST},
+{input:"beta",   tag:"mi", output:"\u03B2", tex:null, ttype:CONST},
+{input:"chi",    tag:"mi", output:"\u03C7", tex:null, ttype:CONST},
+{input:"delta",  tag:"mi", output:"\u03B4", tex:null, ttype:CONST},
+{input:"Delta",  tag:"mo", output:"\u0394", tex:null, ttype:CONST},
+{input:"epsi",   tag:"mi", output:"\u03B5", tex:"epsilon", ttype:CONST},
+{input:"varepsilon", tag:"mi", output:"\u025B", tex:null, ttype:CONST},
+{input:"eta",    tag:"mi", output:"\u03B7", tex:null, ttype:CONST},
+{input:"gamma",  tag:"mi", output:"\u03B3", tex:null, ttype:CONST},
+{input:"Gamma",  tag:"mo", output:"\u0393", tex:null, ttype:CONST},
+{input:"iota",   tag:"mi", output:"\u03B9", tex:null, ttype:CONST},
+{input:"kappa",  tag:"mi", output:"\u03BA", tex:null, ttype:CONST},
+{input:"lambda", tag:"mi", output:"\u03BB", tex:null, ttype:CONST},
+{input:"Lambda", tag:"mo", output:"\u039B", tex:null, ttype:CONST},
+{input:"mu",     tag:"mi", output:"\u03BC", tex:null, ttype:CONST},
+{input:"nu",     tag:"mi", output:"\u03BD", tex:null, ttype:CONST},
+{input:"omega",  tag:"mi", output:"\u03C9", tex:null, ttype:CONST},
+{input:"Omega",  tag:"mo", output:"\u03A9", tex:null, ttype:CONST},
+{input:"phi",    tag:"mi", output:"\u03C6", tex:null, ttype:CONST},
+{input:"varphi", tag:"mi", output:"\u03D5", tex:null, ttype:CONST},
+{input:"Phi",    tag:"mo", output:"\u03A6", tex:null, ttype:CONST},
+{input:"pi",     tag:"mi", output:"\u03C0", tex:null, ttype:CONST},
+{input:"Pi",     tag:"mo", output:"\u03A0", tex:null, ttype:CONST},
+{input:"psi",    tag:"mi", output:"\u03C8", tex:null, ttype:CONST},
+{input:"Psi",    tag:"mi", output:"\u03A8", tex:null, ttype:CONST},
+{input:"rho",    tag:"mi", output:"\u03C1", tex:null, ttype:CONST},
+{input:"sigma",  tag:"mi", output:"\u03C3", tex:null, ttype:CONST},
+{input:"Sigma",  tag:"mo", output:"\u03A3", tex:null, ttype:CONST},
+{input:"tau",    tag:"mi", output:"\u03C4", tex:null, ttype:CONST},
+{input:"theta",  tag:"mi", output:"\u03B8", tex:null, ttype:CONST},
+{input:"vartheta", tag:"mi", output:"\u03D1", tex:null, ttype:CONST},
+{input:"Theta",  tag:"mo", output:"\u0398", tex:null, ttype:CONST},
+{input:"upsilon", tag:"mi", output:"\u03C5", tex:null, ttype:CONST},
+{input:"xi",     tag:"mi", output:"\u03BE", tex:null, ttype:CONST},
+{input:"Xi",     tag:"mo", output:"\u039E", tex:null, ttype:CONST},
+{input:"zeta",   tag:"mi", output:"\u03B6", tex:null, ttype:CONST},
+
+//binary operation symbols
+{input:"*",  tag:"mo", output:"\u22C5", tex:"cdot", ttype:CONST},
+{input:"**", tag:"mo", output:"\u22C6", tex:"star", ttype:CONST},
+{input:"//", tag:"mo", output:"/",      tex:null, ttype:CONST},
+{input:"\\\\", tag:"mo", output:"\\",   tex:"backslash", ttype:CONST},
+{input:"setminus", tag:"mo", output:"\\", tex:null, ttype:CONST},
+{input:"xx", tag:"mo", output:"\u00D7", tex:"times", ttype:CONST},
+{input:"-:", tag:"mo", output:"\u00F7", tex:"divide", ttype:CONST},
+{input:"@",  tag:"mo", output:"\u2218", tex:"circ", ttype:CONST},
+{input:"o+", tag:"mo", output:"\u2295", tex:"oplus", ttype:CONST},
+{input:"ox", tag:"mo", output:"\u2297", tex:"otimes", ttype:CONST},
+{input:"o.", tag:"mo", output:"\u2299", tex:"odot", ttype:CONST},
+{input:"sum", tag:"mo", output:"\u2211", tex:null, ttype:UNDEROVER},
+{input:"prod", tag:"mo", output:"\u220F", tex:null, ttype:UNDEROVER},
+{input:"^^",  tag:"mo", output:"\u2227", tex:"wedge", ttype:CONST},
+{input:"^^^", tag:"mo", output:"\u22C0", tex:"bigwedge", ttype:UNDEROVER},
+{input:"vv",  tag:"mo", output:"\u2228", tex:"vee", ttype:CONST},
+{input:"vvv", tag:"mo", output:"\u22C1", tex:"bigvee", ttype:UNDEROVER},
+{input:"nn",  tag:"mo", output:"\u2229", tex:"cap", ttype:CONST},
+{input:"nnn", tag:"mo", output:"\u22C2", tex:"bigcap", ttype:UNDEROVER},
+{input:"uu",  tag:"mo", output:"\u222A", tex:"cup", ttype:CONST},
+{input:"uuu", tag:"mo", output:"\u22C3", tex:"bigcup", ttype:UNDEROVER},
+
+//binary relation symbols
+{input:"!=",  tag:"mo", output:"\u2260", tex:"ne", ttype:CONST},
+{input:":=",  tag:"mo", output:":=",     tex:null, ttype:CONST},
+{input:"lt",  tag:"mo", output:"<",      tex:null, ttype:CONST},
+{input:"<=",  tag:"mo", output:"\u2264", tex:"le", ttype:CONST},
+{input:"lt=", tag:"mo", output:"\u2264", tex:"leq", ttype:CONST},
+{input:">=",  tag:"mo", output:"\u2265", tex:"ge", ttype:CONST},
+{input:"geq", tag:"mo", output:"\u2265", tex:null, ttype:CONST},
+{input:"-<",  tag:"mo", output:"\u227A", tex:"prec", ttype:CONST},
+{input:"-lt", tag:"mo", output:"\u227A", tex:null, ttype:CONST},
+{input:">-",  tag:"mo", output:"\u227B", tex:"succ", ttype:CONST},
+{input:"-<=", tag:"mo", output:"\u2AAF", tex:"preceq", ttype:CONST},
+{input:">-=", tag:"mo", output:"\u2AB0", tex:"succeq", ttype:CONST},
+{input:"in",  tag:"mo", output:"\u2208", tex:null, ttype:CONST},
+{input:"!in", tag:"mo", output:"\u2209", tex:"notin", ttype:CONST},
+{input:"sub", tag:"mo", output:"\u2282", tex:"subset", ttype:CONST},
+{input:"sup", tag:"mo", output:"\u2283", tex:"supset", ttype:CONST},
+{input:"sube", tag:"mo", output:"\u2286", tex:"subseteq", ttype:CONST},
+{input:"supe", tag:"mo", output:"\u2287", tex:"supseteq", ttype:CONST},
+{input:"-=",  tag:"mo", output:"\u2261", tex:"equiv", ttype:CONST},
+{input:"~=",  tag:"mo", output:"\u2245", tex:"cong", ttype:CONST},
+{input:"~~",  tag:"mo", output:"\u2248", tex:"approx", ttype:CONST},
+{input:"prop", tag:"mo", output:"\u221D", tex:"propto", ttype:CONST},
+
+//logical symbols
+{input:"and", tag:"mtext", output:"and", tex:null, ttype:SPACE},
+{input:"or",  tag:"mtext", output:"or",  tex:null, ttype:SPACE},
+{input:"not", tag:"mo", output:"\u00AC", tex:"neg", ttype:CONST},
+{input:"=>",  tag:"mo", output:"\u21D2", tex:"implies", ttype:CONST},
+{input:"if",  tag:"mo", output:"if",     tex:null, ttype:SPACE},
+{input:"<=>", tag:"mo", output:"\u21D4", tex:"iff", ttype:CONST},
+{input:"AA",  tag:"mo", output:"\u2200", tex:"forall", ttype:CONST},
+{input:"EE",  tag:"mo", output:"\u2203", tex:"exists", ttype:CONST},
+{input:"_|_", tag:"mo", output:"\u22A5", tex:"bot", ttype:CONST},
+{input:"TT",  tag:"mo", output:"\u22A4", tex:"top", ttype:CONST},
+{input:"|--",  tag:"mo", output:"\u22A2", tex:"vdash", ttype:CONST},
+{input:"|==",  tag:"mo", output:"\u22A8", tex:"models", ttype:CONST},
+
+//grouping brackets
+{input:"(", tag:"mo", output:"(", tex:null, ttype:LEFTBRACKET},
+{input:")", tag:"mo", output:")", tex:null, ttype:RIGHTBRACKET},
+{input:"[", tag:"mo", output:"[", tex:null, ttype:LEFTBRACKET},
+{input:"]", tag:"mo", output:"]", tex:null, ttype:RIGHTBRACKET},
+{input:"{", tag:"mo", output:"{", tex:null, ttype:LEFTBRACKET},
+{input:"}", tag:"mo", output:"}", tex:null, ttype:RIGHTBRACKET},
+{input:"|", tag:"mo", output:"|", tex:null, ttype:LEFTRIGHT},
+//{input:"||", tag:"mo", output:"||", tex:null, ttype:LEFTRIGHT},
+{input:"(:", tag:"mo", output:"\u2329", tex:"langle", ttype:LEFTBRACKET},
+{input:":)", tag:"mo", output:"\u232A", tex:"rangle", ttype:RIGHTBRACKET},
+{input:"<<", tag:"mo", output:"\u2329", tex:null, ttype:LEFTBRACKET},
+{input:">>", tag:"mo", output:"\u232A", tex:null, ttype:RIGHTBRACKET},
+{input:"{:", tag:"mo", output:"{:", tex:null, ttype:LEFTBRACKET, invisible:true},
+{input:":}", tag:"mo", output:":}", tex:null, ttype:RIGHTBRACKET, invisible:true},
+
+//miscellaneous symbols
+{input:"int",  tag:"mo", output:"\u222B", tex:null, ttype:CONST},
+{input:"dx",   tag:"mi", output:"{:d x:}", tex:null, ttype:DEFINITION},
+{input:"dy",   tag:"mi", output:"{:d y:}", tex:null, ttype:DEFINITION},
+{input:"dz",   tag:"mi", output:"{:d z:}", tex:null, ttype:DEFINITION},
+{input:"dt",   tag:"mi", output:"{:d t:}", tex:null, ttype:DEFINITION},
+{input:"oint", tag:"mo", output:"\u222E", tex:null, ttype:CONST},
+{input:"del",  tag:"mo", output:"\u2202", tex:"partial", ttype:CONST},
+{input:"grad", tag:"mo", output:"\u2207", tex:"nabla", ttype:CONST},
+{input:"+-",   tag:"mo", output:"\u00B1", tex:"pm", ttype:CONST},
+{input:"O/",   tag:"mo", output:"\u2205", tex:"emptyset", ttype:CONST},
+{input:"oo",   tag:"mo", output:"\u221E", tex:"infty", ttype:CONST},
+{input:"aleph", tag:"mo", output:"\u2135", tex:null, ttype:CONST},
+{input:"...",  tag:"mo", output:"...",    tex:"ldots", ttype:CONST},
+{input:":.",  tag:"mo", output:"\u2234",  tex:"therefore", ttype:CONST},
+{input:"/_",  tag:"mo", output:"\u2220",  tex:"angle", ttype:CONST},
+{input:"\\ ",  tag:"mo", output:"\u00A0", tex:null, ttype:CONST},
+{input:"quad", tag:"mo", output:"\u00A0\u00A0", tex:null, ttype:CONST},
+{input:"qquad", tag:"mo", output:"\u00A0\u00A0\u00A0\u00A0", tex:null, ttype:CONST},
+{input:"cdots", tag:"mo", output:"\u22EF", tex:null, ttype:CONST},
+{input:"vdots", tag:"mo", output:"\u22EE", tex:null, ttype:CONST},
+{input:"ddots", tag:"mo", output:"\u22F1", tex:null, ttype:CONST},
+{input:"diamond", tag:"mo", output:"\u22C4", tex:null, ttype:CONST},
+{input:"square", tag:"mo", output:"\u25A1", tex:null, ttype:CONST},
+{input:"|__", tag:"mo", output:"\u230A",  tex:"lfloor", ttype:CONST},
+{input:"__|", tag:"mo", output:"\u230B",  tex:"rfloor", ttype:CONST},
+{input:"|~", tag:"mo", output:"\u2308",  tex:"lceiling", ttype:CONST},
+{input:"~|", tag:"mo", output:"\u2309",  tex:"rceiling", ttype:CONST},
+{input:"CC",  tag:"mo", output:"\u2102", tex:null, ttype:CONST},
+{input:"NN",  tag:"mo", output:"\u2115", tex:null, ttype:CONST},
+{input:"QQ",  tag:"mo", output:"\u211A", tex:null, ttype:CONST},
+{input:"RR",  tag:"mo", output:"\u211D", tex:null, ttype:CONST},
+{input:"ZZ",  tag:"mo", output:"\u2124", tex:null, ttype:CONST},
+{input:"f",   tag:"mi", output:"f",      tex:null, ttype:UNARY, func:true},
+{input:"g",   tag:"mi", output:"g",      tex:null, ttype:UNARY, func:true},
+
+//standard functions
+{input:"lim",  tag:"mo", output:"lim", tex:null, ttype:UNDEROVER},
+{input:"Lim",  tag:"mo", output:"Lim", tex:null, ttype:UNDEROVER},
+{input:"sin",  tag:"mo", output:"sin", tex:null, ttype:UNARY, func:true},
+{input:"cos",  tag:"mo", output:"cos", tex:null, ttype:UNARY, func:true},
+{input:"tan",  tag:"mo", output:"tan", tex:null, ttype:UNARY, func:true},
+{input:"sinh", tag:"mo", output:"sinh", tex:null, ttype:UNARY, func:true},
+{input:"cosh", tag:"mo", output:"cosh", tex:null, ttype:UNARY, func:true},
+{input:"tanh", tag:"mo", output:"tanh", tex:null, ttype:UNARY, func:true},
+{input:"cot",  tag:"mo", output:"cot", tex:null, ttype:UNARY, func:true},
+{input:"sec",  tag:"mo", output:"sec", tex:null, ttype:UNARY, func:true},
+{input:"csc",  tag:"mo", output:"csc", tex:null, ttype:UNARY, func:true},
+{input:"log",  tag:"mo", output:"log", tex:null, ttype:UNARY, func:true},
+{input:"ln",   tag:"mo", output:"ln",  tex:null, ttype:UNARY, func:true},
+{input:"det",  tag:"mo", output:"det", tex:null, ttype:UNARY, func:true},
+{input:"dim",  tag:"mo", output:"dim", tex:null, ttype:CONST},
+{input:"mod",  tag:"mo", output:"mod", tex:null, ttype:CONST},
+{input:"gcd",  tag:"mo", output:"gcd", tex:null, ttype:UNARY, func:true},
+{input:"lcm",  tag:"mo", output:"lcm", tex:null, ttype:UNARY, func:true},
+{input:"lub",  tag:"mo", output:"lub", tex:null, ttype:CONST},
+{input:"glb",  tag:"mo", output:"glb", tex:null, ttype:CONST},
+{input:"min",  tag:"mo", output:"min", tex:null, ttype:UNDEROVER},
+{input:"max",  tag:"mo", output:"max", tex:null, ttype:UNDEROVER},
+
+//arrows
+{input:"uarr", tag:"mo", output:"\u2191", tex:"uparrow", ttype:CONST},
+{input:"darr", tag:"mo", output:"\u2193", tex:"downarrow", ttype:CONST},
+{input:"rarr", tag:"mo", output:"\u2192", tex:"rightarrow", ttype:CONST},
+{input:"->",   tag:"mo", output:"\u2192", tex:"to", ttype:CONST},
+{input:"|->",  tag:"mo", output:"\u21A6", tex:"mapsto", ttype:CONST},
+{input:"larr", tag:"mo", output:"\u2190", tex:"leftarrow", ttype:CONST},
+{input:"harr", tag:"mo", output:"\u2194", tex:"leftrightarrow", ttype:CONST},
+{input:"rArr", tag:"mo", output:"\u21D2", tex:"Rightarrow", ttype:CONST},
+{input:"lArr", tag:"mo", output:"\u21D0", tex:"Leftarrow", ttype:CONST},
+{input:"hArr", tag:"mo", output:"\u21D4", tex:"Leftrightarrow", ttype:CONST},
+
+//commands with argument
+AMsqrt, AMroot, AMfrac, AMdiv, AMover, AMsub, AMsup,
+{input:"hat", tag:"mover", output:"\u005E", tex:null, ttype:UNARY, acc:true},
+{input:"bar", tag:"mover", output:"\u00AF", tex:"overline", ttype:UNARY, acc:true},
+{input:"vec", tag:"mover", output:"\u2192", tex:null, ttype:UNARY, acc:true},
+{input:"dot", tag:"mover", output:".",      tex:null, ttype:UNARY, acc:true},
+{input:"ddot", tag:"mover", output:"..",    tex:null, ttype:UNARY, acc:true},
+{input:"ul", tag:"munder", output:"\u0332", tex:"underline", ttype:UNARY, acc:true},
+AMtext, AMmbox, AMquote,
+{input:"bb", tag:"mstyle", atname:"fontweight", atval:"bold", output:"bb", tex:null, ttype:UNARY},
+{input:"mathbf", tag:"mstyle", atname:"fontweight", atval:"bold", output:"mathbf", tex:null, ttype:UNARY},
+{input:"sf", tag:"mstyle", atname:"fontfamily", atval:"sans-serif", output:"sf", tex:null, ttype:UNARY},
+{input:"mathsf", tag:"mstyle", atname:"fontfamily", atval:"sans-serif", output:"mathsf", tex:null, ttype:UNARY},
+{input:"bbb", tag:"mstyle", atname:"mathvariant", atval:"double-struck", output:"bbb", tex:null, ttype:UNARY, codes:AMbbb},
+{input:"mathbb", tag:"mstyle", atname:"mathvariant", atval:"double-struck", output:"mathbb", tex:null, ttype:UNARY, codes:AMbbb},
+{input:"cc",  tag:"mstyle", atname:"mathvariant", atval:"script", output:"cc", tex:null, ttype:UNARY, codes:AMcal},
+{input:"mathcal", tag:"mstyle", atname:"mathvariant", atval:"script", output:"mathcal", tex:null, ttype:UNARY, codes:AMcal},
+{input:"tt",  tag:"mstyle", atname:"fontfamily", atval:"monospace", output:"tt", tex:null, ttype:UNARY},
+{input:"mathtt", tag:"mstyle", atname:"fontfamily", atval:"monospace", output:"mathtt", tex:null, ttype:UNARY},
+{input:"fr",  tag:"mstyle", atname:"mathvariant", atval:"fraktur", output:"fr", tex:null, ttype:UNARY, codes:AMfrk},
+{input:"mathfrak",  tag:"mstyle", atname:"mathvariant", atval:"fraktur", output:"mathfrak", tex:null, ttype:UNARY, codes:AMfrk}
+];
+
+function compareNames(s1,s2) {
+  if (s1.input > s2.input) return 1
+  else return -1;
+}
+
+var AMnames = []; //list of input symbols
+
+function AMinitSymbols() {
+  var texsymbols = [], i;
+  for (i=0; i<AMsymbols.length; i++)
+    if (AMsymbols[i].tex)
+      texsymbols[texsymbols.length] = {input:AMsymbols[i].tex,
+        tag:AMsymbols[i].tag, output:AMsymbols[i].output, ttype:AMsymbols[i].ttype};
+  AMsymbols = AMsymbols.concat(texsymbols);
+  AMsymbols.sort(compareNames);
+  for (i=0; i<AMsymbols.length; i++) AMnames[i] = AMsymbols[i].input;
+}
+
+var AMmathml = "http://www.w3.org/1998/Math/MathML";
+
+function AMcreateElementMathML(t) {
+  if (isIE) return document.createElement("m:"+t);
+  else return document.createElementNS(AMmathml,t);
+}
+
+function AMcreateMmlNode(t,frag) {
+//  var node = AMcreateElementMathML(name);
+  if (isIE) var node = document.createElement("m:"+t);
+  else var node = document.createElementNS(AMmathml,t);
+  node.appendChild(frag);
+  return node;
+}
+
+function newcommand(oldstr,newstr) {
+  AMsymbols = AMsymbols.concat([{input:oldstr, tag:"mo", output:newstr,
+                                 tex:null, ttype:DEFINITION}]);
+}
+
+function AMremoveCharsAndBlanks(str,n) {
+//remove n characters and any following blanks
+  var st;
+  if (str.charAt(n)=="\\" && str.charAt(n+1)!="\\" && str.charAt(n+1)!=" ")
+    st = str.slice(n+1);
+  else st = str.slice(n);
+  for (var i=0; i<st.length && st.charCodeAt(i)<=32; i=i+1);
+  return st.slice(i);
+}
+
+function AMposition(arr, str, n) {
+// return position >=n where str appears or would be inserted
+// assumes arr is sorted
+  if (n==0) {
+    var h,m;
+    n = -1;
+    h = arr.length;
+    while (n+1<h) {
+      m = (n+h) >> 1;
+      if (arr[m]<str) n = m; else h = m;
+    }
+    return h;
+  } else
+    for (var i=n; i<arr.length && arr[i]<str; i++);
+  return i; // i=arr.length || arr[i]>=str
+}
+
+function AMgetSymbol(str) {
+//return maximal initial substring of str that appears in names
+//return null if there is none
+  var k = 0; //new pos
+  var j = 0; //old pos
+  var mk; //match pos
+  var st;
+  var tagst;
+  var match = "";
+  var more = true;
+  for (var i=1; i<=str.length && more; i++) {
+    st = str.slice(0,i); //initial substring of length i
+    j = k;
+    k = AMposition(AMnames, st, j);
+    if (k<AMnames.length && str.slice(0,AMnames[k].length)==AMnames[k]){
+      match = AMnames[k];
+      mk = k;
+      i = match.length;
+    }
+    more = k<AMnames.length && str.slice(0,AMnames[k].length)>=AMnames[k];
+  }
+  AMpreviousSymbol=AMcurrentSymbol;
+  if (match!=""){
+    AMcurrentSymbol=AMsymbols[mk].ttype;
+    return AMsymbols[mk];
+  }
+// if str[0] is a digit or - return maxsubstring of digits.digits
+  AMcurrentSymbol=CONST;
+  k = 1;
+  st = str.slice(0,1);
+  var integ = true;
+  while ("0"<=st && st<="9" && k<=str.length) {
+    st = str.slice(k,k+1);
+    k++;
+  }
+  if (st == decimalsign) {
+    st = str.slice(k,k+1);
+    if ("0"<=st && st<="9") {
+      integ = false;
+      k++;
+      while ("0"<=st && st<="9" && k<=str.length) {
+        st = str.slice(k,k+1);
+        k++;
+      }
+    }
+  }
+  if ((integ && k>1) || k>2) {
+    st = str.slice(0,k-1);
+    tagst = "mn";
+  } else {
+    k = 2;
+    st = str.slice(0,1); //take 1 character
+    tagst = (("A">st || st>"Z") && ("a">st || st>"z")?"mo":"mi");
+  }
+  if (st=="-" && AMpreviousSymbol==INFIX) {
+    AMcurrentSymbol = INFIX;  //trick "/" into recognizing "-" on second parse
+    return {input:st, tag:tagst, output:st, ttype:UNARY, func:true};
+  }
+  return {input:st, tag:tagst, output:st, ttype:CONST};
+}
+
+function AMremoveBrackets(node) {
+  var st;
+  if (node.nodeName=="mrow") {
+    st = node.firstChild.firstChild.nodeValue;
+    if (st=="(" || st=="[" || st=="{") node.removeChild(node.firstChild);
+  }
+  if (node.nodeName=="mrow") {
+    st = node.lastChild.firstChild.nodeValue;
+    if (st==")" || st=="]" || st=="}") node.removeChild(node.lastChild);
+  }
+}
+
+/*Parsing ASCII math expressions with the following grammar
+v ::= [A-Za-z] | greek letters | numbers | other constant symbols
+u ::= sqrt | text | bb | other unary symbols for font commands
+b ::= frac | root | stackrel         binary symbols
+l ::= ( | [ | { | (: | {:            left brackets
+r ::= ) | ] | } | :) | :}            right brackets
+S ::= v | lEr | uS | bSS             Simple expression
+I ::= S_S | S^S | S_S^S | S          Intermediate expression
+E ::= IE | I/I                       Expression
+Each terminal symbol is translated into a corresponding mathml node.*/
+
+var AMnestingDepth,AMpreviousSymbol,AMcurrentSymbol;
+
+function AMparseSexpr(str) { //parses str and returns [node,tailstr]
+  var symbol, node, result, i, st,// rightvert = false,
+    newFrag = document.createDocumentFragment();
+  str = AMremoveCharsAndBlanks(str,0);
+  symbol = AMgetSymbol(str);             //either a token or a bracket or empty
+  if (symbol == null || symbol.ttype == RIGHTBRACKET && AMnestingDepth > 0) {
+    return [null,str];
+  }
+  if (symbol.ttype == DEFINITION) {
+    str = symbol.output+AMremoveCharsAndBlanks(str,symbol.input.length);
+    symbol = AMgetSymbol(str);
+  }
+  switch (symbol.ttype) {
+  case UNDEROVER:
+  case CONST:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode(symbol.tag,        //its a constant
+                             document.createTextNode(symbol.output)),str];
+  case LEFTBRACKET:   //read (expr+)
+    AMnestingDepth++;
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseExpr(str,true);
+    AMnestingDepth--;
+    if (typeof symbol.invisible == "boolean" && symbol.invisible)
+      node = AMcreateMmlNode("mrow",result[0]);
+    else {
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      node.appendChild(result[0]);
+    }
+    return [node,result[1]];
+  case TEXT:
+      if (symbol!=AMquote) str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      if (str.charAt(0)=="{") i=str.indexOf("}");
+      else if (str.charAt(0)=="(") i=str.indexOf(")");
+      else if (str.charAt(0)=="[") i=str.indexOf("]");
+      else if (symbol==AMquote) i=str.slice(1).indexOf("\"")+1;
+      else i = 0;
+      if (i==-1) i = str.length;
+      st = str.slice(1,i);
+      if (st.charAt(0) == " ") {
+        node = AMcreateElementMathML("mspace");
+        node.setAttribute("width","1ex");
+        newFrag.appendChild(node);
+      }
+      newFrag.appendChild(
+        AMcreateMmlNode(symbol.tag,document.createTextNode(st)));
+      if (st.charAt(st.length-1) == " ") {
+        node = AMcreateElementMathML("mspace");
+        node.setAttribute("width","1ex");
+        newFrag.appendChild(node);
+      }
+      str = AMremoveCharsAndBlanks(str,i+1);
+      return [AMcreateMmlNode("mrow",newFrag),str];
+  case UNARY:
+      str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      result = AMparseSexpr(str);
+      if (result[0]==null) return [AMcreateMmlNode(symbol.tag,
+                             document.createTextNode(symbol.output)),str];
+      if (typeof symbol.func == "boolean" && symbol.func) { // functions hack
+        st = str.charAt(0);
+        if (st=="^" || st=="_" || st=="/" || st=="|" || st==",") {
+          return [AMcreateMmlNode(symbol.tag,
+                    document.createTextNode(symbol.output)),str];
+        } else {
+          node = AMcreateMmlNode("mrow",
+           AMcreateMmlNode(symbol.tag,document.createTextNode(symbol.output)));
+          node.appendChild(result[0]);
+          return [node,result[1]];
+        }
+      }
+      AMremoveBrackets(result[0]);
+      if (symbol.input == "sqrt") {           // sqrt
+        return [AMcreateMmlNode(symbol.tag,result[0]),result[1]];
+      } else if (typeof symbol.acc == "boolean" && symbol.acc) {   // accent
+        node = AMcreateMmlNode(symbol.tag,result[0]);
+        node.appendChild(AMcreateMmlNode("mo",document.createTextNode(symbol.output)));
+        return [node,result[1]];
+      } else {                        // font change command
+        if (!isIE && typeof symbol.codes != "undefined") {
+          for (i=0; i<result[0].childNodes.length; i++)
+            if (result[0].childNodes[i].nodeName=="mi" || result[0].nodeName=="mi") {
+              st = (result[0].nodeName=="mi"?result[0].firstChild.nodeValue:
+                              result[0].childNodes[i].firstChild.nodeValue);
+              var newst = [];
+              for (var j=0; j<st.length; j++)
+                if (st.charCodeAt(j)>64 && st.charCodeAt(j)<91) newst = newst +
+                  String.fromCharCode(symbol.codes[st.charCodeAt(j)-65]);
+                else newst = newst + st.charAt(j);
+              if (result[0].nodeName=="mi")
+                result[0]=AMcreateElementMathML("mo").
+                          appendChild(document.createTextNode(newst));
+              else result[0].replaceChild(AMcreateElementMathML("mo").
+          appendChild(document.createTextNode(newst)),result[0].childNodes[i]);
+            }
+        }
+        node = AMcreateMmlNode(symbol.tag,result[0]);
+        node.setAttribute(symbol.atname,symbol.atval);
+        return [node,result[1]];
+      }
+  case BINARY:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseSexpr(str);
+    if (result[0]==null) return [AMcreateMmlNode("mo",
+                           document.createTextNode(symbol.input)),str];
+    AMremoveBrackets(result[0]);
+    var result2 = AMparseSexpr(result[1]);
+    if (result2[0]==null) return [AMcreateMmlNode("mo",
+                           document.createTextNode(symbol.input)),str];
+    AMremoveBrackets(result2[0]);
+    if (symbol.input=="root" || symbol.input=="stackrel")
+      newFrag.appendChild(result2[0]);
+    newFrag.appendChild(result[0]);
+    if (symbol.input=="frac") newFrag.appendChild(result2[0]);
+    return [AMcreateMmlNode(symbol.tag,newFrag),result2[1]];
+  case INFIX:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode("mo",document.createTextNode(symbol.output)),str];
+  case SPACE:
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    node = AMcreateElementMathML("mspace");
+    node.setAttribute("width","1ex");
+    newFrag.appendChild(node);
+    newFrag.appendChild(
+      AMcreateMmlNode(symbol.tag,document.createTextNode(symbol.output)));
+    node = AMcreateElementMathML("mspace");
+    node.setAttribute("width","1ex");
+    newFrag.appendChild(node);
+    return [AMcreateMmlNode("mrow",newFrag),str];
+  case LEFTRIGHT:
+//    if (rightvert) return [null,str]; else rightvert = true;
+    AMnestingDepth++;
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    result = AMparseExpr(str,false);
+    AMnestingDepth--;
+    var st = "";
+    if (result[0].lastChild!=null)
+      st = result[0].lastChild.firstChild.nodeValue;
+    if (st == "|") { // its an absolute value subterm
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      node.appendChild(result[0]);
+      return [node,result[1]];
+    } else { // the "|" is a \mid
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      node = AMcreateMmlNode("mrow",node);
+      return [node,str];
+    }
+  default:
+//alert("default");
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    return [AMcreateMmlNode(symbol.tag,        //its a constant
+                             document.createTextNode(symbol.output)),str];
+  }
+}
+
+function AMparseIexpr(str) {
+  var symbol, sym1, sym2, node, result, underover;
+  str = AMremoveCharsAndBlanks(str,0);
+  sym1 = AMgetSymbol(str);
+  result = AMparseSexpr(str);
+  node = result[0];
+  str = result[1];
+  symbol = AMgetSymbol(str);
+  if (symbol.ttype == INFIX && symbol.input != "/") {
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+//    if (symbol.input == "/") result = AMparseIexpr(str); else ...
+    result = AMparseSexpr(str);
+    if (result[0] == null) // show box in place of missing argument
+      result[0] = AMcreateMmlNode("mo",document.createTextNode("\u25A1"));
+    else AMremoveBrackets(result[0]);
+    str = result[1];
+//    if (symbol.input == "/") AMremoveBrackets(node);
+    if (symbol.input == "_") {
+      sym2 = AMgetSymbol(str);
+      underover = (sym1.ttype == UNDEROVER);
+      if (sym2.input == "^") {
+        str = AMremoveCharsAndBlanks(str,sym2.input.length);
+        var res2 = AMparseSexpr(str);
+        AMremoveBrackets(res2[0]);
+        str = res2[1];
+        node = AMcreateMmlNode((underover?"munderover":"msubsup"),node);
+        node.appendChild(result[0]);
+        node.appendChild(res2[0]);
+        node = AMcreateMmlNode("mrow",node); // so sum does not stretch
+      } else {
+        node = AMcreateMmlNode((underover?"munder":"msub"),node);
+        node.appendChild(result[0]);
+      }
+    } else {
+      node = AMcreateMmlNode(symbol.tag,node);
+      node.appendChild(result[0]);
+    }
+  }
+  return [node,str];
+}
+
+function AMparseExpr(str,rightbracket) {
+  var symbol, node, result, i, nodeList = [],
+  newFrag = document.createDocumentFragment();
+  do {
+    str = AMremoveCharsAndBlanks(str,0);
+    result = AMparseIexpr(str);
+    node = result[0];
+    str = result[1];
+    symbol = AMgetSymbol(str);
+    if (symbol.ttype == INFIX && symbol.input == "/") {
+      str = AMremoveCharsAndBlanks(str,symbol.input.length);
+      result = AMparseIexpr(str);
+      if (result[0] == null) // show box in place of missing argument
+        result[0] = AMcreateMmlNode("mo",document.createTextNode("\u25A1"));
+      else AMremoveBrackets(result[0]);
+      str = result[1];
+      AMremoveBrackets(node);
+      node = AMcreateMmlNode(symbol.tag,node);
+      node.appendChild(result[0]);
+      newFrag.appendChild(node);
+      symbol = AMgetSymbol(str);
+    }
+    else if (node!=undefined) newFrag.appendChild(node);
+  } while ((symbol.ttype != RIGHTBRACKET &&
+           (symbol.ttype != LEFTRIGHT || rightbracket)
+           || AMnestingDepth == 0) && symbol!=null && symbol.output!="");
+  if (symbol.ttype == RIGHTBRACKET || symbol.ttype == LEFTRIGHT) {
+//    if (AMnestingDepth > 0) AMnestingDepth--;
+    var len = newFrag.childNodes.length;
+    if (len>0 && newFrag.childNodes[len-1].nodeName == "mrow" && len>1 &&
+      newFrag.childNodes[len-2].nodeName == "mo" &&
+      newFrag.childNodes[len-2].firstChild.nodeValue == ",") { //matrix
+      var right = newFrag.childNodes[len-1].lastChild.firstChild.nodeValue;
+      if (right==")" || right=="]") {
+        var left = newFrag.childNodes[len-1].firstChild.firstChild.nodeValue;
+        if (left=="(" && right==")" && symbol.output != "}" ||
+            left=="[" && right=="]") {
+        var pos = []; // positions of commas
+        var matrix = true;
+        var m = newFrag.childNodes.length;
+        for (i=0; matrix && i<m; i=i+2) {
+          pos[i] = [];
+          node = newFrag.childNodes[i];
+          if (matrix) matrix = node.nodeName=="mrow" &&
+            (i==m-1 || node.nextSibling.nodeName=="mo" &&
+            node.nextSibling.firstChild.nodeValue==",")&&
+            node.firstChild.firstChild.nodeValue==left &&
+            node.lastChild.firstChild.nodeValue==right;
+          if (matrix)
+            for (var j=0; j<node.childNodes.length; j++)
+              if (node.childNodes[j].firstChild.nodeValue==",")
+                pos[i][pos[i].length]=j;
+          if (matrix && i>1) matrix = pos[i].length == pos[i-2].length;
+        }
+        if (matrix) {
+          var row, frag, n, k, table = document.createDocumentFragment();
+          for (i=0; i<m; i=i+2) {
+            row = document.createDocumentFragment();
+            frag = document.createDocumentFragment();
+            node = newFrag.firstChild; // <mrow>(-,-,...,-,-)</mrow>
+            n = node.childNodes.length;
+            k = 0;
+            node.removeChild(node.firstChild); //remove (
+            for (j=1; j<n-1; j++) {
+              if (typeof pos[i][k] != "undefined" && j==pos[i][k]){
+                node.removeChild(node.firstChild); //remove ,
+                row.appendChild(AMcreateMmlNode("mtd",frag));
+                k++;
+              } else frag.appendChild(node.firstChild);
+            }
+            row.appendChild(AMcreateMmlNode("mtd",frag));
+            if (newFrag.childNodes.length>2) {
+              newFrag.removeChild(newFrag.firstChild); //remove <mrow>)</mrow>
+              newFrag.removeChild(newFrag.firstChild); //remove <mo>,</mo>
+            }
+            table.appendChild(AMcreateMmlNode("mtr",row));
+          }
+          node = AMcreateMmlNode("mtable",table);
+          if (typeof symbol.invisible == "boolean" && symbol.invisible) node.setAttribute("columnalign","left");
+          newFrag.replaceChild(node,newFrag.firstChild);
+        }
+       }
+      }
+    }
+    str = AMremoveCharsAndBlanks(str,symbol.input.length);
+    if (typeof symbol.invisible != "boolean" || !symbol.invisible) {
+      node = AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+      newFrag.appendChild(node);
+    }
+  }
+  return [newFrag,str];
+}
+
+function AMparseMath(str) {
+  var result, node = AMcreateElementMathML("mstyle");
+  if (mathcolor != "") node.setAttribute("mathcolor",mathcolor);
+  if (displaystyle) node.setAttribute("displaystyle","true");
+  if (mathfontfamily != "") node.setAttribute("fontfamily",mathfontfamily);
+  AMnestingDepth = 0;
+  node.appendChild(AMparseExpr(str.replace(/^\s+/g,""),false)[0]);
+  node = AMcreateMmlNode("math",node);
+  if (showasciiformulaonhover)                      //fixed by djhsu so newline
+    node.setAttribute("title",str.replace(/\s+/g," "));//does not show in Gecko
+  if (mathfontfamily != "" && (isIE || mathfontfamily != "serif")) {
+    var fnode = AMcreateElementXHTML("font");
+    fnode.setAttribute("face",mathfontfamily);
+    fnode.appendChild(node);
+    return fnode;
+  }
+  return node;
+}
+
+function AMstrarr2docFrag(arr, linebreaks) {
+  var newFrag=document.createDocumentFragment();
+  var expr = false;
+  for (var i=0; i<arr.length; i++) {
+    if (expr) newFrag.appendChild(AMparseMath(arr[i]));
+    else {
+      var arri = (linebreaks ? arr[i].split("\n\n") : [arr[i]]);
+      newFrag.appendChild(AMcreateElementXHTML("span").
+      appendChild(document.createTextNode(arri[0])));
+      for (var j=1; j<arri.length; j++) {
+        newFrag.appendChild(AMcreateElementXHTML("p"));
+        newFrag.appendChild(AMcreateElementXHTML("span").
+        appendChild(document.createTextNode(arri[j])));
+      }
+    }
+    expr = !expr;
+  }
+  return newFrag;
+}
+
+function AMprocessNodeR(n, linebreaks) {
+  var mtch, str, arr, frg, i;
+  if (n.childNodes.length == 0) {
+   if ((n.nodeType!=8 || linebreaks) &&
+    n.parentNode.nodeName!="form" && n.parentNode.nodeName!="FORM" &&
+    n.parentNode.nodeName!="textarea" && n.parentNode.nodeName!="TEXTAREA" &&
+    n.parentNode.nodeName!="pre" && n.parentNode.nodeName!="PRE") {
+    str = n.nodeValue;
+    if (!(str == null)) {
+      str = str.replace(/\r\n\r\n/g,"\n\n");
+      if (doubleblankmathdelimiter) {
+        str = str.replace(/\x20\x20\./g," "+AMdelimiter1+".");
+        str = str.replace(/\x20\x20,/g," "+AMdelimiter1+",");
+        str = str.replace(/\x20\x20/g," "+AMdelimiter1+" ");
+      }
+      str = str.replace(/\x20+/g," ");
+      str = str.replace(/\s*\r\n/g," ");
+      mtch = false;
+      str = str.replace(new RegExp(AMescape2, "g"),
+              function(st){mtch=true;return "AMescape2"});
+      str = str.replace(new RegExp(AMescape1, "g"),
+              function(st){mtch=true;return "AMescape1"});
+      str = str.replace(new RegExp(AMdelimiter2regexp, "g"),AMdelimiter1);
+      arr = str.split(AMdelimiter1);
+      for (i=0; i<arr.length; i++)
+        arr[i]=arr[i].replace(/AMescape2/g,AMdelimiter2).
+                      replace(/AMescape1/g,AMdelimiter1);
+      if (arr.length>1 || mtch) {
+        if (checkForMathML) {
+          checkForMathML = false;
+          var nd = AMisMathMLavailable();
+          AMnoMathML = nd != null;
+          if (AMnoMathML && notifyIfNoMathML)
+            if (alertIfNoMathML)
+              alert("To view the ASCIIMathML notation use Internet Explorer 6 +\nMathPlayer (free from www.dessci.com)\n\
+                or Firefox/Mozilla/Netscape");
+            else AMbody.insertBefore(nd,AMbody.childNodes[0]);
+        }
+        if (!AMnoMathML) {
+          frg = AMstrarr2docFrag(arr,n.nodeType==8);
+          var len = frg.childNodes.length;
+          n.parentNode.replaceChild(frg,n);
+          return len-1;
+        } else return 0;
+      }
+    }
+   } else return 0;
+  } else if (n.nodeName!="math") {
+    for (i=0; i<n.childNodes.length; i++)
+      i += AMprocessNodeR(n.childNodes[i], linebreaks);
+  }
+  return 0;
+}
+
+function AMprocessNode(n, linebreaks, spanclassAM) {
+  var frag,st;
+  if (spanclassAM!=null) {
+    frag = document.getElementsByTagName("span")
+    for (var i=0;i<frag.length;i++)
+      if (frag[i].className == "AM")
+        AMprocessNodeR(frag[i],linebreaks);
+  } else {
+    try {
+      st = n.innerHTML;
+    } catch(err) {}
+    if (st==null ||
+        st.indexOf(AMdelimiter1)!=-1 || st.indexOf(AMdelimiter2)!=-1)
+      AMprocessNodeR(n,linebreaks);
+  }
+  if (isIE) { //needed to match size and font of formula to surrounding text
+    frag = document.getElementsByTagName('math');
+    for (var i=0;i<frag.length;i++) frag[i].update()
+  }
+}
+
+var AMbody;
+var AMnoMathML = false, AMtranslated = false;
+
+function translate(spanclassAM) {
+  if (!AMtranslated) { // run this only once
+    AMtranslated = true;
+    AMinitSymbols();
+    AMbody = document.getElementsByTagName("body")[0];
+    AMprocessNode(AMbody, false, spanclassAM);
+  }
+}
+
+if (isIE) { // avoid adding MathPlayer info explicitly to each webpage
+  document.write("<object id=\"mathplayer\"\
+  classid=\"clsid:32F66A20-7614-11D4-BD11-00104BD3F987\"></object>");
+  document.write("<?import namespace=\"m\" implementation=\"#mathplayer\"?>");
+}
+
+// GO1.1 Generic onload by Brothercake
+// http://www.brothercake.com/
+//onload function (replaces the onload="translate()" in the <body> tag)
+function generic()
+{
+  translate();
+};
+//setup onload function
+if(typeof window.addEventListener != 'undefined')
+{
+  //.. gecko, safari, konqueror and standard
+  window.addEventListener('load', generic, false);
+}
+else if(typeof document.addEventListener != 'undefined')
+{
+  //.. opera 7
+  document.addEventListener('load', generic, false);
+}
+else if(typeof window.attachEvent != 'undefined')
+{
+  //.. win/ie
+  window.attachEvent('onload', generic);
+}
+//** remove this condition to degrade older browsers
+else
+{
+  //.. mac/ie5 and anything else that gets this far
+  //if there's an existing onload function
+  if(typeof window.onload == 'function')
+  {
+    //store it
+    var existing = onload;
+    //add new onload handler
+    window.onload = function()
+    {
+      //call existing onload function
+      existing();
+      //call generic onload function
+      generic();
+    };
+  }
+  else
+  {
+    //setup onload function
+    window.onload = generic;
+  }
+}
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>SPIR-V</h1>
+<span id="author">John Kessenich, LunarG</span><br>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p><strong>A Khronos-Defined Intermediate Language for Native Representation of Graphical Shaders and Compute Kernels</strong></p></div>
+<div class="paragraph"><p>&#169; Copyright 2015, LunarG, Inc.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="imageblock" id="BinaryLanguage" style="text-align:center;">
+<div class="content">
+<img src="BinaryForm.png" alt="BinaryForm.png">
+</div>
+<div class="title">Figure 1. The SPIR-V Binary Intermediate Language. The first 5 slots form the header. The remaining slots hold a linear sequence of variable-length instructions (one per color in the figure). Each instruction starts with a word that encodes the instruction&#8217;s opcode and size, followed by a variable number of 32-bit operands.</div>
+</div>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Abstract. <strong>SPIR-V</strong> is a new platform-independent intermediate language.
+It is a self-contained, fully specified, binary format for representing graphical-shader stages and compute kernels for multiple APIs.
+Physically, it is a stream of 32-bit words.  Logically, it is a header and a linear stream of instructions.  These encode, first, a set of annotations
+and decorations, and second a collection of functions.
+Each function encodes a control-flow graph (CFG) of basic blocks, with additional instructions to preserve source-code structured flow control.
+Load/store instructions are used to access declared variables, which includes all input/output (IO).
+Intermediate results bypassing load/store use single static-assignment (SSA) representation.
+Data objects are represented logically, with hierarchical type information:  There is no flattening of aggregates or assignment to physical register banks, etc.
+Selectable addressing models establish whether general pointers may be used, or if memory access is purely logical.</p></div>
+</div>
+<div class="attribution">
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">A provisional SPIR-V specification was released March 3rd, 2015 by Khronos.
+It contains the full instruction set and specification, and can be used as a reference while reading this paper.</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_what_spir_v_accomplishes">1.1. What SPIR-V Accomplishes</h3>
+<div class="imageblock" id="SPIRDiag" style="text-align:center;">
+<div class="content">
+<img src="Common.png" alt="Common.png">
+</div>
+<div class="title">Figure 2. SPIR-V serves as a common single language for multiple languages feeding multiple drivers.  It can also target other languages. It is fully defined by Khronos, and can natively represent the features needed by graphical shaders and compute kernels.</div>
+</div>
+<div class="paragraph"><p>SPIR-V is a relatively high-level intermediate language.  It is:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+low-level enough to bypass all text-based parsing, dependence on a single high-level language, and avoid portability issues caused by the convenience of high-level languages, and
+</p>
+</li>
+<li>
+<p>
+high-level enough to be device independent and to not lose information needed for maximum performance on the target device.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>How does SPIR-V meet common expectations of an intermediate language (IL)?</p></div>
+<h4 id="_portability" class="float">Portability</h4>
+<div class="paragraph"><p>SPIR-V improves portability in three ways:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Enabling shared tools.
+There is no need for every hardware platform to provide its own high-level language translator.
+Such translators can be much fewer in number than the compiler back ends SPIR-V will feed.
+</p>
+</li>
+<li>
+<p>
+A single tool set for a single ISV.
+An individual ISV can generate SPIR-V with a single tool set, eliminating all issues with portability of the high-level language.
+</p>
+</li>
+<li>
+<p>
+SPIR-V is simpler.  It is easier to have a fully concise, pinned down, description of SPIR-V than of a high-level language.
+Getting independent implementations to match SPIR-V processing is correspondingly simpler.
+Some examples of this, comparing to GLSL:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Policies for qualifier defaults, inheritance, etc., are gone. Everything is explicit (precision, row_major, stream number, etc.).
+</p>
+</li>
+<li>
+<p>
+No implicit conversions.
+</p>
+</li>
+<li>
+<p>
+No function overloading or resolution; call sites identify the specific function instance to call.
+</p>
+</li>
+<li>
+<p>
+Only one compilation unit; multiple compilation units that need to merge to form a single executable will be merged by a front end.
+</p>
+</li>
+<li>
+<p>
+The variable name space is flat; there are no nested scopes.
+</p>
+</li>
+</ul></div>
+</li>
+</ol></div>
+<h4 id="_performance" class="float">Performance</h4>
+<div class="paragraph"><p>Expectations around compile-time performance with an IL vary wildly, and indeed, SPIR-V experience will
+depend highly on how applications generate shaders, the way shaders are cached, the performance of the underlying target compiler,
+and what optimizations were done offline.  Online performance results include some combination of:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+eliminating the compiler front end; this processing, including reflection, can be done offline
+</p>
+</li>
+<li>
+<p>
+optimization passes that settle faster, for optimizations done offline
+</p>
+</li>
+<li>
+<p>
+time saved when multiple source shaders reduce to the same IL instruction stream
+(this multiplies any expectations of the first reason by a factor equal to the many-to-one mapping present between source shaders and unique ILs)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Your mileage will definitely vary. How much SPIR-V should be optimized before entering the run-time driver is discussed further down.
+Note that a typical optimizing run-time compiler will execute register allocation and scheduling transformations specific to the target system.
+These transforms tend to be computationally expensive and can only be done in a platform-specific compiler layer (back end).</p></div>
+<h4 id="_multiple_source_languages" class="float">Multiple Source Languages</h4>
+<div class="paragraph"><p>SPIR-V is fully set up to support multiple source languages.  It includes all the features needed
+to support shipping GLSL shaders, OpenCL C kernels, and support for C++ is progressing.</p></div>
+<div class="paragraph"><p>SPIR-V also enables development of new experimental languages.</p></div>
+<h4 id="_ip_protection" class="float">IP Protection</h4>
+<div class="paragraph"><p>SPIR-V is sufficiently far removed from source code that a significant explicit step is required to recover the original.
+Without tools, its raw binary form is difficult to read or modify.</p></div>
+<h4 id="_additionally_8230" class="float">Additionally&#8230;</h4>
+<div class="paragraph"><p>In addition to the primary expectations above, SPIR-V meets the following goals:</p></div>
+<div class="paragraph"><p><strong>Self Contained:</strong>  Khronos fully defines SPIR-V in Khronos specifications.</p></div>
+<div class="paragraph"><p><strong>Native Representation:</strong> SPIR-V contains, natively, the constructs needed to represent the functionality in Khronos source languages, including
+objects like matrices and images.</p></div>
+<div class="paragraph"><p><strong>Simple:</strong>  Tool sets need to find SPIR-V binary form simple to read and process.  This is achieved through a highly-regular linear stream of words.
+Instructions encode their size, making it easy to process just the instructions of interest while skipping irrelevant (or unrecogized) instructions.
+New instructions can be added through extensions without breaking existing tools.</p></div>
+<div class="paragraph"><p><strong>Binary Representation:</strong> SPIR-V is the binary form that an API entry point will accept, to eliminate all need for parsing and string processing in the driver.</p></div>
+<div class="paragraph"><p><strong>Easy to Convert to other IRs:</strong> SPIR-V is a relatively high-level IL, preserving all vital information from the source language needed to
+translate it easily to existing intermediate representations drivers are likely to have in their stacks.
+It is higher-level than some existing graphical ILs, preserving more information that allows translation to higher-performance run-time code.</p></div>
+<div class="paragraph"><p><strong>Extendable:</strong> The ability for single vendors or groups of vendors to extend an API/IL is important to Khronos.
+SPIR-V is easily extended:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Tools are written to only process instructions they understand, skipping others, making it easy to extend SPIR-V without breaking tools.
+</p>
+</li>
+<li>
+<p>
+The <strong>OpExtension</strong> instruction declares extensions that semantically require processing new instructions.
+</p>
+</li>
+<li>
+<p>
+Sets of extended instructions can be provided and specified in separate specifications.
+This is done for core versions of graphics and OpenCL modules, for operations like sin, cos, min, max, exp, etc.
+</p>
+</li>
+<li>
+<p>
+Reserving (registering) vendor-specific ranges of enumerants.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_optimization">1.2. Optimization</h3>
+<div class="paragraph"><p>SPIR-V can be partially optimized off line, to reduce amount of optimization needed on line.  However, this should be done with care,
+as too much optimization can lose information a target device needs to attain its highest performance.
+Typically, the following are relatively safe optimizations to perform:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+simple constant propagation
+</p>
+</li>
+<li>
+<p>
+constant folding and coalescing
+</p>
+</li>
+<li>
+<p>
+dead code, type, variable, and function elimination
+</p>
+</li>
+<li>
+<p>
+moving from a load/store form of shader variables to an SSA intermediate-object form, and using phi-functions for impacted flow-control
+</p>
+</li>
+<li>
+<p>
+simple if-conversion to select for single operations
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>These optimizations, however, potentially hurt performance, and are generally undesirable:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+function specialization
+</p>
+</li>
+<li>
+<p>
+inlining functions that have multiple call sites
+</p>
+</li>
+<li>
+<p>
+general loop unwinding or unrolling (except perhaps small loops with statically known small number of iterations)
+</p>
+</li>
+<li>
+<p>
+common subexpression elimination that increases data pressure
+</p>
+</li>
+<li>
+<p>
+code motion that increases data pressure
+</p>
+</li>
+<li>
+<p>
+complex transforms that lose information valuable to back-end optimizations
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>So, the above list should be avoided in off-line transforms of SPIR-V meant to be portable across devices.</p></div>
+<div class="paragraph"><p>Instead of doing such undesirable optimizations off line, SPIR-V has optimization control enumerants for loops, functions, and branches that
+allow communicating, say, that a loop is faster if not unrolled, based on some knowledge not present in the module itself.  Such
+controls should be respected by target devices.  See, for example, <strong>DontUnroll</strong> or <strong>InLine</strong> in the specification.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_spir_v_language">2. The SPIR-V Language</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Here is a simple OpenCL example, which will make more sense as this section unfolds:</p></div>
+<div class="paragraph"><p>OpenCL C Kernel:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>__kernel void add(__global int* in1, __global int* in2, __global int* out) {
+        size_t i = get_local_id(0);
+        out[i] = in1[i] + in2[i];
+}</pre>
+</div></div>
+<div style="page-break-after:always"></div>
+<div class="paragraph"><p>Corresponding (human readable) SPIR-V:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>// Magic number 0x07230203
+// SPIR-V Version 99
+// Generated by (magic number): 1
+// Id's are bound by 23
+// schema 0
+
+                              Source OpenCL 120
+                              EntryPoint Kernel 9
+                              MemoryModel Physical64 OpenCL1.2
+                              Name 4  "LocalInvocationId"
+                              Name 9  "add"
+                              Name 10  "in1"
+                              Name 11  "in2"
+                              Name 12  "out"
+                              Name 13  "entry"
+                              Name 15  "call"
+                              Name 16  "arrayidx"
+                              Name 18  "arrayidx1"
+                              Name 20  "add"
+                              Name 21  "arrayidx2"
+                              Decorate 4(LocalInvocationId) Constant
+                              Decorate 4(LocalInvocationId) Built-In LocalInvocationId
+                              Decorate 10(in1) FuncParamAttr 5
+                              Decorate 11(in2) FuncParamAttr 5
+                              Decorate 12(out) FuncParamAttr 5
+                              Decorate 17 Alignment 4
+                              Decorate 19 Alignment 4
+                              Decorate 22 Alignment 4
+               1:             TypeInt 64 0
+               2:             TypeVector 1(int) 3
+               3:             TypePointer UniformConstant 2(ivec3)
+               5:             TypeVoid
+               6:             TypeInt 32 0
+               7:             TypePointer WorkgroupGlobal 6(int)
+               8:             TypeFunction 5 7(ptr) 7(ptr) 7(ptr)
+4(LocalInvocationId):  3(ptr) Variable UniformConstant
+          9(add):           5 Function NoControl 8
+         10(in1):      7(ptr) FunctionParameter
+         11(in2):      7(ptr) FunctionParameter
+         12(out):      7(ptr) FunctionParameter
+       13(entry):             Label
+              14:    2(ivec3) Load 4(LocalInvocationId)
+        15(call):      1(int) CompositeExtract 14 0
+    16(arrayidx):      7(ptr) InBoundsAccessChain 10(in1) 15(call)
+              17:      6(int) Load 16(arrayidx)
+   18(arrayidx1):      7(ptr) InBoundsAccessChain 11(in2) 15(call)
+              19:      6(int) Load 18(arrayidx1)
+         20(add):      6(int) IAdd 19 17
+   21(arrayidx2):      7(ptr) InBoundsAccessChain 12(out) 15(call)
+                              Store 22 21(arrayidx2) 20
+                              Return
+                              FunctionEnd</pre>
+</div></div>
+<div class="paragraph"><p>For an example of a graphics shader, see the example in the SPIR-V specification.</p></div>
+<div class="sect2">
+<h3 id="_result_lt_id_gt_s_variables_and_ssa_form">2.1. Result &lt;id&gt;s, Variables, and SSA Form</h3>
+<div class="paragraph"><p>SPIR-V is based on each type declaration, each variable, each operation result, etc., getting a unique name: a <em>result &lt;id&gt;</em>.
+No result &lt;id&gt; can be re-targeted by another different instruction, and all consumed &lt;id&gt;s are defined somewhere as a result &lt;id&gt;.
+Thus, any consumed &lt;id&gt; will have exactly one place it is defined.</p></div>
+<div class="paragraph"><p>When looking at examples, most opcodes result in an result &lt;id&gt;, and this is the first number shown, before the &#8220;:&#8221;.
+In the following:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>16:  TypeInt 32 0  // 16 is the unique result &lt;id&gt; of this instruction</pre>
+</div></div>
+<div class="paragraph"><p>Text outside of a listing, including the specification, refer to this opcode as <strong>OpTypeInt</strong>, but it is shortened to just &#8220;TypeInt&#8221; in the disassembly, where it is clear it&#8217;s the opcode.</p></div>
+<h4 id="_variables_and_intermediate_objects" class="float">Variables and Intermediate Objects</h4>
+<div class="paragraph"><p>Some instructions produce an object as an intermediate result, meaning it is not allocated in memory, while other instructions can allocate a variable in memory.
+For example:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>17:    TypePointer PrivateGlobal 16  // type 17 is a pointer type to a global of type 16
+18: 17 Variable PrivateGlobal        // make a variable of type 16; 18 is a pointer to it
+19: 16 Load 18                       // 19 is an intermediate object of type 16
+20: 16 IAdd 19 19                    // 20 is an intermediate object of type 16
+       Store 18 20                   // store result of add back into the variable</pre>
+</div></div>
+<div class="paragraph"><p>Above, <strong>PrivateGlobal</strong> is a <em>storage class</em>, of which there are many, including the <strong>Function</strong> storage class for function local variables.
+Some storage classes are for IO and, fundamentally, IO will be done through load/store.</p></div>
+<div class="paragraph"><p>Also, note the store instruction does not have a result &lt;id&gt; that participates in the SSA name space.</p></div>
+<div class="paragraph"><p>The above example also introduce <em>result types</em> which are the second number on some lines.  These are the type of the result of the instruction, and
+refer to the &lt;id&gt; of the appropriate type declaration.</p></div>
+<h4 id="_single_static_assignment_ssa" class="float">Single Static Assignment (SSA)</h4>
+<div class="paragraph"><p>An important, intentional, side effect of each &lt;id&gt; defined by exactly one instruction, is that SPIR-V is always in single static assignment (SSA) form.
+The SSA from of SPIR-V is defined in terms of the result &lt;id&gt;, and not memory loads and stores.
+This standard form is in common use now, and there is quite a bit of information available for it.</p></div>
+<h4 id="_phi_function" class="float">Phi-Function</h4>
+<div class="paragraph"><p>A common optimization would be to eliminate unnecessary loads and stores, making more use of intermediate objects instead.
+For IO storage classes, the initial load and final store can never be eliminated.  However, for many variables, the memory
+could be completely eliminated by removing all loads and stores for them.</p></div>
+<div class="paragraph"><p>SPIR-V includes an <strong>OpPhi</strong> opcode to allow the merging together of intermediate results from split flow control.
+This allows computation across control flow, without needing store to memory, while still maintaining SSA form.
+<strong>OpPhi</strong> lists each parent block in the CFG, and for each parent block, which variable to merge into the new name.
+(The new name is the result &lt;id&gt; of the <strong>OpPhi</strong> instruction.)</p></div>
+</div>
+<div class="sect2">
+<h3 id="_decorations">2.2. Decorations</h3>
+<div class="paragraph"><p>Generally, source-level languages for shaders and kernels have a number of unusual qualifiers and variables.
+Most of these are handled as <em>decorations</em> in SPIR-V, for two reasons:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+any particular one of these would apply to only a small subset of declarations
+</p>
+</li>
+<li>
+<p>
+they normally have no effect on the semantics of operation with the instruction stream in SPIR-V
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>That is, they are both sparse and typically &#8220;pass-through&#8221; semantics, versus information that internally effects the semantics of the SPIR-V instruction stream.
+Hence, these are not an intrinsic part of declaring a variable, type, etc., but instead a <em>decoration</em> that is declared independently.  For (a graphics) example:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>       Decorate 39 Noperspective  // will make 39 use "noperspective" interpolation
+       ...
+39: 22 Variable Input             // define 39 (through type 22) as an input variable</pre>
+</div></div>
+<div class="paragraph"><p>Decorations are declared early, as a forward reference, so that when the object or type is actually made, everything is known about it.</p></div>
+<div class="paragraph"><p>SPIR-V also identifies built-in variables from a high-level language with <strong>OpDecoration</strong>, where the decoration is <strong>Built-In</strong>, followed by which built-in variable it is.
+This assigns any unusual semantics to the SPIR-V variable.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>      Decorate 4 Built-In LocalInvocationId  // will make 4 the built-in LocalInvocationId
+      ...
+ 4: 3 Variable UniformConstant               // define 4 (through type 3) as a uniform</pre>
+</div></div>
+<div class="paragraph"><p>Generally, the variable behaves and is operated on within SPIR-V based on it&#8217;s actual declaration, not as a special built-in variable.
+They are declared and treated the same as any other variable in SPIR-V.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_creating_types">2.3. Creating Types</h3>
+<div class="paragraph"><p>Types are built up, by each module from (parameterized) scalars.
+A floating-point or integer scalar type (<strong>OpTypeFloat</strong> or <strong>OpTypeInt</strong> instruction) takes an operand that says how many bits wide it is, and
+validation rules say which sizes are allowed for which execution models.
+Vector types (<strong>OpTypeVector</strong>) have an operand for what type the component is, and how many components it has.
+Structure types take a list of member types, etc.</p></div>
+<div class="sect3">
+<h4 id="_hierarchical_type_building">2.3.1. Hierarchical Type Building</h4>
+<div class="paragraph"><p>Types are parameterized and built up hierarchically, one instruction at a time.  There are no built-in aggregate types.
+This is best demonstrated in the <a href="#TypeTree">Type Graph</a> figure.</p></div>
+<div class="imageblock" id="TypeTree" style="text-align:center;">
+<div class="content">
+<img src="TypeTree.png" alt="TypeTree.png">
+</div>
+<div class="title">Figure 3. Type Graph.  The SPIR-V instructions build the given GLSL-like structure, and assign it an &lt;id&gt; of <strong>15</strong> for later use.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_unsigned_versus_signed_integers">2.3.2. Unsigned Versus Signed Integers</h4>
+<div class="paragraph"><p>The integer type, <strong>OpTypeInt</strong>, is parameterized not only with a size, but also with <em>signedness</em>.
+There are two typical ways to think about signedness in SPIR-V, both equally valid:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+As if all integers are &#8220;signless&#8221;, meaning they are neither signed nor unsigned:
+  All <strong>OpTypeInt</strong> instructions select a <em>signedness</em> of 0 to conceptually mean &#8220;no sign&#8221; (rather than &#8220;unsigned&#8221;).
+  This is useful when translating from a language that does not distinguish between signed and unsigned types.
+  The type of operation (signed or unsigned) to perform is always decided by the opcode.
+</p>
+</li>
+<li>
+<p>
+As if some integers are signed, and some are unsigned:
+  Some <strong>OpTypeInt</strong> instructions select <em>signedness</em> of 0 to mean &#8220;unsigned&#8221; and some select <em>signedness</em> of 1 to mean &#8220;signed&#8221;.
+  This is useful when signedness matters to external interface, or when targeting a higher-level language that cares about types being signed and unsigned.
+  The type of operation (signed or unsigned) to perform is still always decided by the opcode, but a small amount of validation is done
+  where it is non-sensible to use a signed type.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>Note in both cases all signed and unsigned operations always work on unsigned types, and the semantics of operation come from the opcode.
+SPIR-V does not know which way is being used; it is set up to support both ways of thinking.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_boolean_type">2.3.3. Boolean Type</h4>
+<div class="paragraph"><p>There is a built-in non-numeric Boolean type (<strong>OpTypeBool</strong>).  This type is the result of instructions doing relational testing (e.g., <strong>OpSLessThan</strong>), with
+<strong>true</strong> or <strong>false</strong> being the possible values. These are also the required type of operand to logical instructions (e.g., <strong>OpLogicalOr</strong>).</p></div>
+<div class="paragraph"><p>Different source languages or target architectures have differing <em>numeric</em> definitions of true and false.
+When interfacing between such definitions and the SPIR-V Boolean type, <strong>OpSelect</strong> can be used to convert to arbitrary true and false
+numeric values, or comparisons can be done (e.g., <strong>OpINotEqual</strong>) on numeric values to convert to SPIR-V&#8217;s Boolean non-numeric <strong>true</strong> and <strong>false</strong> values.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_operations_and_operand_types">2.4. Operations and Operand Types</h3>
+<div class="paragraph"><p>One way SPIR-V increases portability is explicit operation.
+High-level languages, for convenience, make great use of implicit type conversion and implicit operation inference, which also makes portability more difficult.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>int a;
+uint b;
+... = a / b;  // convert 'a' to uint, then do an unsigned divide operation
+              // resulting in an unsigned type</pre>
+</div></div>
+<div class="paragraph"><p>There were three inferences: 1) a type conversion, 2) operation semantics, 3) a resulting type.
+In more complex expressions involving more types, this is fragile, and sometimes subject to different interpretations.</p></div>
+<h4 id="_explicit_operation_semantics" class="float">Explicit Operation Semantics</h4>
+<div class="paragraph"><p>In SPIR-V, the above operation would be explicitly encoded as <strong>OpUDiv</strong>. This says, regardless of the operand types, the operation itself will be an unsigned divide.
+The target system did not decide what semantics to use based on examining the type of the operands.
+This is typically true of how SPIR-V instructions work: the opcode dictates the semantics of the operation to perform, and the instruction says what the resulting type is.
+For the example above:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>16:    TypeInt 32 0  // scalar unsigned 32-bit integers are id 16
+       ...           // creation of 20 and 21
+22: 16 UDiv 20 21    // divide with unsigned-int semantics, resulting in an unsigned int</pre>
+</div></div>
+<h4 id="_inferred_operation_widths" class="float">Inferred Operation Widths</h4>
+<div class="paragraph"><p>SPIR-V instructions do not, however, encode the full type of their operands.
+Here, as usual, take &#8220;type&#8221; to include the bit width of scalars/components as well as number of components in a vector, etc.
+Many opcodes can operate both on scalars or vectors, typically with all the operands and the result being the same type.
+These opcodes also operate on multiple bit widths (e.g., 32-bit floats or 64-bit floats).
+Effectively, bit-width information and component-count information typically comes from the operands' type and the result type, not from the opcode.</p></div>
+<h4 id="_validation" class="float">Validation</h4>
+<div class="paragraph"><p>It is often easier to verify a claim is correct than to infer what is correct, and this is reflected in SPIR-V instruction&#8217;s explicitly including their result type.
+This and more can be validated to be true sometime before run time:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the operand types are compatible with the opcode (e.g., floating-point semantics not allowed on integer types),
+</p>
+</li>
+<li>
+<p>
+the operand types and result type are compatible with each other (e.g., all are 3-component vectors of 32-bit floats), and
+</p>
+</li>
+<li>
+<p>
+the result type is correct for the operation (e.g., a dot product results in a scalar).
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The SPIR-V specification says for each opcode what must be true in a valid module.
+For our example here, it says 16, the type of 20, and the type of 21 must all be unsigned integer types, all of the same width, and in this case, all scalars.</p></div>
+<div class="paragraph"><p>The result in arguably redundant information, but less inferencing means simpler algorithms and faster load times at run time.</p></div>
+<h4 id="_no_function_overloading" class="float">No Function Overloading</h4>
+<div class="paragraph"><p>Finding the right overloaded function in the face of implicit conversions is also quite tricky, and something SPIR-V avoids.
+The SPIR-V function-call instruction explicitly says the &lt;id&gt; of the function definition to use.
+A direct call is not done by name string, function signature, or any other kind of matching.  It is direct and explicit.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>30:   Function ...         // define a function
+      ...
+...   FunctionCall 30 ...  // call the function defined by id 30</pre>
+</div></div>
+<div class="paragraph"><p>When using the <strong>link</strong> capability of SPIR-V, linkage names will used along with import/export decorations to enable function calls across modules.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_cfg_and_structured_flow_control">2.5. CFG and Structured Flow Control</h3>
+<div class="paragraph"><p>Instructions are grouped into <em>blocks</em> (the traditional &#8220;basic block&#8221;).  A block always starts with a label and ends with a branch.  For example:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>47:    Label
+49: 28 Load 45
+51: 14 SLessThan 49 50
+       BranchConditional 51 52 48</pre>
+</div></div>
+<div class="paragraph"><p>Branches include conditional and unconditional branches, switch, kill, and return instructions.</p></div>
+<div class="paragraph"><p>There is no other way into a block than a branch to its beginning, either from being the first block in a function or having an explicit branch to it.
+There is no other way out of a block than the branch at the end.  Blocks always end in a branch; there is no fall through to the next block.
+Branches can be conditional (two choices), or unconditional (one choice) or switches (many choices, labeled with constants).  They also include
+return statements.</p></div>
+<div class="paragraph"><p>The set of blocks and branches form a traditional control-flow graph (CFG), which is a directed graph that allows many topologies for looping and selection.</p></div>
+<div class="paragraph"><p>It is often desirable to represent structured flow control, meaning, roughly, the type of nested control-flow structure allowed by the C language, without using gotos,
+but still allowing breaks, continues, and early return statements.  Effectively meaning flow must be strictly nested, except for jumping out of the nesting by
+one or more levels.</p></div>
+<div class="paragraph"><p>Many high-level languages allow representing structured flow control, and it is helpful for back ends of parallel-execution architectures to know it is present.
+Allowing arbitrary rearrangement of the CFG can lose this desirable information.  Hence, SPIR-V allows the CFG to be annotated to allow representation of structured control
+flow.  This is done by recognizing when nested control splits, it must merge again, and it is the pairs of splits and merges that nest.</p></div>
+<div class="imageblock" id="StructuredSource" style="text-align:center;">
+<div class="content">
+<img src="StructuredSource.png" alt="StructuredSource.png">
+</div>
+<div class="title">Figure 4. Structured Source</div>
+</div>
+<div class="imageblock" id="NestingCFG" style="text-align:center;">
+<div class="content">
+<img src="NestingCFG.png" alt="NestingCFG.png">
+</div>
+<div class="title">Figure 5. Nesting CFG for <a href="#StructuredSource">Structured Source</a>.</div>
+</div>
+<div class="paragraph"><p>Below is the example corresponding SPIR-V for the above.  Loop breaks would also branch to the loop merge point.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>11:    Label
+18:    ...                            // set up loop exit condition
+       LoopMerge 12 NoControl         // declare loop merge point
+       BranchConditional 18 19 12     // branch to the loop or out to merge point
+19:      Label
+22:      ...                          // set up if-test condition
+         SelectionMerge 24 NoControl  // declare if merge point
+         BranchConditional 22 23 28   // if-test branch to true or false branch
+23:        Label                      // true branch
+           ...
+           Branch 24
+28:        Label                      // false branch
+           ...
+           Branch 24
+24:      Label                        // if merge point
+         ...
+         Branch 11
+12:    Label                          // loop merge point
+       ...</pre>
+</div></div>
+<div class="paragraph"><p>Note: Khronos is currently considering whether to further restrict structured loops to just &#8220;infinite&#8221; do loops containing breaks,
+rather than supporting the above &#8220;for&#8221; loop topology.</p></div>
+<div class="paragraph"><p>The following are critical components for preserving structured control flow:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Header blocks declare their merge points (blocks) with the <strong>OpSelectionMerge</strong> or <strong>OpLoopMerge</strong> instruction.
+</p>
+</li>
+<li>
+<p>
+The header and merge blocks bracket a nested construct, defined through dominance and post dominance of the construct&#8217;s blocks.
+</p>
+</li>
+<li>
+<p>
+Breaks, continues, and early returns can bypass a nested structure&#8217;s merge block.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Preserving structured control flow is optional from a SPIR-V perspective, but there are vertical paths that will require it.
+For example, going from GLSL down to hardware-specific shaders will require preserving the structured control flow from GLSL,
+through SPIR-V.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_function_calling">2.6. Function Calling</h3>
+<div class="paragraph"><p>To make a function, you first need a function type (<strong>OpTypeFunction</strong>) that gives types to parameters and a return value. A function definition (<strong>OpFunction</strong>) then refers to this type.
+To call a function defined in the current module, use <strong>OpFunctionCall</strong> with an operand that is the &lt;id&gt; of the <strong>OpFunction</strong> definition to call, and the &lt;id&gt;s of the arguments to pass.
+All arguments are passed by value into the called function. This includes pointers, through which a callee object could be modified.</p></div>
+<div class="paragraph"><p>A forward function call is possible in part because there is no missing type information: The call&#8217;s result Type must match the return type of the function,
+and the calling argument types must match the formal parameter types.</p></div>
+<div class="paragraph"><p>A function definition&#8217;s parameters each get their own instruction declaring them (<strong>OpFunctionParameter</strong>), giving &lt;id&gt;s to the formal parameters used within the definition&#8217;s body.
+This is in keeping with every &lt;id&gt; being defined in exactly one place.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_debuggability">2.7. Debuggability</h3>
+<div class="paragraph"><p>SPIR-V allows assigning a string to any result &lt;id&gt;.  That means any type, variable, function, intermediate result, etc. can be named for debug purposes.
+This can be used to aid in understandability when disassembling or debugging lowered versions of SPIR-V.
+Line numbers and file names can also be declared for any type, variable, instruction result, etc.:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>80:   String "add.cl" // 80 can be a shorthand for the file name add.cl
+      Name 11 "in2"   // the name associated with id 11 is in2
+      Line 11 80 1 52 // in2 is on line 1, column 52 of add.cl</pre>
+</div></div>
+<div class="paragraph"><p>Such instructions can be removed from a module without changing its semantics; they are for debug-style information only.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_a_id_specializationintro_a_specialization">2.8. <a id="SpecializationIntro"></a>Specialization</h3>
+<div class="paragraph"><p><em>Specialization</em> enables creating a portable SPIR-V module outside the target execution environment,
+based on constant values that won&#8217;t be known until inside the execution environment.  For example, to size a
+fixed array with a constant not known during creation of a SPIR-V module, but is known by the time a driver lowers that module
+to its target architecture.</p></div>
+<div class="paragraph"><p>The mechanism is to label a specialization constant offline, so it can be later updated with a final value.
+For example, in the following (extended) GLSL:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>layout(constantId = 42) const uint NumTextures = 12;  // 12 is just a default
+float TextureWeights[NumTextures];                    // NumTextures treated as a constant</pre>
+</div></div>
+<div class="paragraph"><p>Which translates to the following SPIR-V:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>       Name 50 "NumTextures"      // optional
+       Decorate 50 SpecId 42      // the "constantId"
+       ...
+16:    TypeInt 32 0               // 16 is a uint
+50: 16 SpecConstant 12            // 50 has default constant value of 12
+51:    TypeArray 16 50            // an array of uint, length in id 50
+       ...
+60: 51 OpVariable PrivateGlobal   // global of type 51</pre>
+</div></div>
+<div class="paragraph"><p>Now, the module above has a default size of 12 for the array (the constant value for &lt;id&gt; 50).  If no specialization is applied, 12 will be its size.</p></div>
+<div class="paragraph"><p>At any point, a <em>specialization</em> can be applied to the module, which will replace specialization constants with actual constants.
+A specialization is an independent entity from a module that a tool or driver can use to turn specialization constants into actual constants.
+Lets say it is time to compile on the target system, and it is better to only use 10 textures, so a specialization is created that
+says &#8220;specialization constant 42 should get the value 10&#8221;.
+On processing such as specialization with the above module, the following is produced:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>       Name 50 "NumTextures"      // optional
+       Name 51
+       Decorate 50 SpecId 42      // the "constantId"
+       ...
+16:    TypeInt 32 0               // 16 is a uint
+50: 16 Constant 10                // 50 has constant value of 10
+51:    TypeArray 16 50            // an array of type int, length is 10
+       ...
+60: 51 OpVariable PrivateGlobal   // global of type 51: i.e., uint[10]</pre>
+</div></div>
+<div class="paragraph"><p>The module now is now specialized.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_pointers_or_not">2.9. Pointers (or Not)</h3>
+<div class="paragraph"><p>SPIR-V fully supports pointers, in all their (ugly) glory.  Variable declarations (<strong>OpVariable</strong>) result in a type that is a pointer to them, for future load/store.
+General arithmetic and type casting can be performed on such pointers, resulting in new pointers that do not point to declared variables.  This
+functionality is required by OpenCL.</p></div>
+<div class="paragraph"><p>However, key graphical-shader programming models do not expose pointers, do not support general arithmetic on them, and do not want them in registers at the machine level.
+This programming model is also fully supported.</p></div>
+<div class="paragraph"><p>Which style of pointer is declared early in the module through the <em>Addressing Model</em> operand of the <strong>OpMemoryModel</strong> instruction.
+It can be <strong>Logical</strong> to enable the graphical-shader programming model, or <strong>Physical32</strong> or <strong>Physical64</strong> to enable the full pointer model needed by OpenCL.</p></div>
+<div class="paragraph"><p>When the <strong>Logical</strong> <em>Addressing Model</em> is used, the result of a variable declaration (<strong>OpVariable</strong>) can instead be considered a reference or handle to the
+variable, rather than its address.  In fact, the resulting pointer has no numeric value and cannot be arithmetically manipulated or cast to a numeric type.  The
+pointer types also have no bit width, and variables cannot be made in memory that would hold a pointer.</p></div>
+<div class="paragraph"><p>For either style, to access a part of a composite object, say a structure containing an array, use <strong>OpAccessChain</strong>, which gives a chain of indexes to walk the type&#8217;s hierarchy.
+Let&#8217;s say we want to access the the <em>z</em> component of element 4 of the array in the <a href="#TypeTree">Type Graph</a> figure.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>64: 16 Constant 1
+65: 16 Constant 2
+66: 16 Constant 4
+       ...
+70:    ...                      // type: pointer to a float
+71:    ...                      // a variable of type struct { mat3x4; vec4[6]; int; }
+72: 70 AccessChain 71 64 66 65  // member 64, element 66, component 65: 71-&gt;1.4.2</pre>
+</div></div>
+<div class="paragraph"><p>Note that &lt;id&gt;s (not literals) are used for indexing to support variable indexes (allowed for arrays, not for structures).</p></div>
+<div class="paragraph"><p>A physical-pointer model might have memory layout information that allows turning such an <strong>OpAccessChain</strong> into an address computation.
+However, the logical addressing model will not, and &lt;id&gt; 72 simply remains as a logical statement of how to walk the structure, and not an address computation.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_other_instructions">2.10. Other Instructions</h3>
+<div class="paragraph"><p>We&#8217;ve already sampled some instructions for</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+annotation
+</p>
+</li>
+<li>
+<p>
+debug
+</p>
+</li>
+<li>
+<p>
+type declaration
+</p>
+</li>
+<li>
+<p>
+variable declaration and load/store
+</p>
+</li>
+<li>
+<p>
+phi-function
+</p>
+</li>
+<li>
+<p>
+arithmetic operation
+</p>
+</li>
+<li>
+<p>
+control flow
+</p>
+</li>
+<li>
+<p>
+function types, formal parameters, and calls
+</p>
+</li>
+<li>
+<p>
+specialization
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Also present are</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+mode setting instructions for declaring the memory model, execution model and modes, entry points, and compilation flags
+</p>
+</li>
+<li>
+<p>
+constant instructions for creating constants, done hierarchically, analogously to type creation
+</p>
+</li>
+<li>
+<p>
+texturing instructions to do graphical texture lookup, including use of implicit derivative and subsequent code motion constraints
+</p>
+</li>
+<li>
+<p>
+composite instructions for modifying subsets of composite objects (structures, arrays, matrices, and vectors) and doing swizzle-like operations
+</p>
+</li>
+<li>
+<p>
+relational instructions for comparing and testing numeric and Boolean values
+</p>
+</li>
+<li>
+<p>
+derivatives: <strong>OpDPdy</strong>, <strong>OpFwidth</strong>, etc.
+</p>
+</li>
+<li>
+<p>
+atomic operations, unified across atomic counters, images, etc.
+</p>
+</li>
+<li>
+<p>
+geometry shader primitive emit vertex, end stream, etc.
+</p>
+</li>
+<li>
+<p>
+control and memory barrier
+</p>
+</li>
+<li>
+<p>
+execution-group instructions
+</p>
+</li>
+<li>
+<p>
+OpenCL device-side equeue instructions and pipe instructions
+</p>
+</li>
+<li>
+<p>
+extension instructions, discussed in the next section
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_the_core">3. Extending the Core</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are multiple ways of extending SPIR-V from the core specification.</p></div>
+<div class="sect2">
+<h3 id="_extended_instruction_sets">3.1. Extended Instruction Sets</h3>
+<div class="paragraph"><p>SPIR-V can import an extended instruction set (<strong>OpExInstImport</strong>).
+An extended instruction set is typically associated with a particular source language to provide, for example, built-in functions from that source language that
+are not represented by the core SPIR-V instruction set.  Extended instruction sets are specified in separate documents from the core specification.</p></div>
+<div class="paragraph"><p>While the semantics of the core instructions are intended to be the same for all source languages, other operations have semantics that vary across
+source languages.
+For example, the performance/accuracy trade-offs of trigonometric and exponential built-in functions like atan() or pow().
+Or, the behavior of NaN operands in min() or max().  Rather than having modes in SPIR-V that modify the behavior of such operations, or
+having many different min, max, pow, and atan core instructions, these instead are kept unique through extended instruction sets, where
+each document specifies the correct semantics for its extended instruction set.  This allows mode-less SPIR-V &#8594; SPIR-V transforms that
+know the semantics of the extended instructions.</p></div>
+<div class="paragraph"><p>Some important notes:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+An extended instruction could also represent some operation other than something that looks like a function in the source language.
+  It could be a syntax/operator driven operation, or even a built-in variable.
+</p>
+</li>
+<li>
+<p>
+In the above, the &#8220;built-in functions&#8221; referred to are meant to be intrinsic to the source language, rather than libraries.
+  Libraries are quite different, and discussed in the next section.
+</p>
+</li>
+<li>
+<p>
+Tools expected to process extended instructions must know the semantics of the instruction to the same extent they would know the semantics of core instruction they operate on.
+  This is in contrast to an external call to a library function, where all that would be known would be the signature and possibly memory characteristics of the function.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Extended instructions are called by <em>number</em>, not by name.  Other than the name of the extended instruction set itself, there is no string processing.  These numbers
+are part of the specification of the extended instructions, and must be shared by at least the front end creating SPIR-V and the back-end lowering it to a target instruction set.
+That is, they are not black boxes; they are known as well as the core instructions.</p></div>
+<div class="paragraph"><p>This example usage is from the shader example from the specification:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre> 1:    ExtInstImport  "GLSL.std.450"        // declare use
+       ...
+40:  8 Load 39                              // load a vec4
+41:  8 ExtInst 1(GLSL.std.450) 28(sqrt) 40  // take its sqrt</pre>
+</div></div>
+<div class="paragraph"><p>In the above, it is simply known that extended instruction 28 in the GLSL.std.450 instruction set means the GLSL semantics for the built-in sqrt().
+This is known from the extended instruction specification just as well as it is known that core instruction 122 is <strong>OpIAdd</strong>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_libraries">3.2. Libraries</h3>
+<div class="paragraph"><p>Currently, in graphical shading languages, there are no libraries of functions to call, only intrinsic built-in functions, or possibly separate compilation units of function bodies.
+Further, for graphical shaders, one SPIR-V module represents an entire stage of a graphical-shader pipeline:
+All compilation units for that stages must be linked together by the front end for that language, making a single SPIR-V module.
+Thus, as graphical shading languages stand today, they do not link to external libraries of unknown semantics, and this section does not apply to them.</p></div>
+<div class="paragraph"><p>OpenCL source languages, however, support multiple compilation units, where external functions and variables can be imported and exported.
+Libraries, for example, make use of separate compilation units.  This is represented in SPIR-V using multiple modules that are subsequently linked together.
+Within a module, use the <strong>Linkage Type</strong> decoration on functions and variables to decorate them as being either definitions to <strong>Export</strong>, or declarations to <strong>Import</strong>.
+Linkers will subsequently link symbols by an exported name string.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_extensions">3.3. Extensions</h3>
+<div class="paragraph"><p>Traditional-style extensions can also be added to SPIR-V.
+It is easy to extend all the types, storage classes, opcodes, decorations, etc. by adding to the enumeration tokens.
+Of course, if done independently by two parties, this would cause some obvious conflicts.  So, vendors wishing to write extensions to SPIR-V
+can register for a range of enumeration values to avoid conflict.</p></div>
+<div class="paragraph"><p>Use of such extensions must be declared near the beginning of the module, using the <strong>OpExtension</strong> instruction.</p></div>
+<div class="paragraph"><p>Extending SPIR-V through <strong>OpExtension</strong> is not necessarily
+the same thing as the source language using an extension.  It is quite possible that core SPIR-V has all the features needed to support
+some source-language extensions.  For debug purposes only, extensions used at the source-language level can be documented in a
+SPIR-V module using the <strong>OpSourceExtension</strong> instruction.  If such a source extension does require a SPIR-V extension, that is a
+separate thing, a SPIR-V extension, which still must be declared through the <strong>OpExtension</strong> instruction.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2015-03-02 14:36:27 MST
+</div>
+</div>
+</body>
+</html>
