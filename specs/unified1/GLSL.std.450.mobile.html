@@ -1683,7 +1683,7 @@ body {
 <div id="header">
 <h1>SPIR-V Extended Instructions for GLSL</h1>
 <span id="author">John Kessenich, Google</span><br>
-<span id="revnumber">version 1.00, Revision 10</span>
+<span id="revnumber">version 1.00, Revision 12</span>
 </div>
 <div id="content">
 <div id="preamble">
@@ -1765,7 +1765,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Round</strong><br>
 <br>
-Result is the value equal to the nearest whole number to <em>x</em>. The fraction 0.5 will round in a direction chosen by the implementation, presumably the direction that is fastest. This includes the possibility that <strong>Round</strong> <em>x</em> is the same value as <strong>RoundEven</strong> <em>x</em> for all values of <em>x</em>.<br>
+Result is the value equal to the nearest whole number to <em>x</em>. The fraction 0.5 rounds in a direction chosen by the implementation, presumably the direction that is fastest. This includes the possibility that <strong>Round</strong> <em>x</em> is the same value as <strong>RoundEven</strong> <em>x</em> for all values of <em>x</em>.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1788,7 +1788,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>RoundEven</strong><br>
 <br>
-Result is the value equal to the nearest whole number to <em>x</em>. A fractional part of 0.5 will round toward the nearest even whole number. (Both 3.5 and 4.5 for <em>x</em> will be 4.0.)<br>
+Result is the value equal to the nearest whole number to <em>x</em>. A fractional part of 0.5 rounds toward the nearest even whole number. (Both 3.5 and 4.5 for <em>x</em> round to 4.0.)<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1880,7 +1880,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>FSign</strong><br>
 <br>
-Result is <em>1.0</em> if <em>x &gt; 0</em>, <em>-1.0</em> if <em>x &lt; 0</em>, <em>+0.0</em> if <em>x = +0.0</em>, and <em>&plusmn;0.0</em> if <em>x = -0.0</em>. When <em>x</em> = <em>&plusmn;NaN</em>, the result can be any of &plusmn;1.0 or &plusmn;0.0, regardless of whether shader_float_controls is in use.<br>
+Result is <em>1.0</em> if <em>x &gt; 0</em>, <em>-1.0</em> if <em>x &lt; 0</em>, <em>+0.0</em> if <em>x = +0.0</em>, and <em>&plusmn;0.0</em> if <em>x = -0.0</em>. If <em>x</em> = <em>&plusmn;NaN</em>, the result can be any of &plusmn;1.0 or &plusmn;0.0, regardless of whether shader_float_controls is in use.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2108,7 +2108,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Asin</strong><br>
 <br>
-Arc sine. Result is an angle, in radians, whose sine is <em>x</em>. The range of result values is [-&#960; / 2, &#960; / 2]. Result is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
+Arc sine. Result is an angle, in radians, whose sine is <em>x</em>. The range of result values is [-&#960; / 2, &#960; / 2]. The resulting value is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2131,7 +2131,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Acos</strong><br>
 <br>
-Arc cosine. Result is an angle, in radians, whose cosine is <em>x</em>. The range of result values is [0, &#960;]. Result is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
+Arc cosine. Result is an angle, in radians, whose cosine is <em>x</em>. The range of result values is [0, &#960;]. The resulting value is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2269,7 +2269,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Acosh</strong><br>
 <br>
-Arc hyperbolic cosine; Result is the non-negative inverse of <strong>cosh</strong>. Result is undefined if <em>x</em> &lt; 1.<br>
+Arc hyperbolic cosine; Result is the non-negative inverse of <strong>cosh</strong>. The resulting value is undefined if <em>x</em> &lt; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2292,7 +2292,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Atanh</strong><br>
 <br>
-Arc hyperbolic tangent; result is the inverse of tanh. Result is undefined if <strong>abs</strong> <em>x</em> &ge; 1.<br>
+Arc hyperbolic tangent; result is the inverse of tanh. The resulting value is undefined if <strong>abs</strong> <em>x</em> &ge; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2316,7 +2316,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>Atan2</strong><br>
 <br>
-Arc tangent. Result is an angle, in radians, whose tangent is <em>y</em> / <em>x</em>. The signs of <em>x</em> and <em>y</em> are used to determine what quadrant the angle is in. The range of result values is  [-&#960;, &#960;] . Result is undefined if <em>x</em> and <em>y</em> are both 0.<br>
+Arc tangent. Result is an angle, in radians, whose tangent is <em>y</em> / <em>x</em>. The signs of <em>x</em> and <em>y</em> are used to determine what quadrant the angle is in. The range of result values is  [-&#960;, &#960;]. The resulting value is undefined if <em>x</em> and <em>y</em> are both 0.<br>
 <br>
  The operand <em>x</em> and <em>y</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2342,7 +2342,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>Pow</strong><br>
 <br>
-Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></sup>. Result is undefined if <em>x</em> &lt; 0. Result is undefined if <em>x</em> = 0 and <em>y</em> &le; 0.<br>
+Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &lt; 0. Result is undefined if <em>x</em> = 0 and <em>y</em> &le; 0.<br>
 <br>
  The operand <em>x</em> and <em>y</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2390,7 +2390,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Log</strong><br>
 <br>
-Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation <em>x</em> = <em>e</em><sup><em>y</em></sup>.  Result is undefined if <em>x</em> &le; 0.<br>
+Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation <em>x</em> = <em>e</em><sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &le; 0.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2436,7 +2436,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Log2</strong><br>
 <br>
-Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation  <em>x</em> = 2<sup><em>y</em></sup>. Result is undefined if <em>x</em> &le; 0.<br>
+Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation  <em>x</em> = 2<sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &le; 0.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -2451,7 +2451,7 @@ Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which s
 </table>
 <table class="tableblock frame-all grid-all"
 style="
-width:84%;
+width:88%;
 ">
 <col style="width:50%;">
 <col style="width:50%;">
@@ -2459,7 +2459,7 @@ width:84%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>Sqrt</strong><br>
 <br>
-Result is the square root of <em>x</em>. Result is undefined if <em>x</em> &lt; 0.<br>
+Result is the square root of <em>x</em>. The resulting value is undefined if <em>x</em> &lt; 0.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2474,7 +2474,7 @@ Result is the square root of <em>x</em>. Result is undefined if <em>x</em> &lt; 
 </table>
 <table class="tableblock frame-all grid-all"
 style="
-width:87%;
+width:91%;
 ">
 <col style="width:50%;">
 <col style="width:50%;">
@@ -2482,7 +2482,7 @@ width:87%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>InverseSqrt</strong><br>
 <br>
-Result is the reciprocal of <strong>sqrt</strong> <em>x</em>. Result is undefined if <em>x</em> &le; 0.<br>
+Result is the reciprocal of <strong>sqrt</strong> <em>x</em>. The resulting value is undefined if <em>x</em> &le; 0.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2520,7 +2520,7 @@ The operand <em>x</em> must be a square matrix.<br>
 </table>
 <table class="tableblock frame-all grid-all"
 style="
-width:84%;
+width:83%;
 ">
 <col style="width:50%;">
 <col style="width:50%;">
@@ -2528,7 +2528,7 @@ width:84%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>MatrixInverse</strong><br>
 <br>
-Result is a matrix that is the inverse of <em>x</em>. The values in the result are undefined if <em>x</em> is singular or poorly conditioned (nearly singular).<br>
+Result is a matrix that is the inverse of <em>x</em>. The resulting values are undefined if <em>x</em> is singular or poorly conditioned (nearly singular).<br>
 <br>
 The operand <em>x</em> must be a square matrix.<br>
 <br>
@@ -2552,7 +2552,9 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>Modf</strong><br>
 <br>
-Result is the fractional part of <em>x</em> and stores through <em>i</em> the whole number part (as a whole-number floating-point value). Both the result and the output parameter will have the same sign as <em>x</em>.<br>
+<strong>Modf</strong> is deprecated, use <strong>ModfStruct</strong> instead.<br>
+<br>
+Result is the fractional part of <em>x</em>, and stores through <em>i</em> the whole-number part as a whole-number floating-point value. Both the result and the output parameter have the same sign as <em>x</em>.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2579,9 +2581,11 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>ModfStruct</strong><br>
 <br>
-Same semantics as in <strong>Modf</strong>, except that the entire result is in the instruction&#8217;s result; there is not a pointer operand to write through.<br>
+Result is a structure containing both the fractional part of <em>x</em> and the whole number part of <em>x</em>.<br>
 <br>
-<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members. Member 0 holds the fractional part. Member 1 holds the whole number part. These two members, and <em>x</em> must all be the same type and have a floating-point component type.</p></td>
+<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members. Member 0 holds the fractional part. Member 1 holds the whole number part. Both members get the same sign as <em>x</em>. These two members and <em>x</em> must all be the same type. Results are computed per component.<br>
+<br>
+ The operand <em>x</em> must be a scalar or vector whose component type is floating-point.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top" ><p class="tableblock">36</p></td>
@@ -2601,7 +2605,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>FMin</strong><br>
 <br>
-Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> when both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
+Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2675,7 +2679,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>FMax</strong><br>
 <br>
-Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> when both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
+Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2750,7 +2754,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4" ><p class="tableblock"><strong>FClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). Result is undefined if <em>minVal</em> &gt; <em>maxVal</em>.The semantics used by min() and max() are those of FMin and FMax.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of FMin and FMax.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2779,7 +2783,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4" ><p class="tableblock"><strong>UClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>),  where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as unsigned integers. Result is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as unsigned integers. The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
 <br>
  <em>Result Type</em> and the type of the operands must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.</p></td>
 </tr>
@@ -2806,7 +2810,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4" ><p class="tableblock"><strong>SClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as signed integers. Result is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as signed integers. The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
 <br>
  <em>Result Type</em> and the type of the operands must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.</p></td>
 </tr>
@@ -2888,11 +2892,11 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4" ><p class="tableblock"><strong>SmoothStep</strong><br>
 <br>
-Result is 0.0 if <em>x</em> &le; <em>edge0</em> and 1.0 if <em>x</em> &ge; <em>edge1</em> and performs smooth Hermite interpolation between 0 and 1 when <em>edge0</em> &lt; <em>x</em> &lt; <em>edge1</em>. This is equivalent to:<br>
+Result is 0.0 if <em>x</em> &le; <em>edge0</em> and 1.0 if <em>x</em> &ge; <em>edge1</em> and performs smooth Hermite interpolation between 0 and 1 if <em>edge0</em> &lt; <em>x</em> &lt; <em>edge1</em>. This is equivalent to:<br>
 <br>
 <em>t</em> * <em>t</em> * (3 - 2 * <em>t</em>), where <em>t</em> = clamp ((<em>x</em> - <em>edge0</em>) / (<em>edge1</em> - <em>edge0</em>), 0, 1)<br>
 <br>
-Result is undefined if <em>edge0</em> &ge; <em>edge1</em>.<br>
+The resulting value is undefined if <em>edge0</em> &ge; <em>edge1</em>.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2925,7 +2929,7 @@ Computes <em>a</em> * <em>b</em> + <em>c</em>. In uses where this operation is d
 <br>
 - <strong>fma</strong> is considered a single operation, whereas the expression <em>a</em> * <em>b</em> + <em>c</em> is considered two operations.<br></p>
 <p class="tableblock">- The precision of <strong>fma</strong> can differ from the precision of the expression <em>a</em> * <em>b</em> + <em>c</em>.<br></p>
-<p class="tableblock">- <strong>fma</strong> will be computed with the same precision as any other <strong>fma</strong> decorated with <strong>NoContraction</strong>, giving invariant results for the same input values of <em>a</em>, <em>b</em>, and <em>c</em>.<br>
+<p class="tableblock">- <strong>fma</strong> is computed with the same precision as any other <strong>fma</strong> decorated with <strong>NoContraction</strong>, giving invariant results for the same input values of <em>a</em>, <em>b</em>, and <em>c</em>.<br>
 <br>
 Otherwise, in the absence of a <strong>NoContraction</strong> decoration, there are no special constraints on the number of operations or difference in precision between <strong>fma</strong> and the expression <em>a</em> * <em>b</em> +<em>c</em>.<br>
 <br>
@@ -2955,13 +2959,15 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>Frexp</strong><br>
 <br>
+<strong>Frexp</strong> is deprecated, use <strong>FrexpStruct</strong> instead.<br>
+<br>
 Splits <em>x</em> into a floating-point significand in the range (-1.0, 0.5] or [0.5, 1.0) and an integral exponent of 2, such that:<br></p>
 <p class="tableblock"><em>x</em> = <em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
 <p class="tableblock">The <em>significand</em> is the instruction result. An <em>x</em> of <em>-0.0</em> results in a significand <em>-0.0</em>, while an <em>x</em> of <em>0.0</em> results in <em>0.0</em>. For a floating-point value that is an infinity or is not a number, the significand is undefined.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
-The exponent is returned through the pointer-parameter <em>exp</em>. The <em>exp</em> operand must be a pointer to a scalar or vector with integer component type, with 32-bit component width. The number of components in <em>x</em> and what <em>exp</em> points to must be the same. When <em>x</em> is a zero, the exponent will be 0.0. When <em>x</em> is an infinity or a NaN, the exponent is undefined.<br>
+The exponent is returned through the pointer-parameter <em>exp</em>. The <em>exp</em> operand must be a pointer to a scalar or vector with integer component type, with 32-bit component width. The number of components in <em>x</em> and what <em>exp</em> points to must be the same. If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is undefined.<br>
 <br>
 <em>Result Type</em> must be the same type as the type of <em>x</em>. Results are computed per component.</p></td>
 </tr>
@@ -2984,9 +2990,13 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>FrexpStruct</strong><br>
 <br>
-Same semantics as in <strong>Frexp</strong>, except that the entire result is in the instruction&#8217;s result; there is not a pointer operand to write through.<br>
+Result is a structure containing <em>x</em> split into a floating-point significand in the range (-1.0, 0.5] or [0.5, 1.0) and an integral exponent of 2, such that:<br></p>
+<p class="tableblock"><em>x</em> = <em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
+<p class="tableblock">If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is undefined. If <em>x</em> is <em>0.0</em>, the significand is <em>0.0</em>. If <em>x</em> is <em>-0.0</em>, the significand is <em>-0.0</em><br>
 <br>
-<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members.  Member 0 must have the same type as the type of <em>x</em>. Member 0 holds the <em>significand</em>. Member 1 must be a scalar or vector with integer component type, with 32-bit component width. Member 1 holds <em>exponent</em>. These two members must have the same number of components.</p></td>
+<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members.  Member 0 must have the same type as the type of <em>x</em>. Member 0 holds the significand. Member 1 must be a scalar or vector with integer component type, with 32-bit component width. Member 1 holds the exponent. These two members and <em>x</em> must have the same number of components.<br>
+<br>
+ The operand <em>x</em> must be a scalar or vector whose component type is floating-point.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top" ><p class="tableblock">52</p></td>
@@ -3008,7 +3018,7 @@ width:100%;
 <br>
 Builds a floating-point number from <em>x</em> and the corresponding integral exponent of two in <em>exp</em>:<br></p>
 <p class="tableblock"><em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
-<p class="tableblock">If this product is too large to be represented in the floating-point type, the result is undefined. If <em>exp</em> is greater than +128 (single precision) or +1024 (double precision), the result undefined. If <em>exp</em> is less than -126 (single precision) or -1022 (double precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
+<p class="tableblock">If this product is too large to be represented in the floating-point type, the resulting value is undefined. If <em>exp</em> is greater than +128 (single precision) or +1024 (double precision), the resulting value is undefined. If <em>exp</em> is less than -126 (single precision) or -1022 (double precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -3038,7 +3048,7 @@ width:100%;
 First, converts each component of the normalized floating-point value <em>v</em> into 8-bit integer values. These are then packed into the result.<br></p>
 <p class="tableblock">The conversion for component <em>c</em> of <em>v</em> to fixed point is done as follows:<br></p>
 <p class="tableblock">round(clamp(<em>c</em>, -1, +1) * 127.0)<br></p>
-<p class="tableblock">The first component of the vector will be written to the least significant bits of the output; the last component will be written to the most significant bits.<br>
+<p class="tableblock">The first component of the vector is written to the least significant bits of the output; the last component is written to the most significant bits.<br>
 <br>
 The <em>v</em> operand must be a vector of 4 components whose type is a 32-bit floating-point.<br>
 <br>
@@ -3064,7 +3074,7 @@ width:100%;
 First, converts each component of the normalized floating-point value <em>v</em> into 8-bit integer values. These are then packed into the result.<br></p>
 <p class="tableblock">The conversion for component <em>c</em> of <em>v</em> to fixed point is done as follows:<br></p>
 <p class="tableblock">round(clamp(<em>c</em>, 0, +1) * 255.0)<br></p>
-<p class="tableblock">The first component of the vector will be written to the least significant bits of the output; the last component will be written to the most significant bits.<br>
+<p class="tableblock">The first component of the vector is written to the least significant bits of the output; the last component is written to the most significant bits.<br>
 <br>
 The <em>v</em> operand must be a vector of 4 components whose type is a 32-bit floating-point.<br>
 <br>
@@ -3090,7 +3100,7 @@ width:100%;
 First, converts each component of the normalized floating-point value <em>v</em> into 16-bit integer values. These are then packed into the result.<br></p>
 <p class="tableblock">The conversion for component <em>c</em> of <em>v</em> to fixed point is done as follows:<br></p>
 <p class="tableblock">round(clamp(<em>c</em>, -1, +1) * 32767.0)<br></p>
-<p class="tableblock">The first component of the vector will be written to the least significant bits of the output; the last component will be written to the most significant bits.<br>
+<p class="tableblock">The first component of the vector is written to the least significant bits of the output; the last component is written to the most significant bits.<br>
 <br>
 The <em>v</em> operand must be a vector of 2 components whose type is a 32-bit floating-point.<br>
 <br>
@@ -3116,7 +3126,7 @@ width:100%;
 First, converts each component of the normalized floating-point value <em>v</em> into 16-bit integer values. These are then packed into the result.<br></p>
 <p class="tableblock">The conversion for component <em>c</em> of <em>v</em> to fixed point is done as follows:<br></p>
 <p class="tableblock">round(clamp(<em>c</em>, 0, +1) * 65535.0)<br></p>
-<p class="tableblock">The first component of the vector will be written to the least significant bits of the output; the last component will be written to the most significant bits.<br>
+<p class="tableblock">The first component of the vector is written to the least significant bits of the output; the last component is written to the most significant bits.<br>
 <br>
 The <em>v</em> operand must be a vector of 2 components whose type is a 32-bit floating-point.<br>
 <br>
@@ -3189,7 +3199,7 @@ width:100%;
 <br>
 First, unpacks a single 32-bit unsigned integer <em>p</em> into a pair of 16-bit signed integers. Then, each component is converted to a normalized floating-point value to generate the result. The conversion for unpacked fixed-point value <em>f</em> to floating point is done as follows:<br></p>
 <p class="tableblock">clamp(<em>f</em> / 32767.0, -1, +1)<br></p>
-<p class="tableblock">The first component of the result will be extracted from the least significant bits of the input; the last component will be extracted from the most significant bits.<br>
+<p class="tableblock">The first component of the result is extracted from the least significant bits of the input; the last component is extracted from the most significant bits.<br>
 <br>
 The <em>p</em> operand must be a scalar with 32-bit integer type.<br>
 <br>
@@ -3214,7 +3224,7 @@ width:100%;
 <br>
 First, unpacks a single 32-bit unsigned integer <em>p</em> into a pair of 16-bit unsigned integers. Then, each component is converted to a normalized floating-point value to generate the result. The conversion for unpacked fixed-point value <em>f</em> to floating point is done as follows:<br></p>
 <p class="tableblock"><em>f</em> / 65535.0<br></p>
-<p class="tableblock">The first component of the result will be extracted from the least significant bits of the input; the last component will be extracted from the most significant bits.<br>
+<p class="tableblock">The first component of the result is extracted from the least significant bits of the input; the last component is extracted from the most significant bits.<br>
 <br>
 The <em>p</em> operand must be a scalar with 32-bit integer type.<br>
 <br>
@@ -3263,7 +3273,7 @@ width:100%;
 <br>
 First, unpacks a single 32-bit unsigned integer <em>p</em> into four 8-bit signed integers. Then, each component is converted to a normalized floating-point value to generate the result. The conversion for unpacked fixed-point value <em>f</em> to floating point is done as follows:<br></p>
 <p class="tableblock">clamp(<em>f</em> / 127.0, -1, +1)<br></p>
-<p class="tableblock">The first component of the result will be extracted from the least significant bits of the input; the last component will be extracted from the most significant bits.<br>
+<p class="tableblock">The first component of the result is extracted from the least significant bits of the input; the last component is extracted from the most significant bits.<br>
 <br>
 The <em>p</em> operand must be a scalar with 32-bit integer type.<br>
 <br>
@@ -3288,7 +3298,7 @@ width:100%;
 <br>
 First, unpacks a single 32-bit unsigned integer <em>p</em> into four 8-bit unsigned integers. Then, each component is converted to a normalized floating-point value to generate the result. The conversion for unpacked fixed-point value <em>f</em> to floating point is done as follows:<br></p>
 <p class="tableblock"><em>f</em> / 255.0<br></p>
-<p class="tableblock">The first component of the result will be extracted from the least significant bits of the input; the last component will be extracted from the most significant bits.<br>
+<p class="tableblock">The first component of the result is extracted from the least significant bits of the input; the last component is extracted from the most significant bits.<br>
 <br>
 The <em>p</em> operand must be a scalar with 32-bit integer type.<br>
 <br>
@@ -3469,7 +3479,7 @@ width:100%;
 <br>
 For the incident vector <em>I</em> and surface orientation <em>N</em>, the result is the reflection direction:<br></p>
 <p class="tableblock"><em>I</em> - 2 * dot(<em>N</em>, <em>I</em>) * <em>N</em><br></p>
-<p class="tableblock"><em>N</em> must already be normalized in order to achieve the desired result.<br>
+<p class="tableblock">This computation assumes <em>N</em> is already normalized.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -3500,7 +3510,7 @@ For the incident vector <em>I</em> and surface normal <em>N</em>, and the ratio 
 <p class="tableblock">k = 1.0 - <em>eta</em> * <em>eta</em> * (1.0 - dot(<em>N</em>, <em>I</em>) * dot(<em>N</em>, <em>I</em>))<br></p>
 <p class="tableblock">if k &lt; 0.0 the result is 0.0<br></p>
 <p class="tableblock">otherwise, the result is <em>eta</em> * <em>I</em> - (<em>eta</em> * dot(<em>N</em>, <em>I</em>) + sqrt(k)) * <em>N</em><br></p>
-<p class="tableblock">The input parameters for the incident vector <em>I</em> and the surface normal <em>N</em> must already be normalized to get the desired results.<br>
+<p class="tableblock">This computation assumes the input parameters for the incident vector <em>I</em> and the surface normal <em>N</em> are already normalized.<br>
 <br>
 The type of <em>I</em> and <em>N</em> must be a scalar or vector with a floating-point component type.<br>
 <br>
@@ -3531,7 +3541,7 @@ width:100%;
 <br>
 Integer least-significant bit.<br>
 <br>
-Results in the bit number of the least-significant 1-bit in the binary representation of <em>Value</em>. If <em>Value</em> is 0, the result is -1.<br>
+Results in the bit number of the least-significant 1-bit in the binary representation of <em>Value</em>. If <em>Value</em> is 0, the result has all bits set (e.g., -1 if interpreted as signed).<br>
 <br>
  <em>Result Type</em> and the type of <em>Value</em> must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.<br>
 <br>
@@ -3556,7 +3566,7 @@ width:100%;
 <br>
 Signed-integer most-significant bit, with <em>Value</em> interpreted as a signed integer.<br>
 <br>
-For positive numbers, the result will be the bit number of the most significant 1-bit. For negative numbers, the result will be the bit number of the most significant 0-bit. For a <em>Value</em> of 0 or -1, the result is -1.<br>
+For positive numbers, the result is the bit number of the most significant 1-bit. For negative numbers, the result is the bit number of the most significant 0-bit. For a <em>Value</em> of 0 or -1, the result has all bits set (e.g., -1 if interpreted as signed).<br>
 <br>
  <em>Result Type</em> and the type of <em>Value</em> must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.<br>
 <br>
@@ -3581,7 +3591,7 @@ width:100%;
 <br>
 Unsigned-integer most-significant bit.<br>
 <br>
-Results in the bit number of the most-significant 1-bit in the binary representation of <em>Value</em>. If <em>Value</em> is 0, the result is -1.<br>
+Results in the bit number of the most-significant 1-bit in the binary representation of <em>Value</em>. If <em>Value</em> is 0, the result has all bits set (e.g., -1 if interpreted as signed).<br>
 <br>
  <em>Result Type</em> and the type of <em>Value</em> must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.<br>
 <br>
@@ -3604,7 +3614,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2" ><p class="tableblock"><strong>InterpolateAtCentroid</strong><br>
 <br>
-Result is the value of the input <em>interpolant</em> sampled at a location inside both the pixel and the primitive being processed. The value obtained would be the same value assigned to the input variable if it were decorated as <strong>Centroid</strong>.<br>
+Result is the value of the input <em>interpolant</em> sampled at a location inside both the fragment and the primitive being processed. The value obtained would be the same value assigned to the input variable if it were decorated as <strong>Centroid</strong>.<br>
 <br>
  The operand <em>interpolant</em> must be a pointer to the <strong>Input</strong> Storage Class.<br>
 <br>
@@ -3634,7 +3644,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>InterpolateAtSample</strong><br>
 <br>
-Result is the value of the input <em>interpolant</em> variable at the location of sample number <em>sample</em>. If multisample buffers are not available, the input variable will be evaluated at the center of the pixel. If sample <em>sample</em> does not exist, the position used to interpolate the input variable is undefined.<br>
+Result is the value of the input <em>interpolant</em> variable at the location of sample number <em>sample</em>. If sample <em>sample</em> does not exist, the position used to interpolate the input variable is undefined.<br>
 <br>
  The operand <em>interpolant</em> must be a pointer to the <strong>Input</strong> Storage Class.<br>
 <br>
@@ -3668,7 +3678,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>InterpolateAtOffset</strong><br>
 <br>
-Result is the value of the input <em>interpolant</em> variable sampled at an offset from the center of the pixel specified by <em>offset</em>. The two floating-point components of <em>offset</em>, give the offset in pixels in the <em>x</em> and <em>y</em> directions, respectively. An <em>offset</em> of (0, 0) identifies the center of the pixel. The range and granularity of offsets supported are implementation-dependent.<br>
+Result is the value of the input <em>interpolant</em> variable sampled at an offset from the center of the fragment specified by <em>offset</em>. The two floating-point components of <em>offset</em>, give the offset in pixels in the <em>x</em> and <em>y</em> directions, respectively. An <em>offset</em> of (0, 0) identifies the center of the fragment. The range and granularity of offsets supported are implementation-dependent.<br>
 <br>
  The operand <em>interpolant</em> must be a pointer to the <strong>Input</strong> Storage Class.<br>
 <br>
@@ -3702,7 +3712,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>NMin</strong><br>
 <br>
-Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> when both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
+Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -3728,7 +3738,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3" ><p class="tableblock"><strong>NMax</strong><br>
 <br>
-Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> when both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
+Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -3755,7 +3765,7 @@ width:100%;
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4" ><p class="tableblock"><strong>NClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). Result is undefined if <em>minVal</em> &gt; <em>maxVal</em>.The semantics used by min() and max() are those of NMin and NMax.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of NMin and NMax.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -3987,14 +3997,34 @@ State what <strong>FSign</strong> of <em>&plusmn;NaN</em> is.
 </li>
 </ul></div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_00_revision_11">3.14. Changes from Version 1.00, Revision 11</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+Khronos SPIR-V Issue #555: Deprecate <strong>Modf</strong>, use <strong>ModfStruct</strong> instead. Deprecate <strong>Frexp</strong>, use <strong>FrexpStruct</strong> instead.
+</p>
+</li>
+<li>
+<p>
+Khronos SPIR-V Issue #284: Say all bits are set, instead of saying -1, for some results of <strong>FindILsb</strong>, <strong>FindSMsb</strong>, and <strong>FindUMsb</strong>.
+</p>
+</li>
+<li>
+<p>
+Khronos SPIR-V MR #181: Use "fragment" instead of "pixel" in <strong>InterpolateAtCentroid</strong>, <strong>InterpolateAtSample</strong>, and <strong>InterpolateAtOffset</strong>.
+</p>
+</li>
+</ul></div>
+</div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr></div>
 <div id="footer">
 <div id="footer-text">
-Version 1.00, Revision 10<br>
-Last updated 2020-04-23 06:48:50 MDT
+Version 1.00, Revision 12<br>
+Last updated 2020-10-21 22:37:37 MDT
 </div>
 </div>
 </body>

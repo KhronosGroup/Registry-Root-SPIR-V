@@ -30,7 +30,7 @@ include_once("../../assets/static_pages/khr_page_top.php");
 </p>
 
 <ul>
-<li> SPIR-V 1.5 Unified Specification, Revision 3, 24-Apr-2020
+<li> SPIR-V 1.5 Unified Specification, Revision 5, 11-Jan-2021:
     <ul>
         <li> <a href="specs/unified1/SPIRV.html">HTML</a></li>
         <li> <a href="specs/unified1/SPIRV.mobile.html">HTML formatted for mobile devices</a></li>
