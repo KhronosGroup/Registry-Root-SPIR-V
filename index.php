@@ -25,9 +25,9 @@ include_once("../../assets/static_pages/khr_page_top.php");
 <h3> <a name="spec"></a> SPIR-V 1.5 Unified Specification, Headers, and Grammar </h3>
 
 <p>
-    SPIR-V 1.6 was released Dec 16, 2019, and includes all previous versions,
+    SPIR-V 1.6 was released Dec 16, 2021, and includes all previous versions,
     including the latest and final revision 6 of SPIR-V 1.5.)
-    (SPIR-V 1.5 was released Sep 13, 2019, and includes all previous versions.
+    (SPIR-V 1.5 was released Sep 13, 2020, and includes all previous versions.
     SPIR-V 1.4 was released May 7, 2019.)
 </p>
 
