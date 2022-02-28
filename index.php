@@ -26,12 +26,11 @@ include_once("../../assets/static_pages/khr_page_top.php");
 
 <p>
     The unified specification contains all previous versions of SPIR-V.
-    <li> SPIR-V 1.6 Unified Specification, Revision 1, 16-Dec-2021:
-        <ul>
-            <li> SPIR-V 1.5 was released Sep 13, 2020
-            <li> SPIR-V 1.4 was released May 7, 2019
-        </ul>
-    </li>
+    <ul>
+        <li> SPIR-V 1.6 was released Dec. 16, 2021</li>
+        <li> SPIR-V 1.5 was released Sep. 13, 2020</li>
+        <li> SPIR-V 1.4 was released May 7, 2019</li>
+    </ul>
 </p>
 
 <ul>
