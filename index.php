@@ -25,44 +25,39 @@ include_once("../../assets/static_pages/khr_page_top.php");
 <h3> <a name="spec"></a> SPIR-V Unified Specification, Headers, and Grammar.</h3>
 
 <p>
-    The unified specification contains all previous versions of SPIR-V.
-    <ul>
-        <li> SPIR-V 1.6 was released Dec. 16, 2021</li>
-        <li> SPIR-V 1.5 was released Sep. 13, 2020</li>
-        <li> SPIR-V 1.4 was released May 7, 2019</li>
-    </ul>
-</p>
-
+The unified specification contains all previous versions of SPIR-V.
 <ul>
-<li> SPIR-V 1.6 Unified Specification, Revision 1, 16-Dec-2021:
+    <li> SPIR-V 1.6 was released Dec. 16, 2021</li>
+    <li> SPIR-V 1.5 was released Sep. 13, 2020</li>
+    <li> SPIR-V 1.4 was released May 7, 2019</li>
     <ul>
         <li> <a href="specs/unified1/SPIRV.html">HTML</a></li>
         <li> <a href="specs/unified1/SPIRV.pdf">PDF</a></li>
     </ul>
-</li>
-<li> Header files are available in the Khronos GitHub project
-     <a href="https://github.com/KhronosGroup/SPIRV-Headers">
-     SPIRV-Headers</a> in the directory
-     <a href="https://github.com/KhronosGroup/SPIRV-Headers/tree/master/include/spirv/unified1">
-     include/spirv/unified1/</a>, including, but not limited to:
-            <ul>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.h">spirv.h</a> (C) </li>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.hpp">spirv.hpp</a> (C++) </li>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.hpp11">spirv.hpp11</a> (C++11) </li>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.lua">spirv.lua</a> (Lua) </li>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.json">spirv.json</a> (JSON) </li>
-                <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.py">spirv.py</a> (Python) </li>
-            </ul>
-</li>
-<li> Machine-readable JSON grammar:
-    <ul>
-        <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.core.grammar.json">spirv.core.grammar.json</a> </li>
-        <li> Documentation for the Machine-readable JSON grammar:
-                    <a href="specs/unified1/MachineReadableGrammar.html">HTML</a>,
-                    <a href="specs/unified1/MachineReadableGrammar.pdf">PDF</a> </li>
-    </ul>
-</li>
+    <li> Header files are available in the Khronos GitHub project
+         <a href="https://github.com/KhronosGroup/SPIRV-Headers">
+         SPIRV-Headers</a> in the directory
+         <a href="https://github.com/KhronosGroup/SPIRV-Headers/tree/master/include/spirv/unified1">
+         include/spirv/unified1/</a>, including, but not limited to:
+                <ul>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.h">spirv.h</a> (C) </li>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.hpp">spirv.hpp</a> (C++) </li>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.hpp11">spirv.hpp11</a> (C++11) </li>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.lua">spirv.lua</a> (Lua) </li>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.json">spirv.json</a> (JSON) </li>
+                    <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.py">spirv.py</a> (Python) </li>
+                </ul>
+    </li>
+    <li> Machine-readable JSON grammar:
+        <ul>
+            <li> <a href="https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/unified1/spirv.core.grammar.json">spirv.core.grammar.json</a> </li>
+            <li> Documentation for the Machine-readable JSON grammar:
+                        <a href="specs/unified1/MachineReadableGrammar.html">HTML</a>,
+                        <a href="specs/unified1/MachineReadableGrammar.pdf">PDF</a> </li>
+        </ul>
+    </li>
 </ul>
+</p>
 
 <h3> <a name="extins"></a> Extended Instruction Sets and Headers </h3>
 
