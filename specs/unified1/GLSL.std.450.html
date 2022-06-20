@@ -27,7 +27,7 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">John Kessenich, Google</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 12</span>
+<span id="revdate">Revision 13</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -50,6 +50,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_00_revision_9">3.12. Changes from Version 1.00, Revision 9</a></li>
 <li><a href="#_changes_from_version_1_00_revision_10">3.13. Changes from Version 1.00, Revision 10</a></li>
 <li><a href="#_changes_from_version_1_00_revision_11">3.14. Changes from Version 1.00, Revision 11</a></li>
+<li><a href="#_changes_from_version_1_00_revision_12">3.15. Changes from Version 1.00, Revision 12</a></li>
 </ul>
 </li>
 </ul>
@@ -69,7 +70,7 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>&#169; Copyright 2014-2021 The Khronos Group Inc. All Rights Reserved.</p>
+<p>&#169; Copyright 2014-2022 The Khronos Group Inc. All Rights Reserved.</p>
 </div>
 <div class="paragraph">
 <p>This specification is protected by copyright laws and contains material proprietary to the Khronos Group, Inc. It or any components may not be reproduced, republished, distributed, transmitted, displayed, broadcast, or otherwise exploited in any manner
@@ -1794,9 +1795,9 @@ If the dot product of <em>Nref</em> and <em>I</em> is negative, the result is <e
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>Reflect</strong><br>
 <br>
-For the incident vector <em>I</em> and surface orientation <em>N</em>, the result is the reflection direction:<br></p>
-<p class="tableblock"><em>I</em> - 2 * dot(<em>N</em>, <em>I</em>) * <em>N</em><br></p>
-<p class="tableblock">This computation assumes <em>N</em> is already normalized.<br>
+For the incident vector <em>I</em> and surface orientation <em>N</em>, returns <em>I</em> - 2 * dot(<em>N</em>, <em>I</em>) * <em>N</em>.<br>
+<br>
+If <em>N</em> is normalized then this corresponds to <em>I</em> reflected from a surface with normal <em>N</em>.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2302,13 +2303,23 @@ were historically disallowed, this is a backward compatible change.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_00_revision_12">3.15. Changes from Version 1.00, Revision 12</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Khronos SPIR-V Issue #705: Clarify the computation provided for <strong>Reflect</strong> is used regardless of input normalization.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2021-12-05 23:24:40 +0700
+Last updated 2022-06-08 11:32:02 +0700
 </div>
 </div>
 </body>

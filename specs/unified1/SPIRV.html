@@ -29,7 +29,7 @@ em, b, strong {
 <span id="author2" class="author">Boaz Ouriel, Intel</span><br>
 <span id="author3" class="author">Raun Krisch, Intel</span><br>
 <span id="revnumber">version 1.6,</span>
-<span id="revdate">Revision 1</span>
+<span id="revdate">Revision 2</span>
 <br><span id="revremark">Unified</span>
 </div>
 <div id="toc" class="toc2">
@@ -82,7 +82,13 @@ em, b, strong {
 </li>
 <li><a href="#_function_calling">2.9. Function Calling</a></li>
 <li><a href="#_extended_instruction_sets">2.10. Extended Instruction Sets</a></li>
-<li><a href="#_structured_control_flow">2.11. Structured Control Flow</a></li>
+<li><a href="#_structured_control_flow">2.11. Structured Control Flow</a>
+<ul class="sectlevel3">
+<li><a href="#_rules_for_structured_control_flow_declarations">2.11.1. Rules for Structured Control-flow Declarations</a></li>
+<li><a href="#_structured_control_flow_constructs">2.11.2. Structured Control-flow Constructs</a></li>
+<li><a href="#_rules_for_structured_control_flow_constructs">2.11.3. Rules for Structured Control-flow Constructs</a></li>
+</ul>
+</li>
 <li><a href="#_specialization_2">2.12. Specialization</a></li>
 <li><a href="#_linkage">2.13. Linkage</a></li>
 <li><a href="#_relaxed_precision">2.14. Relaxed Precision</a></li>
@@ -231,6 +237,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_5_revision_4">4.40. Changes from Version 1.5, Revision 4</a></li>
 <li><a href="#_changes_from_version_1_5_revision_5">4.41. Changes from Version 1.5, Revision 5</a></li>
 <li><a href="#_changes_from_version_1_5">4.42. Changes from Version 1.5</a></li>
+<li><a href="#_changes_from_version_1_6_revision_1">4.43. Changes from Version 1.6, Revision 1</a></li>
 </ul>
 </li>
 </ul>
@@ -250,7 +257,7 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>&#169; Copyright 2014-2021 The Khronos Group Inc. All Rights Reserved.</p>
+<p>&#169; Copyright 2014-2022 The Khronos Group Inc. All Rights Reserved.</p>
 </div>
 <div class="paragraph">
 <p>This specification is protected by copyright laws and contains material proprietary to the Khronos Group, Inc. It or any components may not be reproduced, republished, distributed, transmitted, displayed, broadcast, or otherwise exploited in any manner
@@ -376,6 +383,9 @@ product names, trademarks, and/or company names are used solely for identificati
 <p>John Kessenich, Google</p>
 </li>
 <li>
+<p>Vasileios Klimis, Imperial College London</p>
+</li>
+<li>
 <p>Daniel Koch, NVIDIA</p>
 </li>
 <li>
@@ -443,6 +453,9 @@ product names, trademarks, and/or company names are used solely for identificati
 </li>
 <li>
 <p>Brian Sumner, AMD</p>
+</li>
+<li>
+<p>John Wickerson, Imperial College London</p>
 </li>
 <li>
 <p>Andrew Woloszyn, Google</p>
@@ -1198,11 +1211,33 @@ Explicitly excludes fragment and compute execution models.</p>
 <div class="sect3">
 <h4 id="_control_flow">2.2.5. Control Flow</h4>
 <div class="paragraph">
-<p><a id="Block"></a><em>Block</em>: A contiguous sequence of instructions starting with an <a href="#OpLabel"><strong>OpLabel</strong></a>, ending with a <a href="#Termination">termination instruction</a>.
-A <em>block</em> has no additional label or termination instructions.</p>
+<p><a id="Block"></a><em>Block</em>: A contiguous sequence of instructions starting with an <a href="#OpLabel"><strong>OpLabel</strong></a>, ending with a <a href="#Termination">block termination instruction</a>.
+A <em>block</em> has no additional label or block termination instructions.</p>
 </div>
 <div class="paragraph">
-<p><a id="Branch"></a><em>Branch Instruction</em>: One of the following, used as a <a href="#Termination">termination instruction</a>:</p>
+<p><a id="FunctionTermination"></a><em>Function Termination Instruction</em>: One of the following, used to terminate execution of a function:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#OpReturn"><strong>OpReturn</strong></a></p>
+</li>
+<li>
+<p><a href="#OpReturnValue"><strong>OpReturnValue</strong></a></p>
+</li>
+<li>
+<p><a href="#OpKill"><strong>OpKill</strong></a></p>
+</li>
+<li>
+<p><a href="#OpUnreachable"><strong>OpUnreachable</strong></a></p>
+</li>
+<li>
+<p><a href="#OpTerminateInvocation"><strong>OpTerminateInvocation</strong></a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a id="Branch"></a><em>Branch Instruction</em>: One of the following, used as a <a href="#Termination">block termination instruction</a>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1215,16 +1250,10 @@ A <em>block</em> has no additional label or termination instructions.</p>
 <li>
 <p><a href="#OpSwitch"><strong>OpSwitch</strong></a></p>
 </li>
-<li>
-<p><a href="#OpReturn"><strong>OpReturn</strong></a></p>
-</li>
-<li>
-<p><a href="#OpReturnValue"><strong>OpReturnValue</strong></a></p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
-<p><a id="Termination"></a><em>Termination Instruction</em>: One of the following, used to terminate blocks:</p>
+<p><a id="Termination"></a><em>Block Termination Instruction</em>: One of the following, used to terminate blocks:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1232,38 +1261,15 @@ A <em>block</em> has no additional label or termination instructions.</p>
 <p>any <a href="#Branch">branch instruction</a></p>
 </li>
 <li>
-<p><a href="#OpKill"><strong>OpKill</strong></a></p>
-</li>
-<li>
-<p><a href="#OpTerminateInvocation"><strong>OpTerminateInvocation</strong></a></p>
-</li>
-<li>
-<p><a href="#OpUnreachable"><strong>OpUnreachable</strong></a></p>
+<p>any <a href="#FunctionTermination">function termination instruction</a></p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p><a id="Dominate"></a><em>Dominate</em>: A block <em>A</em> dominates a block <em>B</em>, where <em>A</em> and <em>B</em> are in the same function, if every path from the function&#8217;s
-entry point to block <em>B</em> includes block <em>A</em>. <em>A</em> <em>strictly dominates</em> <em>B</em> only if <em>A</em> <em>dominates</em> <em>B</em> and <em>A</em> and <em>B</em> are different blocks.</p>
-</div>
-<div class="paragraph">
-<p><a id="PostDominate"></a><em>Post Dominate</em>: A block <em>B</em> post dominates a block <em>A</em>, where <em>A</em> and <em>B</em> are in the same function,
-if every path from <em>A</em> to a function-return instruction goes through block <em>B</em>.</p>
 </div>
 <div class="paragraph">
 <p><em>Control-Flow Graph</em>: The graph formed by a function&#8217;s blocks and branches.  The blocks are the graph&#8217;s nodes, and the branches the graph&#8217;s edges.</p>
 </div>
 <div class="paragraph">
 <p><em>CFG</em>: Control-flow graph.</p>
-</div>
-<div class="paragraph">
-<p><a id="BackEdge"></a><em>Back Edge</em>: A branch is a <em>back edge</em> if there is a depth-first search starting at the entry block of the
-CFG where the branch branches to one of its ancestors.
-A <em>back-edge block</em> is a block containing such a branch instruction.<br>
-Note: For a given function, if all its loops are structured, then each back edge corresponds to exactly one loop
-header, and vice versa.
-So the set of back-edges in the function is unique, regardless of the depth-first search used to find them.
-This is equivalent to the function&#8217;s CFG being reducible.</p>
 </div>
 <div class="paragraph">
 <p><a id="Merge"></a><em>Merge Instruction</em>: One of the following, used before a branch instruction to declare structured control flow:</p>
@@ -1285,16 +1291,70 @@ This is equivalent to the function&#8217;s CFG being reducible.</p>
 <p><a id="LoopHeader"></a><em>Loop Header</em>: A <a href="#HeaderBlock">header block</a> whose merge instruction is an <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a>.</p>
 </div>
 <div class="paragraph">
+<p><a id="SelectionHeader"></a><em>Selection Header</em>: A <a href="#HeaderBlock">header block</a> whose merge instruction is an <a href="#OpSelectionMerge"><strong>OpSelectionMerge</strong></a> and whose termination instruction is an <a href="#OpBranchConditional"><strong>OpBranchConditional</strong></a>.</p>
+</div>
+<div class="paragraph">
+<p><a id="SwitchHeader"></a><em>Switch Header</em>: A <a href="#HeaderBlock">header block</a> whose merge instruction is an <a href="#OpSelectionMerge"><strong>OpSelectionMerge</strong></a> and whose termination instruction is an <a href="#OpSwitch"><strong>OpSwitch</strong></a>.</p>
+</div>
+<div class="paragraph">
 <p><a id="MergeBlock"></a><em>Merge Block</em>: A block declared by the <em>Merge Block</em> operand of a <a href="#Merge">merge instruction</a>.</p>
 </div>
 <div class="paragraph">
-<p><a id="BreakBlock"></a><em>Break Block</em>: A block containing a branch to the <em>Merge Block</em> of a loop <a href="#HeaderBlock">header&#8217;s</a> <a href="#Merge">merge instruction</a>.</p>
+<p><a id="BreakBlock"></a><em>Break Block</em>: A block containing a branch to the <a href="#MergeBlock">merge block</a> of a loop <a href="#HeaderBlock">header&#8217;s</a> <a href="#Merge">merge instruction</a>.</p>
 </div>
 <div class="paragraph">
 <p><a id="ContinueBlock"></a><em>Continue Block</em>: A block containing a branch to an <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> instruction&#8217;s <em>Continue Target</em>.</p>
 </div>
 <div class="paragraph">
 <p><a id="ReturnBlock"></a><em>Return Block</em>: A block containing an <a href="#OpReturn"><strong>OpReturn</strong></a> or <a href="#OpReturnValue"><strong>OpReturnValue</strong></a> branch.</p>
+</div>
+<div class="paragraph">
+<p><a id="BranchEdge"></a><em>Branch Edge</em>: There is a <em>branch edge</em> from block <em>A</em> to block <em>B</em> if the terminator of <em>A</em> is a <a href="#Branch">branch instruction</a> and <em>B</em> is one of the target blocks for the branch instruction.</p>
+</div>
+<div class="paragraph">
+<p><a id="MergeEdge"></a><em>Merge Edge</em>: There is a <em>merge edge</em> from block <em>A</em> to block <em>B</em> if <em>A</em> contains a <a href="#Merge">merge instruction</a> and <em>B</em> is the <a href="#MergeBlock">merge block</a> of this merge instruction.</p>
+</div>
+<div class="paragraph">
+<p><a id="ContinueEdge"></a><em>Continue Edge</em>: There is a continue edge from block <em>A</em> to block <em>B</em> if <em>A</em> is a <a href="#LoopHeader">loop header</a> and <em>B</em> is the <em>Continue Target</em> of the loop header&#8217;s <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> instruction.</p>
+</div>
+<div class="paragraph">
+<p><a id="StructuredControlFlowEdge"></a><em>Structured Control-Flow Edge</em>: There is a structured control-flow edge from block <em>A</em> to block <em>B</em> if there is a <a href="#BranchEdge">branch edge</a>, <a href="#MergeEdge">merge edge</a>, or <a href="#ContinueEdge">continue edge</a> from <em>A</em> to <em>B</em>.</p>
+</div>
+<div class="paragraph">
+<p><a id="BackEdge"></a><em>Back Edge</em>: A <a href="#BranchEdge">branch edge</a> that
+branches to one of its ancestors in a depth-first search over
+<a href="#StructuredControlFlowEdge">structured control-flow edges</a> starting
+at the function&#8217;s entry block.<br>
+Note: When all loops are structured, each <em>back edge</em> corresponds to exactly
+one loop header, and vice versa, making this set of back edges invariant with
+respect to which depth-first search found them.
+This implies that the CFG defined by the function&#8217;s structured control-flow edges is reducible.</p>
+</div>
+<div class="paragraph">
+<p><a id="BackEdgeBlock"></a><em>Back-Edge Block</em>: If there is a <a href="#BackEdge">back edge</a> from block <em>A</em> to block <em>B</em> then <em>A</em> is a <em>back-edge block</em>.</p>
+</div>
+<div class="paragraph">
+<p><a id="Path"></a><em>Path</em>: A sequence of blocks <em>B<sub>0</sub></em>, <em>B<sub>1</sub></em>, …, <em>B<sub>n</sub></em> where for each 0 &lt;= <em>i</em> &lt; <em>n</em> there is a <a href="#BranchEdge">branch edge</a> from <em>B<sub>i</sub></em> to <em>B<sub>i+1</sub></em>.
+This forms a <em>path</em> from <em>B<sub>0</sub></em> to <em>B<sub>n</sub></em>.</p>
+</div>
+<div class="paragraph">
+<p><a id="StructuredControlFlowPath"></a><em>Structured Control-Flow Path</em>: A sequence of blocks <em>B<sub>0</sub></em>, <em>B<sub>1</sub></em>, …, <em>B<sub>n</sub></em> where for each 0 &lt;= <em>i</em> &lt; <em>n</em> there is a <a href="#StructuredControlFlowEdge">structured control-flow edge</a> from <em>B<sub>i</sub></em> to <em>B<sub>i+1</sub></em>.
+This forms a <em>structured control-flow path</em> from <em>B<sub>0</sub></em> to <em>B<sub>n</sub></em></p>
+</div>
+<div class="paragraph">
+<p><a id="StructurallyReachable"></a><em>Structurally Reachable</em>: A block <em>B</em> is <em>structurally reachable</em> if there exists a <a href="#StructuredControlFlowPath">structured control-flow path</a> from the entry block of the function containing <em>B</em> to <em>B</em>.</p>
+</div>
+<div class="paragraph">
+<p><a id="Dominate"></a><em>Dominate</em>: A block <em>A</em> <em>dominates</em> a block <em>B</em>, where <em>A</em> and <em>B</em> are in the same function, if every <a href="#Path">path</a> from the function&#8217;s
+entry block to block <em>B</em> includes block <em>A</em>. <em>A</em> <em>strictly dominates</em> <em>B</em> if <em>A</em> <em>dominates</em> <em>B</em> and <em>A</em> and <em>B</em> are different blocks.</p>
+</div>
+<div class="paragraph">
+<p><a id="StructurallyDominate"></a><em>Structurally Dominate</em>: A block <em>A</em> <em>structurally dominates</em> a block <em>B</em>, where <em>A</em> and <em>B</em> are in the same function, if every <a href="#StructuredControlFlowPath">structured control-flow path</a> from the function&#8217;s
+entry block to block <em>B</em> includes block <em>A</em>. <em>A</em> <em>strictly structurally dominates</em> <em>B</em> if <em>A</em> <em>structurally dominates</em> <em>B</em> and <em>A</em> and <em>B</em> are different blocks.</p>
+</div>
+<div class="paragraph">
+<p><a id="StructurallyPostDominate"></a><em>Structurally Post Dominate</em>: A block <em>B</em> structurally post dominates a block <em>A</em>, where <em>A</em> and <em>B</em> are in the same function,
+if every <a href="#StructuredControlFlowPath">structured control-flow path</a> from <em>A</em> to a <a href="#FunctionTermination">function termination instruction</a> includes block <em>B</em>.</p>
 </div>
 <div class="paragraph">
 <p><a id="Invocation"></a><em>Invocation</em>: A single execution of an entry point in a SPIR-V module,
@@ -1357,7 +1417,7 @@ Different loop iterations and different dynamic function-call-site chains yield 
 Only <a href="#TangledInstruction">tangled instructions</a> are required to execute the dynamic instance as if all invocations
 that communicate together and share the same dynamic instance execute simultaneously.
 Invocations that execute the same dynamic instance of an instruction will continue to execute the same dynamic
-instances as long as they follow the same control flow path.
+instances as long as they follow the same control-flow path.
 A dynamic instance of an instruction, tangled or not, is executed by one or more invocations.</p>
 </div>
 <div class="paragraph">
@@ -1638,7 +1698,7 @@ This section is the first section to allow use of:</p>
 This may be immediately preceded by an <a href="#OpLine"><strong>OpLine</strong></a> instruction, but the <strong>OpLabel</strong> is considered as the beginning of the block.</p>
 </li>
 <li>
-<p>A block always ends with a <a href="#Termination">termination instruction</a> (see <a href="#Validation">validation rules</a> for more detail).</p>
+<p>A block always ends with a <a href="#Termination">block termination instruction</a> (see <a href="#Validation">validation rules</a> for more detail).</p>
 </li>
 <li>
 <p>All <a href="#OpVariable"><strong>OpVariable</strong></a> instructions in a function must have a <a href="#Storage_Class">Storage Class</a> of <strong>Function</strong>.</p>
@@ -2067,8 +2127,10 @@ by the time the merge block is reached.)
 These blocks delimit constructs that must nest, and must be entered and exited in structured ways,
 as per the following.</p>
 </div>
+<div class="sect3">
+<h4 id="_rules_for_structured_control_flow_declarations">2.11.1. Rules for Structured Control-flow Declarations</h4>
 <div class="paragraph">
-<p>Structured control-flow declarations must satisfy the following rules:</p>
+<p>Structured control flow declarations must satisfy the following rules:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2077,122 +2139,177 @@ as per the following.</p>
 must not be a merge block declared by any other header block</p>
 </li>
 <li>
-<p>each <a href="#HeaderBlock">header block</a> must <a href="#Dominate">strictly dominate</a> its
-<a href="#MergeBlock">merge block</a>, unless the merge block is unreachable in the CFG</p>
+<p>each header block must <a href="#StructurallyDominate">strictly structurally dominate</a> its merge block</p>
 </li>
 <li>
-<p>all CFG <a href="#BackEdge">back edges</a> must branch to a <a href="#LoopHeader">loop header</a>,
-with each <a href="#LoopHeader">loop header</a> having exactly one back edge branching to it</p>
+<p>all <a href="#BackEdge">back edges</a> must branch to a <a href="#LoopHeader">loop header</a>,
+with each loop header having exactly one back edge branching to it</p>
 </li>
 <li>
-<p>for a given loop header, its <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> <em>Continue Target</em>, and corresponding back-edge block:</p>
+<p>for a given loop header, its <a href="#MergeBlock">merge block</a>, <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> <em>Continue Target</em>, and corresponding <a href="#BackEdgeBlock">back-edge block</a>:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>the <em>loop header</em> must dominate the <em>Continue Target</em>, unless the <em>Continue Target</em> is unreachable in the CFG</p>
+<p>the <em>Continue Target</em> and <em>merge block</em> must be different blocks</p>
 </li>
 <li>
-<p>the <em>Continue Target</em> must dominate the back-edge block</p>
+<p>the <em>loop header</em> must structurally dominate the <em>Continue Target</em></p>
 </li>
 <li>
-<p>the back-edge block must post dominate the <em>Continue Target</em></p>
+<p>the <em>Continue Target</em> must structurally dominate the <em>back-edge block</em></p>
+</li>
+<li>
+<p>the <em>back-edge block</em> must <a href="#StructurallyPostDominate">structurally post dominate</a> the <em>Continue Target</em></p>
 </li>
 </ul>
 </div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_structured_control_flow_constructs">2.11.2. Structured Control-flow Constructs</h4>
+<div class="paragraph">
+<p>A structured control-flow <em>construct</em> is defined as one of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <em>selection construct</em>: the blocks structurally dominated by a <a href="#SelectionHeader">selection header</a>,
+excluding blocks structurally dominated by the selection header&#8217;s merge block</p>
+</li>
+<li>
+<p>a <em>continue construct</em>: the blocks that are both structurally dominated by an <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> <em>Continue Target</em>
+and structurally post dominated by the corresponding loop&#8217;s back-edge block</p>
+</li>
+<li>
+<p>a <em>loop construct</em>: the blocks structurally dominated by a <a href="#LoopHeader">loop header</a>,
+excluding both the loop header&#8217;s <em>continue construct</em> and the blocks structurally dominated by the loop header&#8217;s merge block</p>
+</li>
+<li>
+<p>a <em>switch construct</em>: the blocks structurally dominated by a <a href="#SwitchHeader">switch header</a>,
+excluding blocks structurally dominated by the switch header&#8217;s merge block</p>
+</li>
+<li>
+<p>a <em>case construct</em>: the blocks structurally dominated by an <a href="#OpSwitch"><strong>OpSwitch</strong></a> <em>Target</em> or <em>Default</em> block, excluding the blocks structurally dominated by the <strong>OpSwitch</strong> construct&#8217;s corresponding merge block
+(note that as a consequence of this definition, an <strong>OpSwitch</strong> <em>Target</em> or <em>Default</em> block that is equal to the <strong>OpSwitch&#8217;s</strong> corresponding merge block does not give rise to a case construct)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rules_for_structured_control_flow_constructs">2.11.3. <a id="ConstructRules"></a>Rules for Structured Control-flow Constructs</h4>
+<div class="paragraph">
+<p>Below, we will use the following terminology:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A branch edge from block <em>A</em> to block <em>B</em> <em>exits</em> a structured control-flow construct <em>S</em> if and only if <em>A</em> is contained in <em>S</em> and <em>B</em> is not contained in <em>S</em></p>
+</li>
+<li>
+<p>A <em>single-block loop</em> is a loop construct where the loop&#8217;s header block, continue target and back-edge block are all the same.</p>
+</li>
+<li>
+<p>The <em>header block</em> of a continue construct is the continue target of the associated loop.</p>
+</li>
+<li>
+<p>The <em>header block</em> of a case construct is the <strong>OpSwitch</strong> <em>Target</em> or <em>Default</em> block that defines the case construct.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>A structured control-flow <em>construct</em> is then defined as one of:</p>
+<p>If the header block of a structured control-flow construct is <a href="#StructurallyReachable">structurally reachable</a> then that structured control-flow construct must satisfy the following rules:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>a <em>selection construct</em>: includes the blocks dominated by a selection header,
-while excluding blocks dominated by the selection construct&#8217;s merge block</p>
-</li>
-<li>
-<p>a <em>continue construct</em>: includes the blocks dominated by an <a href="#OpLoopMerge"><strong>OpLoopMerge</strong></a> <em>Continue Target</em>
-and post dominated by the corresponding loop&#8217;s back-edge block,
-while excluding blocks dominated by that loop&#8217;s merge block</p>
-</li>
-<li>
-<p>a <em>loop construct</em>: includes the blocks dominated by a <a href="#LoopHeader">loop header</a>,
-while excluding both that header&#8217;s <em>continue construct</em> and the blocks dominated by the loop&#8217;s merge block</p>
-</li>
-<li>
-<p>a <em>case construct</em>: the blocks dominated by an <a href="#OpSwitch"><strong>OpSwitch</strong></a> <em>Target</em> or <em>Default</em>
-(this construct is only defined for those <strong>OpSwitch</strong> <em>Target</em> or <em>Default</em> that are not equal to the <strong>OpSwitch&#8217;s</strong>
-corresponding merge block)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Furthermore, these structured control-flow constructs are additionally defined to exclude all outer constructs'
-continue constructs and exclude all blocks dominated by all outer constructs' merge blocks.</p>
-</div>
-<div class="paragraph">
-<p>The above structured control-flow constructs must satisfy the following rules:</p>
-</div>
+<p>if a branch edge from block <em>A</em> to block <em>B</em> exits the structured control-flow construct <em>S</em>, then the exit must correspond to one of the following:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>if a construct contains another header block, it also contains that header&#8217;s corresponding merge block
-if that merge block is reachable in the CFG</p>
+<p>Breaking from a selection construct: <em>S</em> is a selection construct, <em>S</em> is the innermost structured control-flow construct containing <em>A</em>, and <em>B</em> is the merge block for <em>S</em></p>
 </li>
 <li>
-<p>a continue construct must include its loop&#8217;s back-edge block</p>
+<p>Breaking from the innermost loop: <em>S</em> is the innermost loop construct containing <em>A</em>, and <em>B</em> is the merge block for <em>S</em></p>
 </li>
 <li>
-<p>a <a href="#BreakBlock">break block</a> is valid only for the innermost loop it is nested inside of</p>
+<p>Entering the innermost loop&#8217;s continue construct: <em>S</em> is the innermost loop construct containing <em>A</em>, and <em>B</em> is the continue target for <em>S</em></p>
 </li>
 <li>
-<p>a <a href="#ContinueBlock">continue block</a> is valid only for the innermost loop it is nested inside of</p>
+<p>Next loop iteration: the branch edge from <em>A</em> to <em>B</em> is a <a href="#BackEdge">back edge</a> (so that <em>S</em> is the continue construct of the associated loop)</p>
 </li>
 <li>
-<p>a branch to an outer <strong>OpSwitch</strong> merge block is</p>
-<div class="ulist">
-<ul>
-<li>
-<p>valid only for the innermost <strong>OpSwitch</strong> the branch is nested inside of</p>
+<p>Branching from back-edge block to loop merge: <em>A</em> is the back-edge block for a loop construct (so that <em>S</em> is the continue construct of the associated loop), and <em>B</em> is the merge block for the loop construct</p>
 </li>
 <li>
-<p>not valid if it is nested in a loop that is nested in that <strong>OpSwitch</strong></p>
+<p>Branching from one case construct to another: <em>S</em> is a case construct associated with an <a href="#OpSwitch"><strong>OpSwitch</strong></a> instruction, and <em>B</em> is a target block or default block associated with the <strong>OpSwitch</strong> instruction</p>
+</li>
+<li>
+<p>Breaking from the innermost switch construct without breaking from a loop: <em>S</em> is the innermost switch construct containing <em>A</em>, <em>B</em> is the merge block for <em>S</em>, and the branch from <em>A</em> to <em>B</em> does not exit a loop construct</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>a branch from one case construct to another must be for the same <strong>OpSwitch</strong></p>
+<p>a branch edge that exits a continue construct must branch to the header block or merge block of the associated loop</p>
 </li>
 <li>
-<p>all branches into a construct from reachable blocks outside the construct must be to the header block</p>
+<p>for a loop construct that is not a single block loop, if there is a branch edge from a block <em>B</em> to the loop&#8217;s continue target that is not a <a href="#BackEdge">back edge</a>, then <em>B</em> must belong to the loop construct</p>
 </li>
 <li>
-<p>additionally for switches:</p>
+<p>if a structured control-flow construct <em>S</em> contains the header block for a selection, loop or switch construct different from <em>S</em>, then <em>S</em> must also contain that construct&#8217;s merge block</p>
+</li>
+<li>
+<p>all branches into a selection, loop or switch construct from structurally-reachable blocks outside the construct must be to the construct&#8217;s header block</p>
+</li>
+<li>
+<p>for a switch construct <em>S</em> with associated <a href="#OpSwitch"><strong>OpSwitch</strong></a> instruction:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>an <strong>OpSwitch</strong> block dominates all its defined <em>case constructs</em></p>
+<p>the header block for <em>S</em> must <a href="#StructurallyDominate">structurally dominate</a> every <em>case construct</em> associated with <em>S</em></p>
 </li>
 <li>
-<p>each <em>case construct</em> has at most one branch to another <em>case construct</em></p>
+<p>each <em>case construct</em> associated with <em>S</em> must not branch to more than one other <em>case construct</em> associated with <em>S</em></p>
 </li>
 <li>
-<p>each <em>case construct</em> is branched to by at most one other <em>case construct</em></p>
+<p>each <em>case construct</em> associated with <em>S</em> must not be branched to by more than one other <em>case construct</em> associated with <em>S</em></p>
 </li>
 <li>
-<p>if <em>Target T1</em> branches to <em>Target T2</em>, or if <em>Target T1</em> branches to the <em>Default</em> and the <em>Default</em> branches to
-<em>Target T2</em>, then <em>T1</em> must immediately precede <em>T2</em> in the list of the <a href="#OpSwitch"><strong>OpSwitch</strong></a> <em>Target</em> operands</p>
+<p>if <em>T1</em> and <em>T2</em> appear as labels of targets in the <strong>OpSwitch</strong>
+instruction and the case construct defined by <em>T1</em> branches to
+the case construct defined by <em>T2</em> then the last target with label <em>T1</em> must immediately precede
+the first target with label <em>T2</em> in the list of <strong>OpSwitch</strong>
+<em>Target</em> operands</p>
 </li>
 <li>
-<p>none of the <em>Targets</em> nor the <em>Default</em> may be the declared <a href="#MergeBlock">merge block</a> or <em>Continue Target</em>
-of a loop the switch is nested within</p>
+<p>if <em>T1</em> and <em>T2</em> appear as labels of targets in the <strong>OpSwitch</strong>
+instruction and the case construct defined by <em>T1</em> branches to the
+<em>Default</em> case construct of the <strong>OpSwitch</strong> which in turn
+branches to the case construct defined by <em>T2</em>, then either:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the block that defines the <em>Default</em> case construct must
+appear as a target label in the <strong>OpSwitch</strong> instruction, or</p>
+</li>
+<li>
+<p>the last target with label <em>T1</em> must immediately precede the
+first target with label <em>T2</em> in the list of <strong>OpSwitch</strong>
+<em>Target</em> operands</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>for any label <em>T</em>, all targets with label <em>T</em> must appear consecutively in the list of <strong>OpSwitch</strong> <em>Target</em> operands</p>
 </li>
 </ul>
 </div>
 </li>
 </ul>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2824,17 +2941,17 @@ then the <strong>PhysicalStorageBuffer</strong> <a href="#Storage_Class">storage
 <p><a href="#OpVariable"><strong>OpVariable</strong></a> must not use the <strong>PhysicalStorageBuffer</strong> <a href="#Storage_Class">storage class</a>.</p>
 </li>
 <li>
-<p>If the type an <a href="#OpVariable"><strong>OpVariable</strong></a> points to is a pointer (or array of pointers) in
+<p>If the type an <a href="#OpVariable"><strong>OpVariable</strong></a> points to is a pointer (or contains a pointer) in
 the <strong>PhysicalStorageBuffer</strong> <a href="#Storage_Class">storage class</a>,
 the <strong>OpVariable</strong> must be <a href="#Decoration">decorated</a> with exactly one of <strong>AliasedPointer</strong> or <strong>RestrictPointer</strong>.</p>
 </li>
 <li>
-<p>If an <a href="#OpFunctionParameter"><strong>OpFunctionParameter</strong></a> is a pointer (or array of pointers) in
+<p>If an <a href="#OpFunctionParameter"><strong>OpFunctionParameter</strong></a> is a pointer (or contains a pointer) in
 the <strong>PhysicalStorageBuffer</strong> <a href="#Storage_Class">storage class</a>,
 the function parameter must be <a href="#Decoration">decorated</a> with exactly one of <strong>Aliased</strong> or <strong>Restrict</strong>.</p>
 </li>
 <li>
-<p>If an <a href="#OpFunctionParameter"><strong>OpFunctionParameter</strong></a> is a pointer (or array of pointers)
+<p>If an <a href="#OpFunctionParameter"><strong>OpFunctionParameter</strong></a> is a pointer (or contains a pointer)
 and the type it points to is a pointer in the <strong>PhysicalStorageBuffer</strong> <a href="#Storage_Class">storage class</a>,
 the function parameter must be decorated with exactly one of <strong>AliasedPointer</strong> or <strong>RestrictPointer</strong>.</p>
 </li>
@@ -2966,10 +3083,10 @@ must not be decorated with the <strong>Import</strong> <a href="#Linkage_Type"><
 </div>
 </li>
 <li>
-<p>The last instruction of each block is a <a href="#Termination">termination instruction</a>.</p>
+<p>The last instruction of each block is a <a href="#Termination">block termination instruction</a>.</p>
 </li>
 <li>
-<p>Each <a href="#Termination">Termination instruction</a> must be the last instruction in a block.</p>
+<p>Each <a href="#Termination">block termination instruction</a> must be the last instruction in a block.</p>
 </li>
 <li>
 <p>Each <a href="#OpLabel"><strong>OpLabel</strong></a> instruction must be within a function.</p>
@@ -3885,6 +4002,10 @@ it is even possible for the <em>&lt;id&gt;</em> to be uniform at the subgroup sc
 <td class="tableblock halign-center valign-middle"><p class="tableblock">6</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>CPP_for_OpenCL</strong></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SYCL</strong></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -4601,6 +4722,16 @@ The default rounding mode for floating-point arithmetic and conversions instruct
 Also see extension: <strong>SPV_KHR_float_controls</strong></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5017</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EarlyAndLateFragmentTestsAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Shader</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock">5027</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefReplacingEXT</strong></p></td>
 <td class="tableblock halign-left valign-top" colspan="3"></td>
@@ -4609,6 +4740,66 @@ Also see extension: <strong>SPV_KHR_float_controls</strong></p></td>
 <a href="#Unified">Reserved</a>.<br>
 <br>
 Also see extension: <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5079</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefUnchangedFrontAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefGreaterFrontAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5081</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefLessFrontAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5082</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefUnchangedBackAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5083</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefGreaterBackAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5084</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilRefLessBackAMD</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>StencilExportEXT</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extensions: <strong>SPV_AMD_shader_early_and_late_fragment_tests</strong>, <strong>SPV_EXT_shader_stencil_export</strong></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock">5269</p></td>
@@ -4819,6 +5010,15 @@ Also see extension: <strong>SPV_INTEL_kernel_attributes</strong></p></td>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><a href="#Literal"><em>Literal</em></a><br>
 <em>target_fmax</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>FPGAKernelAttributesINTEL</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">6417</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NamedBarrierCountINTEL</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><a href="#Literal"><em>Literal</em></a><br>
+<em>Barrier Count</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VectorComputeINTEL</strong><br>
 <br>
 <a href="#Unified">Reserved</a>.</p></td>
 </tr>
@@ -6026,13 +6226,13 @@ Hints that the accessed texels are not likely to be accessed again in the near f
 <tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">0x1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NotNaN</strong><br>
-Assume parameters and result are not NaN.</p></td>
+Assume parameters and result are not NaN. If this assumption does not hold then the operation returns an undefined value.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">0x2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NotInf</strong><br>
-Assume parameters and result are not +/- Inf.</p></td>
+Assume parameters and result are not +/- Inf. If this assumption does not hold then the operation returns an undefined value.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -6196,7 +6396,9 @@ A readable and writable object.</p></td>
 <div class="sect2">
 <h3 id="_function_parameter_attribute">3.19. <a id="Function_Parameter_Attribute"></a>Function Parameter Attribute</h3>
 <div class="paragraph">
-<p>Adds additional information to the return type and to each parameter of a function.</p>
+<p>Adds additional information to the return type and to each parameter of a function.<br>
+<br>
+ Only one of <strong>Zext</strong> and <strong>Sext</strong> can be used to decorate the same <em>&lt;id&gt;</em>, and no attribute may be used multiple times on the same <em>&lt;id&gt;</em>. Otherwise, multiple function parameter attributes can be applied to the same <em>&lt;id&gt;</em>.</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
@@ -6264,6 +6466,11 @@ The parameter is not dereferenced, either to read or write the memory pointed to
 </div>
 <div class="sect2">
 <h3 id="_decoration">3.20. <a id="Decoration"></a>Decoration</h3>
+<div class="paragraph">
+<p>Decorations add additional information to an <em>&lt;id&gt;</em> or member of a structure.<br>
+<br>
+It is invalid to decorate any given <em>&lt;id&gt;</em> or structure member more than one time with the same <a href="#Decoration">decoration</a>, unless explicitly allowed below for a specific decoration.</p>
+</div>
 <div class="paragraph">
 <p>Used by:</p>
 </div>
@@ -6610,7 +6817,7 @@ Apply to anything <strong>XfbBuffer</strong> is applied to. <em>XFB Stride</em> 
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock">38</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>FuncParamAttr</strong><br>
-Indicates a function return value or parameter attribute.</p></td>
+Indicates a function return value or parameter attribute. Multiple uses of this decoration are allowed on the same <em>&lt;id&gt;</em>, as described in the <a href="#Function_Parameter_Attribute">function parameter attributes</a>.</p></td>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Function_Parameter_Attribute"><em>Function Parameter Attribute</em></a><br>
 <em>Function Parameter Attribute</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Kernel</strong></p></td>
@@ -7248,6 +7455,24 @@ Also see extension: <strong>SPV_INTEL_fpga_memory_attributes</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>FuseLoopsInFunctionINTEL</strong></p></td>
 <td class="tableblock halign-left valign-top" colspan="2"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>LoopFuseINTEL</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5914</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>AliasScopeINTEL</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Aliasing Scopes List</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MemoryAccessAliasingINTEL</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5915</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NoAliasINTEL</strong></p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Aliasing Scopes List</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MemoryAccessAliasingINTEL</strong><br>
 <br>
 <a href="#Unified">Reserved</a>.</p></td>
 </tr>
@@ -8326,6 +8551,15 @@ Also see extension: <strong>SPV_NV_shader_sm_builtins</strong></p></td>
 <br>
 Also see extension: <strong>SPV_NV_shader_sm_builtins</strong></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">6021</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>CullMaskKHR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RayCullMaskKHR</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_KHR_ray_cull_mask</strong></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -8675,6 +8909,12 @@ Memory semantics define memory-order constraints, and on what storage classes th
 <li>
 <p><a href="#OpAtomicFAddEXT"><strong>OpAtomicFAddEXT</strong></a></p>
 </li>
+<li>
+<p><a href="#OpControlBarrierArriveINTEL"><strong>OpControlBarrierArriveINTEL</strong></a></p>
+</li>
+<li>
+<p><a href="#OpControlBarrierWaitINTEL"><strong>OpControlBarrierWaitINTEL</strong></a></p>
+</li>
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
@@ -8947,6 +9187,24 @@ The memory access obeys inter-thread ordering, as specified by the client API.</
 <br>
 Also see extension: <strong>SPV_KHR_vulkan_memory_model</strong></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">0x10000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>AliasScopeINTELMask</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MemoryAccessAliasingINTEL</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_INTEL_memory_access_aliasing</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">0x20000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NoAliasINTELMask</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MemoryAccessAliasingINTEL</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_INTEL_memory_access_aliasing</strong></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -9179,6 +9437,9 @@ Also see extension: <strong>SPV_KHR_vulkan_memory_model</strong></p></td>
 <p><a href="#OpGroupNonUniformQuadSwap"><strong>OpGroupNonUniformQuadSwap</strong></a></p>
 </li>
 <li>
+<p><a href="#OpGroupNonUniformRotateKHR"><strong>OpGroupNonUniformRotateKHR</strong></a></p>
+</li>
+<li>
 <p><a href="#OpGroupIAddNonUniformAMD"><strong>OpGroupIAddNonUniformAMD</strong></a></p>
 </li>
 <li>
@@ -9216,6 +9477,36 @@ Also see extension: <strong>SPV_KHR_vulkan_memory_model</strong></p></td>
 </li>
 <li>
 <p><a href="#OpAtomicFAddEXT"><strong>OpAtomicFAddEXT</strong></a></p>
+</li>
+<li>
+<p><a href="#OpControlBarrierArriveINTEL"><strong>OpControlBarrierArriveINTEL</strong></a></p>
+</li>
+<li>
+<p><a href="#OpControlBarrierWaitINTEL"><strong>OpControlBarrierWaitINTEL</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupIMulKHR"><strong>OpGroupIMulKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupFMulKHR"><strong>OpGroupFMulKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseAndKHR"><strong>OpGroupBitwiseAndKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseOrKHR"><strong>OpGroupBitwiseOrKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseXorKHR"><strong>OpGroupBitwiseXorKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalAndKHR"><strong>OpGroupLogicalAndKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalOrKHR"><strong>OpGroupLogicalOrKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalXorKHR"><strong>OpGroupLogicalXorKHR</strong></a></p>
 </li>
 </ul>
 </div>
@@ -9395,6 +9686,30 @@ Scope is the current queue family.</p></td>
 </li>
 <li>
 <p><a href="#OpGroupSMaxNonUniformAMD"><strong>OpGroupSMaxNonUniformAMD</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupIMulKHR"><strong>OpGroupIMulKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupFMulKHR"><strong>OpGroupFMulKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseAndKHR"><strong>OpGroupBitwiseAndKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseOrKHR"><strong>OpGroupBitwiseOrKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupBitwiseXorKHR"><strong>OpGroupBitwiseXorKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalAndKHR"><strong>OpGroupLogicalAndKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalOrKHR"><strong>OpGroupLogicalOrKHR</strong></a></p>
+</li>
+<li>
+<p><a href="#OpGroupLogicalXorKHR"><strong>OpGroupLogicalXorKHR</strong></a></p>
 </li>
 </ul>
 </div>
@@ -11077,6 +11392,13 @@ Also see extension: <strong>SPV_INTEL_fpga_cluster_attributes</strong></p></td>
 Also see extension: <strong>SPV_INTEL_loop_fuse</strong></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">5910</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MemoryAccessAliasingINTEL</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_INTEL_memory_access_aliasing</strong></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">5920</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>FPGABufferLocationINTEL</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
@@ -11179,11 +11501,27 @@ Uses dot product instructions</p></td>
 Also see extension: <strong>SPV_KHR_integer_dot_product</strong></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">6020</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RayCullMaskKHR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_KHR_ray_cull_mask</strong></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">6025</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>BitInstructions</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
 <br>
 Also see extension: <strong>SPV_KHR_bit_instructions</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">6026</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>GroupNonUniformRotateKHR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>GroupNonUniform</strong><br>
+<br>
+<a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_KHR_subgroup_rotate</strong></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">6033</p></td>
@@ -11226,6 +11564,20 @@ Also see extension: <strong>SPV_EXT_shader_atomic_float16_add</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
 <br>
 Also see extension: <strong>SPV_INTEL_debug_module</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">6141</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SplitBarrierINTEL</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_INTEL_split_barrier</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">6400</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>GroupUniformArithmeticKHR</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Unified">Reserved</a>.<br>
+<br>
+Also see extension: <strong>SPV_KHR_uniform_group_instructions</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -15467,6 +15819,7 @@ Sample a sparse image using an explicit level of detail.<br>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 11.5384%;">
@@ -19397,6 +19750,7 @@ Unsigned-integer comparison if <em>Operand 1</em> is less than or equal to <em>O
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19499,6 +19853,7 @@ Floating-point comparison for being unordered or equal.<br>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19601,6 +19956,7 @@ Floating-point comparison if operands are ordered and <em>Operand 1</em> is less
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19635,7 +19991,6 @@ Floating-point comparison if operands are unordered or <em>Operand 1</em> is les
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19704,6 +20059,7 @@ Floating-point comparison if operands are unordered or <em>Operand 1</em> is gre
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19738,7 +20094,6 @@ Floating-point comparison if operands are ordered and <em>Operand 1</em> is less
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -19807,6 +20162,7 @@ Floating-point comparison if operands are ordered and <em>Operand 1</em> is grea
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -21716,6 +22072,68 @@ If <em>Semantics</em> is not <strong>None</strong>, this instruction also serves
 </tr>
 </tbody>
 </table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 8.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25.0001%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><a id="OpControlBarrierArriveINTEL"></a><strong>OpControlBarrierArriveINTEL</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>SplitBarrierINTEL</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6142</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Memory</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Memory_Semantics_-id-"><em>Memory Semantics &lt;id&gt;</em></a><br>
+<em>Semantics</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 8.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25.0001%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><a id="OpControlBarrierWaitINTEL"></a><strong>OpControlBarrierWaitINTEL</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>SplitBarrierINTEL</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6143</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Memory</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Memory_Semantics_-id-"><em>Memory Semantics &lt;id&gt;</em></a><br>
+<em>Semantics</em></p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect3">
@@ -22463,6 +22881,46 @@ TBD</p></td>
 </table>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
+<col style="width: 13.0434%;">
+<col style="width: 8.6956%;">
+<col style="width: 13.0434%;">
+<col style="width: 13.0434%;">
+<col style="width: 13.0434%;">
+<col style="width: 13.0434%;">
+<col style="width: 13.0434%;">
+<col style="width: 13.044%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="6"><p class="tableblock"><a id="OpGroupNonUniformRotateKHR"></a><strong>OpGroupNonUniformRotateKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupNonUniformRotateKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6 + variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4431</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Value</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Delta</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional<br>
+<em>&lt;id&gt;</em><br>
+<em>ClusterSize</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
 <col style="width: 6.6666%;">
 <col style="width: 13.3333%;">
 <col style="width: 20%;">
@@ -22494,6 +22952,7 @@ See extension SPV_KHR_shader_ballot</p></td>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 5.5555%;">
@@ -22950,6 +23409,7 @@ TBD</p></td>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -23115,6 +23575,294 @@ TBD</p></td>
 <em>Height</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
 <em>Data</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupIMulKHR"></a><strong>OpGroupIMulKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupFMulKHR"></a><strong>OpGroupFMulKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6402</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupBitwiseAndKHR"></a><strong>OpGroupBitwiseAndKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupBitwiseOrKHR"></a><strong>OpGroupBitwiseOrKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6404</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupBitwiseXorKHR"></a><strong>OpGroupBitwiseXorKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6405</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupLogicalAndKHR"></a><strong>OpGroupLogicalAndKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6406</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupLogicalOrKHR"></a><strong>OpGroupLogicalOrKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6407</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 5.5555%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="5"><p class="tableblock"><a id="OpGroupLogicalXorKHR"></a><strong>OpGroupLogicalXorKHR</strong><br>
+<br>
+TBD</p></td>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><a href="#Capability">Capability</a>:<br>
+<strong>GroupUniformArithmeticKHR</strong>
+<br>
+<br>
+<a href="#Unified">Reserved</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6408</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>Result Type</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ResultId"><em>Result &lt;id&gt;</em> </a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Scope_-id-"><em>Scope &lt;id&gt;</em></a><br>
+<em>Execution</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#Group_Operation"><em>Group Operation</em></a><br>
+<em>Operation</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;id&gt;</em><br>
+<em>X</em></p></td>
 </tr>
 </tbody>
 </table>
@@ -24214,6 +24962,7 @@ Behavior is undefined unless <em>Packet Alignment</em> &gt; 0 and evenly divides
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 8.3333%;">
@@ -30914,13 +31663,124 @@ or <a href="#OpDemoteToHelperInvocation"><strong>OpDemoteToHelperInvocation</str
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_6_revision_1">4.43. Changes from Version 1.6, Revision 1</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Reserve enumerants for:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>SPV_KHR_ray_cull_mask</p>
+</li>
+<li>
+<p>SPV_KHR_uniform_group_instructions</p>
+</li>
+<li>
+<p>SPV_AMD_shader_early_and_late_fragment_tests</p>
+</li>
+<li>
+<p>SPV_INTEL_vector_compute</p>
+</li>
+<li>
+<p>SPV_INTEL_memory_access_aliasing</p>
+</li>
+<li>
+<p>SPV_INTEL_split_barrier</p>
+</li>
+<li>
+<p>SYCL <a href="#Source_Language">source language</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Fix Khronos issues:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>#680, #685, #696: Refine, clarify, and fix <a href="#StructuredControlFlow">structured control-flow</a> definitions and rules:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add the concept of a <a href="#StructuredControlFlowPath">structured control-flow path</a>
+to better express the rules for structured control flow, as defined by the following terms.</p>
+</li>
+<li>
+<p>Terms: Define the terms <a href="#BranchEdge">branch edge</a>,
+<a href="#MergeEdge">merge edge</a>, <a href="#ContinueEdge">continue edge</a>,
+<a href="#StructuredControlFlowEdge">structured control-flow edge</a>,
+<a href="#Path">path</a>, <a href="#StructuredControlFlowPath">structured control-flow path</a>,
+<a href="#StructurallyReachable">structurally reachable</a>, <a href="#StructurallyDominate">structurally dominate</a>,
+and <a href="#StructurallyPostDominate">structurally post dominate</a>.
+Remove "post dominate".
+Revise definition of <a href="#BackEdge">back edge</a> to refer to <em>branch edge</em> instead of
+<em>branch</em>. Pull out <a href="#BackEdgeBlock">back-edge block</a> into its own definition.
+Rename the term "termination instruction" to <a href="#Termination">block termination instruction</a>
+and introduce the term <a href="#FunctionTermination">function termination instruction</a>.</p>
+</li>
+<li>
+<p>Rework and simplify structured control-flow rules using the terms above.
+Clarify that a loop&#8217;s continue target must be different from its merge block.
+Remove redundant condition that a loop&#8217;s continue construct must contain the
+loop&#8217;s back-edge block.
+Precisely define the rules for exiting structured control-flow constructs.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>#672, #673, #674: Clarify branching rules for the <a href="#OpSwitch"><strong>OpSwitch</strong></a> instruction, for:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the order in which target operands appear in an
+<a href="#OpSwitch"><strong>OpSwitch</strong></a> instruction,</p>
+</li>
+<li>
+<p>duplicated targets, and</p>
+</li>
+<li>
+<p>branching between case constructs, to make
+it clear that branch edges do not have to start at a switch target, but can
+come from anywhere in a switch construct.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>#695: For most cases, disallow multiple uses of the same <a href="#Decoration">decoration</a> on
+the same <em>&lt;id&gt;</em> or structure member.</p>
+</li>
+<li>
+<p>#696: Change <a href="#PhysicalValidation">validation rules</a> for physical storage buffers to
+clarify they apply to pointers nested in other types (not just arrays).</p>
+</li>
+<li>
+<p>#672, #704: Clarify branching rules under <a href="#ConstructRules">switch construct rules</a> for the <strong>OpSwitch</strong> instruction,
+making it clear that the rules about
+target ordering only apply to targets that define case constructs,
+and resolving ambiguity about what is allowed when the default case
+construct appears in the list of targets.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Clarify the meaning of <a href="#FP_Fast_Math_Mode">fast math flags</a> when the
+asserted properties are not true.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.6<br>
-Last updated 2021-12-16 14:14:33 +0700
+Last updated 2022-06-21 01:31:00 +0700
 </div>
 </div>
 </body>
