@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Ben Ashbaugh, Intel">
 <title>OpenCL Extended Instruction Set Specification</title>
 <style>
@@ -27,7 +27,7 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">Ben Ashbaugh, Intel</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 7</span>
+<span id="revdate">Revision 8</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -56,6 +56,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_0_revision_4">3.7. Changes from Version 1.0, Revision 4</a></li>
 <li><a href="#_changes_from_version_1_0_revision_5">3.8. Changes from Version 1.0, Revision 5</a></li>
 <li><a href="#_changes_from_version_1_0_revision_6">3.9. Changes from Version 1.0, Revision 6</a></li>
+<li><a href="#_changes_from_version_1_0_revision_7">3.10. Changes from Version 1.0, Revision 7</a></li>
 </ul>
 </li>
 </ul>
@@ -75,36 +76,76 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>&#169; Copyright 2014-2021 The Khronos Group Inc. All Rights Reserved.</p>
+<p>Copyright 2014-2023 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
-<p>This specification is protected by copyright laws and contains material proprietary to the Khronos Group, Inc. It or any components may not be reproduced, republished, distributed, transmitted, displayed, broadcast, or otherwise exploited in any manner
-without the express prior written permission of Khronos Group. You may use this specification for implementing the functionality therein, without altering or removing any trademark, copyright or other notice from the specification, but the receipt or
-possession of this specification does not convey any rights to reproduce, disclose, or distribute its contents, or to manufacture,
-use, or sell anything that it may describe, in whole or in part.</p>
+<p>This Specification is protected by copyright laws and contains material proprietary to Khronos.
+Except as described by these terms, it or any components may not be reproduced, republished,
+distributed, transmitted, displayed, broadcast or otherwise exploited in any manner without the
+express prior written permission of Khronos.</p>
 </div>
 <div class="paragraph">
-<p>Khronos Group grants express permission to any current Promoter, Contributor or Adopter member of Khronos to copy and
-redistribute UNMODIFIED versions of this specification in any fashion, provided that NO CHARGE is made for the specification
-and the latest available update of the specification for any version of the API is used whenever possible. Such distributed
-specification may be reformatted AS LONG AS the contents of the specification are not changed in any way. The specification
-may be incorporated into a product that is sold as long as such product includes significant independent work developed by the
-seller. A link to the current version of this specification on the Khronos Group website should be included whenever possible
-with specification distributions.</p>
+<p>This Specification has been created under the Khronos Intellectual Property Rights
+Policy, which is Attachment A of the Khronos Group Membership Agreement available at
+www.khronos.org/files/member_agreement.pdf.</p>
 </div>
 <div class="paragraph">
-<p>Khronos Group makes no, and expressly disclaims any, representations or warranties, express or implied, regarding this specification, including, without limitation, any implied warranties of merchantability or fitness for a particular purpose or noninfringement of any intellectual property. Khronos Group makes no, and expressly disclaims any, warranties, express or implied,
-regarding the correctness, accuracy, completeness, timeliness, and reliability of the specification. Under no circumstances will
-the Khronos Group, or any of its Promoters, Contributors or Members or their respective partners, officers, directors, employees,
-agents, or representatives be liable for any damages, whether direct, indirect, special or consequential damages for lost revenues,
-lost profits, or otherwise, arising from or in connection with these materials.</p>
+<p>Khronos grants a conditional copyright license to use and reproduce the
+unmodified Specification for any purpose, without fee or royalty, EXCEPT no licenses
+to any patent, trademark or other intellectual property rights are granted under these
+terms. Parties desiring to implement the Specification and make use of Khronos trademarks
+in relation to that implementation, and receive reciprocal patent license protection under
+the Khronos Intellectual Property Rights Policy must become Adopters and confirm the
+implementation as conformant under the process defined by Khronos for this Specification;
+see <a href="https://www.khronos.org/adopters" class="bare">https://www.khronos.org/adopters</a>.</p>
 </div>
 <div class="paragraph">
-<p>Khronos, SYCL, SPIR, WebGL, EGL, COLLADA, StreamInput, OpenVX, OpenKCam, glTF, OpenKODE, OpenVG, OpenWF,
-OpenSL ES, OpenMAX, OpenMAX AL, OpenMAX IL and OpenMAX DL are trademarks and WebCL is a certification mark
-of the Khronos Group Inc. OpenCL is a trademark of Apple Inc. and OpenGL and OpenML are registered trademarks and the
-OpenGL ES and OpenGL SC logos are trademarks of Silicon Graphics International used under license by Khronos. All other
-product names, trademarks, and/or company names are used solely for identification and belong to their respective owners.</p>
+<p>Khronos makes no, and expressly disclaims any, representations or warranties,
+express or implied, regarding this Specification, including, without limitation:
+merchantability, fitness for a particular purpose, non-infringement of any
+intellectual property, correctness, accuracy, completeness, timeliness, and
+reliability. Under no circumstances will Khronos, or any of its Promoters,
+Contributors or Members, or their respective partners, officers, directors,
+employees, agents or representatives be liable for any damages, whether direct,
+indirect, special or consequential damages for lost revenues, lost profits, or
+otherwise, arising from or in connection with these materials.</p>
+</div>
+<div class="paragraph">
+<p>This Specification contains substantially unmodified functionality from, and is a successor
+to, Khronos specifications including all versions of "The SPIR Specification",
+"The OpenGL Shading Language", "The OpenGL ES Shading Language", as well as all Khronos
+OpenCL API and OpenCL programming language specifications.</p>
+</div>
+<div class="paragraph">
+<p>The Khronos Intellectual Property Rights Policy defines the terms <em>Scope</em>, <em>Compliant Portion</em>,
+and <em>Necessary Patent Claims</em>.</p>
+</div>
+<div class="paragraph">
+<p>Where this Specification uses technical terminology, defined in the Glossary or otherwise,
+that refer to enabling technologies that are not expressly set forth in this Specification,
+those enabling technologies are EXCLUDED from the Scope of this Specification. For clarity,
+enabling technologies not disclosed with particularity in this Specification
+(e.g. semiconductor manufacturing technology, hardware architecture, processor architecture
+or microarchitecture, memory architecture, compiler technology, object oriented technology,
+basic operating system technology, compression technology, algorithms, and so on) are NOT
+to be considered expressly set forth; only those application program interfaces and data
+structures disclosed with particularity are included in the Scope of this Specification.</p>
+</div>
+<div class="paragraph">
+<p>For purposes of the Khronos Intellectual Property Rights Policy as it relates to the
+definition of Necessary Patent Claims, all recommended or optional features, behaviors
+and functionality set forth in this Specification, if implemented, are considered to
+be included as Compliant Portions.</p>
+</div>
+<div class="paragraph">
+<p>Khronos&#174; and Vulkan&#174; are registered trademarks, and ANARI&#8482;, WebGL&#8482;, glTF&#8482;, NNEF&#8482;, OpenVX&#8482;,  SPIR&#8482;,
+SPIR-V&#8482;, SYCL&#8482;, OpenVG&#8482;, Vulkan SC&#8482;, 3D Commerce&#8482; and Kamaros&#8482; are trademarks of The Khronos Group Inc.
+OpenXR&#8482; is a trademark owned by The Khronos Group Inc. and is registered as a trademark in
+China, the European Union, Japan and the United Kingdom. OpenCL&#8482; is a trademark of Apple Inc. used
+under license by Khronos. OpenGL&#174; is a registered trademark and the OpenGL ES&#8482; and OpenGL SC&#8482; logos
+are trademarks of Hewlett Packard Enterprise used under license by Khronos. ASTC is a trademark of
+ARM Holdings PLC. All other product names, trademarks, and/or company names are used solely
+for identification and belong to their respective owners.</p>
 </div>
 <div style="page-break-after: always;"></div>
 <h3 id="_contributors_and_acknowledgments" class="float">Contributors and Acknowledgments</h3>
@@ -362,7 +403,7 @@ Compute the inverse hyperbolic cosine of <em>x</em> .  <br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="acospi"></a><strong>acospi</strong><br>
 <br>
-Compute <strong>acos</strong>(<em>x</em>) / &#960;.<br>
+Compute <strong>acos</strong>(<em>x</em>) / &#120587;.<br>
 <br>
 <em>Result</em> is an angle in radians.
 <br></p>
@@ -465,7 +506,7 @@ Compute the inverse hyperbolic sine of <em>x</em>.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="asinpi"></a><strong>asinpi</strong><br>
 <br>
-Compute <strong>asin</strong>(<em>x</em>) / &#960;.<br>
+Compute <strong>asin</strong>(<em>x</em>) / &#120587;.<br>
 <br>
 <em>Result</em> is an angle in radians.
 <br></p>
@@ -605,7 +646,7 @@ Compute the hyperbolic arc tangent of <em>x</em>.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="atanpi"></a><strong>atanpi</strong><br>
 <br>
-Compute <strong>atan</strong>(<em>x</em>) / &#960;.<br>
+Compute <strong>atan</strong>(<em>x</em>) / &#120587;.<br>
 <br>
 <em>Result</em> is an angle in radians.
 <br></p>
@@ -640,7 +681,7 @@ Compute <strong>atan</strong>(<em>x</em>) / &#960;.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="atan2pi"></a><strong>atan2pi</strong><br>
 <br>
-Compute <strong>atan</strong>(<em>y</em>, <em>x</em>) / &#960;.<br>
+Compute <strong>atan</strong>(<em>y</em>, <em>x</em>) / &#120587;.<br>
 <br>
 <em>Result</em> is an angle in radians.
 <br></p>
@@ -841,7 +882,7 @@ Compute the hyperbolic cosine of <em>x</em> radians.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="cospi"></a><strong>cospi</strong><br>
 <br>
-Compute <strong>cos</strong>(<em>x</em>) / &#960; radians.
+Compute <strong>cos</strong>(<em>x</em>) / &#120587; radians.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -2005,7 +2046,7 @@ Compute <em>x</em> to the power <em>y</em>, where <em>y</em> is an <em>i32</em> 
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="powr"></a><strong>powr</strong><br>
 <br>
-Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &gt;= 0.
+Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &#8805; 0.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em> and <em>y</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -2346,7 +2387,7 @@ Compute hyperbolic sine of <em>x</em> radians.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="sinpi"></a><strong>sinpi</strong><br>
 <br>
-Compute <em>sin</em> (&#960; x) radians.
+Compute <em>sin</em> (&#120587; x) radians.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -2475,7 +2516,7 @@ Compute hyperbolic tangent of <em>x</em> radians.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="tanpi"></a><strong>tanpi</strong><br>
 <br>
-Compute <em>tan</em> (&#960; x) radians.
+Compute <em>tan</em> (&#120587; x) radians.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -2834,7 +2875,7 @@ Compute the base 10 logarithm of <em>x</em>.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="half_powr"></a><strong>half_powr</strong><br>
 <br>
-Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &gt;= 0.
+Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &#8805; 0.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em> and <em>y</em> must be <em>float</em> or <em>vector(2,3,4,8,16)</em> of <em>float</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -3299,7 +3340,7 @@ Compute a base 10 logarithm of <em>x</em> over an implementation-defined range. 
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="native_powr"></a><strong>native_powr</strong><br>
 <br>
-Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &gt;= 0.
+Compute <em>x</em> to the power <em>y</em>, where <em>x</em> is &#8805; 0.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em> and <em>y</em> must be <em>float</em> or <em>vector(2,3,4,8,16)</em> of <em>float</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p>
@@ -4328,10 +4369,10 @@ If <em>hi</em> and <em>lo</em> component type is i8:<br></p>
 <p class="tableblock">Result = ((upcast&#8230;&#8203;to i16)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
 <br>
 If <em>hi</em> and <em>lo</em> component type is i16:<br></p>
-<p class="tableblock">Result = ((upcast&#8230;&#8203;to i32)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
+<p class="tableblock">Result = ((upcast&#8230;&#8203;to i32)<em>hi</em> &lt;&lt; 16) | <em>lo</em><br>
 <br>
 If <em>hi</em> and <em>lo</em> component i32:<br></p>
-<p class="tableblock">Result = ((upcast&#8230;&#8203;to i64)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
+<p class="tableblock">Result = ((upcast&#8230;&#8203;to i64)<em>hi</em> &lt;&lt; 32) | <em>lo</em><br>
 <br>
 <em>hi</em> and <em>lo</em> are treated as unsigned integers.
 <br></p>
@@ -4374,10 +4415,10 @@ If <em>hi</em> and <em>lo</em> component type is i8:<br></p>
 <p class="tableblock">Result = ((upcast&#8230;&#8203;to i16)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
 <br>
 If <em>hi</em> and <em>lo</em> component type is i16:<br></p>
-<p class="tableblock">Result = ((upcast&#8230;&#8203;to i32)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
+<p class="tableblock">Result = ((upcast&#8230;&#8203;to i32)<em>hi</em> &lt;&lt; 16) | <em>lo</em><br>
 <br>
 If <em>hi</em> and <em>lo</em> component i32:<br></p>
-<p class="tableblock">Result = ((upcast&#8230;&#8203;to i64)<em>hi</em> &lt;&lt; 8) | <em>lo</em><br>
+<p class="tableblock">Result = ((upcast&#8230;&#8203;to i64)<em>hi</em> &lt;&lt; 32) | <em>lo</em><br>
 <br>
 <em>hi</em> is treated as a signed integer and <em>lo</em> is treated as an unsigned integer.
 <br></p>
@@ -4782,7 +4823,7 @@ Returns <em>fmin</em>(<em>fmax</em>(<em>x</em>, <em>minval</em>), <em>maxval</em
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="degrees"></a><strong>degrees</strong><br>
 <br>
-Converts <em>radians</em> to degrees, i.e. (180 / &#960;) * <em>radians</em>.
+Converts <em>radians</em> to degrees, i.e. (180 / &#120587;) * <em>radians</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>radians</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -4925,7 +4966,7 @@ Returns the linear blend of <em>x</em> &amp; <em>y</em> implemented as:<br></p>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="radians"></a><strong>radians</strong><br>
 <br>
-Converts <em>degrees</em> to radians, i.e. (&#960; / 180) * <em>degrees</em>.
+Converts <em>degrees</em> to radians, i.e. (&#120587; / 180) * <em>degrees</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>degrees</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -4994,13 +5035,13 @@ Returns 0.0 if <em>x</em> &lt; <em>edge</em>, otherwise it returns 1.0.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="9"><p class="tableblock"><a id="smoothstep"></a><strong>smoothstep</strong><br>
 <br>
-Returns 0.0 if <em>x</em> &#8656; <em>edge<sub>0</sub></em> and 1.0 if <em>x</em> &gt;= <em>edge<sub>1</sub></em> and performs smooth Hermite interpolation between 0 and 1, if <em>edge<sub>0</sub></em> &lt; x &lt; <em>edge<sub>1</sub></em>.<br>
+Returns 0.0 if <em>x</em> &#8804; <em>edge<sub>0</sub></em> and 1.0 if <em>x</em> &#8805; <em>edge<sub>1</sub></em> and performs smooth Hermite interpolation between 0 and 1, if <em>edge<sub>0</sub></em> &lt; x &lt; <em>edge<sub>1</sub></em>.<br>
 <br>
  This is equivalent to :<br></p>
 <p class="tableblock"> t = <em>fclamp</em>((<em>x</em> - <em>edge<sub>0</sub></em>) / (<em>edge<sub>1</sub></em> - <em>edge<sub>0</sub></em>), 0, 1);<br></p>
 <p class="tableblock"> return t * t * (3 - 2 * t);<br>
 <br>
-The resulting values are undefined if <em>edge<sub>0</sub></em> &gt;= <em>edge<sub>1</sub></em> or if <em>x</em>, <em>edge<sub>0</sub></em> or <em>edge<sub>1</sub></em> is a NaN.
+The resulting values are undefined if <em>edge<sub>0</sub></em> &#8805; <em>edge<sub>1</sub></em> or if <em>x</em>, <em>edge<sub>0</sub></em> or <em>edge<sub>1</sub></em> is a NaN.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>edge<sub>0</sub></em>, <em>edge<sub>1</sub></em> and <em>x</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p>
@@ -6034,7 +6075,7 @@ The <em>printf</em> extended instruction writes output to an implementation-defi
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="prefetch"></a><strong>prefetch</strong><br>
 <br>
-Prefetch <em>num_elements</em> * size in bytes of the type pointed by <em>p</em>, into the global cache. The prefetch instruction is applied to a work-item in a work-group and does not affect the functionality of the kernel.
+Prefetch <em>num_elements</em> * size in bytes of the type pointed by <em>p</em>, into the global cache. The prefetch instruction is applied to an invocation in a workgroup and does not affect the functionality of the kernel.
 <br></p>
 <p class="tableblock"><em>num_elements</em> must be <em>size_t</em>. <br></p>
 <p class="tableblock"><em>Result Type</em> must be <em>void</em>. <br></p>
@@ -6258,13 +6299,30 @@ vector data load/store instructions for environments that allow it.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_0_revision_7">3.10. Changes from Version 1.0, Revision 7</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fixed internal bugs:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Corrected the description of <strong>u_upsample</strong> and <strong>s_upsample</strong>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2021-12-05 23:13:09 +0700
+Last updated 2023-12-04 22:29:22 +0700
 </div>
 </div>
 </body>
