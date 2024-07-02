@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <meta name="author" content="John Kessenich, Google">
 <title>SPIR-V Extended Instructions for GLSL</title>
 <style>
@@ -27,7 +27,7 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">John Kessenich, Google</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 13</span>
+<span id="revdate">Revision 14</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -51,6 +51,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_00_revision_10">3.13. Changes from Version 1.00, Revision 10</a></li>
 <li><a href="#_changes_from_version_1_00_revision_11">3.14. Changes from Version 1.00, Revision 11</a></li>
 <li><a href="#_changes_from_version_1_00_revision_12">3.15. Changes from Version 1.00, Revision 12</a></li>
+<li><a href="#_changes_from_version_1_00_revision_13">3.16. Changes from Version 1.00, Revision 13</a></li>
 </ul>
 </li>
 </ul>
@@ -70,7 +71,7 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>Copyright 2014-2023 The Khronos Group Inc.</p>
+<p>Copyright 2014-2024 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
 <p>This Specification is protected by copyright laws and contains material proprietary to Khronos.
@@ -152,6 +153,27 @@ for identification and belong to their respective owners.</p>
 <div class="paragraph">
 <p>Import this extended instruction set using an <strong>OpExtInstImport</strong> "GLSL.std.450" instruction.</p>
 </div>
+<div class="paragraph">
+<p>Where requirements are written in the form f(&#177;x) = &#177;y, this means that f(x) = y and f(-x) = -y.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>These instructions may specify their behavior for special floating-point values such as -0.0, Infinities or NaN.
+Such values can only be reliably observed when <strong>SPV_KHR_float_controls2</strong> is used because the
+<strong>SignedZeroInfNaNPreserve</strong> execution mode does not apply to these instructions and by default these special
+values may be ignored. In some cases, client APIs may allow an error bound for results which may include values
+other than the reference value given.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -194,6 +216,10 @@ for identification and belong to their respective owners.</p>
 <br>
 Result is the value equal to the nearest whole number to <em>x</em>. The fraction 0.5 rounds in a direction chosen by the implementation, presumably the direction that is fastest. This includes the possibility that <strong>Round</strong> <em>x</em> is the same value as <strong>RoundEven</strong> <em>x</em> for all values of <em>x</em>.<br>
 <br>
+ round(&#177;0) = &#177;0<br>
+<br>
+ round(&#177;Inf) = &#177;Inf.<br>
+<br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
  <em>Result Type</em> and the type of <em>x</em> must be the same type. Results are computed per component.</p></td>
@@ -215,6 +241,10 @@ Result is the value equal to the nearest whole number to <em>x</em>. The fractio
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>RoundEven</strong><br>
 <br>
 Result is the value equal to the nearest whole number to <em>x</em>. A fractional part of 0.5 rounds toward the nearest even whole number. (Both 3.5 and 4.5 for <em>x</em> round to 4.0.)<br>
+<br>
+ roundEven(&#177;0) = &#177;0.<br>
+<br>
+ roundEven(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -238,6 +268,10 @@ Result is the value equal to the nearest whole number to <em>x</em>. A fractiona
 <br>
 Result is the value equal to the nearest whole number to <em>x</em> whose absolute value is not larger than the absolute value of <em>x</em>.<br>
 <br>
+ trunc(&#177;0) = &#177;0.<br>
+<br>
+ trunc(&#177;Inf) = &#177;Inf.<br>
+<br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
  <em>Result Type</em> and the type of <em>x</em> must be the same type. Results are computed per component.</p></td>
@@ -249,7 +283,7 @@ Result is the value equal to the nearest whole number to <em>x</em> whose absolu
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 90%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -259,6 +293,10 @@ Result is the value equal to the nearest whole number to <em>x</em> whose absolu
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>FAbs</strong><br>
 <br>
 Result is <em>+0.0</em> if <em>x</em> is <em>&#177;0.0</em>, <em>x</em> if <em>x &gt; 0.0</em>, and <em>-x</em> if <em>x &lt; 0.0</em>.<br>
+<br>
+ fabs(&#177;0) = +0.0.<br>
+<br>
+ fabs(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -302,7 +340,7 @@ This instruction can be decorated with <strong>NoSignedWrap</strong>.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>FSign</strong><br>
 <br>
-Result is <em>1.0</em> if <em>x &gt; 0</em>, <em>-1.0</em> if <em>x &lt; 0</em>, <em>+0.0</em> if <em>x = +0.0</em>, and <em>&#177;0.0</em> if <em>x = -0.0</em>. If <em>x</em> = <em>&#177;NaN</em>, the result can be any of <em>&#177;1.0</em> or <em>&#177;0.0</em>, regardless of whether shader_float_controls is in use.<br>
+Result is <em>1.0</em> if <em>x &gt; 0</em>, <em>-1.0</em> if <em>x &lt; 0</em>, <em>+0.0</em> if <em>x = +0.0</em>, and <em>&#177;0.0</em> if <em>x = -0.0</em>. fsign(&#177;Inf) = &#177;1 If <em>x</em> = <em>&#177;NaN</em>, the result can be any of <em>&#177;1.0</em> or <em>&#177;0.0</em>, regardless of whether shader_float_controls is in use.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -335,7 +373,7 @@ Result is 1 if <em>x &gt; 0</em>, <em>0</em> if <em>x = 0</em>, or <em>-1</em> i
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 92%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -345,6 +383,10 @@ Result is 1 if <em>x &gt; 0</em>, <em>0</em> if <em>x = 0</em>, or <em>-1</em> i
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Floor</strong><br>
 <br>
 Result is the value equal to the nearest whole number that is less than or equal to <em>x</em>.<br>
+<br>
+ floor(&#177;0) = &#177;0.<br>
+<br>
+ floor(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -357,7 +399,7 @@ Result is the value equal to the nearest whole number that is less than or equal
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 93%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -367,6 +409,10 @@ Result is the value equal to the nearest whole number that is less than or equal
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Ceil</strong><br>
 <br>
 Result is the value equal to the nearest whole number that is greater than or equal to <em>x</em>.<br>
+<br>
+ ceil(&#177;0) = &#177;0.<br>
+<br>
+ ceil(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -379,7 +425,7 @@ Result is the value equal to the nearest whole number that is greater than or eq
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 72%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 92%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -389,6 +435,10 @@ Result is the value equal to the nearest whole number that is greater than or eq
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Fract</strong><br>
 <br>
 Result is <em>x</em> - <strong>floor</strong> <em>x</em>.<br>
+<br>
+ fract(&#177;0) = +0.<br>
+<br>
+ fract(&#177;Inf) = NaN.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -445,7 +495,7 @@ Converts <em>radians</em> to degrees, i.e., <em>radians</em> * 180 / &#120587;.<
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 88%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 98%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -455,6 +505,8 @@ Converts <em>radians</em> to degrees, i.e., <em>radians</em> * 180 / &#120587;.<
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Sin</strong><br>
 <br>
 The standard trigonometric sine of <em>x</em> radians.<br>
+<br>
+ sin(&#177;Inf) = NaN.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -467,7 +519,7 @@ The standard trigonometric sine of <em>x</em> radians.<br>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 89%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 99%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -477,6 +529,8 @@ The standard trigonometric sine of <em>x</em> radians.<br>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Cos</strong><br>
 <br>
 The standard trigonometric cosine of <em>x</em> radians.<br>
+<br>
+ cos(&#177;Inf) = NaN.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -489,7 +543,7 @@ The standard trigonometric cosine of <em>x</em> radians.<br>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 89%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 99%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -499,6 +553,8 @@ The standard trigonometric cosine of <em>x</em> radians.<br>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Tan</strong><br>
 <br>
 The standard trigonometric tangent of <em>x</em> radians.<br>
+<br>
+ tan(&#177;Inf) = NaN.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -520,7 +576,7 @@ The standard trigonometric tangent of <em>x</em> radians.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Asin</strong><br>
 <br>
-Arc sine. Result is an angle, in radians, whose sine is <em>x</em>. The range of result values is [-&#120587; / 2, &#120587; / 2]. The resulting value is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
+Arc sine. Result is an angle, in radians, whose sine is <em>x</em>. The range of result values is [-&#120587; / 2, &#120587; / 2]. The resulting value is NaN if <strong>abs</strong> <em>x</em> &gt; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -542,7 +598,7 @@ Arc sine. Result is an angle, in radians, whose sine is <em>x</em>. The range of
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Acos</strong><br>
 <br>
-Arc cosine. Result is an angle, in radians, whose cosine is <em>x</em>. The range of result values is [0, &#120587;]. The resulting value is undefined if <strong>abs</strong> <em>x</em> &gt; 1.<br>
+Arc cosine. Result is an angle, in radians, whose cosine is <em>x</em>. The range of result values is [0, &#120587;]. The resulting value is NaN if <strong>abs</strong> <em>x</em> &gt; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -577,7 +633,7 @@ Arc tangent. Result is an angle, in radians, whose tangent is <em>y_over_x</em>.
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 83%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 96%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -587,6 +643,8 @@ Arc tangent. Result is an angle, in radians, whose tangent is <em>y_over_x</em>.
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Sinh</strong><br>
 <br>
 Hyperbolic sine of <em>x</em> radians.<br>
+<br>
+ sinh(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -599,7 +657,7 @@ Hyperbolic sine of <em>x</em> radians.<br>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 83%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 94%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -609,6 +667,8 @@ Hyperbolic sine of <em>x</em> radians.<br>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Cosh</strong><br>
 <br>
 Hyperbolic cosine of <em>x</em> radians.<br>
+<br>
+ cosh(&#177;Inf) = Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -621,7 +681,7 @@ Hyperbolic cosine of <em>x</em> radians.<br>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 84%;">
+<table class="tableblock frame-all grid-all stripes-even" style="width: 96%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -631,6 +691,8 @@ Hyperbolic cosine of <em>x</em> radians.<br>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Tanh</strong><br>
 <br>
 Hyperbolic tangent of <em>x</em> radians.<br>
+<br>
+ tanh(&#177;Inf) = &#177;1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -643,7 +705,7 @@ Hyperbolic tangent of <em>x</em> radians.<br>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 90%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -653,6 +715,8 @@ Hyperbolic tangent of <em>x</em> radians.<br>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Asinh</strong><br>
 <br>
 Arc hyperbolic sine; result is the inverse of <strong>sinh</strong>.<br>
+<br>
+ asinh(&#177;Inf) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -674,7 +738,9 @@ Arc hyperbolic sine; result is the inverse of <strong>sinh</strong>.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Acosh</strong><br>
 <br>
-Arc hyperbolic cosine; Result is the non-negative inverse of <strong>cosh</strong>. The resulting value is undefined if <em>x</em> &lt; 1.<br>
+Arc hyperbolic cosine; Result is the non-negative inverse of <strong>cosh</strong>. The resulting value is NaN if <em>x</em> &lt; 1.<br>
+<br>
+ acosh(Inf) = Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -696,7 +762,7 @@ Arc hyperbolic cosine; Result is the non-negative inverse of <strong>cosh</stron
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Atanh</strong><br>
 <br>
-Arc hyperbolic tangent; result is the inverse of tanh. The resulting value is undefined if <strong>abs</strong> <em>x</em> &#8805; 1.<br>
+Arc hyperbolic tangent; result is the inverse of tanh. The resulting value is NaN if <strong>abs</strong> <em>x</em> &#8805; 1.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -759,7 +825,7 @@ Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 90%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -769,6 +835,10 @@ Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Exp</strong><br>
 <br>
 Result is the natural exponentiation of <em>x</em>; <em>e</em><sup><em>x</em></sup>.<br>
+<br>
+ exp(Inf) = Inf.<br>
+<br>
+ exp(-Inf) = +0.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -790,7 +860,13 @@ Result is the natural exponentiation of <em>x</em>; <em>e</em><sup><em>x</em></s
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Log</strong><br>
 <br>
-Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation <em>x</em> = <em>e</em><sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &#8804; 0.<br>
+Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation <em>x</em> = <em>e</em><sup><em>y</em></sup>. The resulting value is NaN if <em>x</em> &lt; 0.<br>
+<br>
+ log(Inf) = Inf.<br>
+<br>
+ log(1.0) = +0.<br>
+<br>
+ log(&#177;0) = -Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -803,7 +879,7 @@ Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which 
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 87%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -813,6 +889,10 @@ Result is the natural logarithm of <em>x</em>, i.e., the value <em>y</em> which 
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Exp2</strong><br>
 <br>
 Result is 2 raised to the <em>x</em> power; 2<sup><em>x</em></sup>.<br>
+<br>
+ exp2(Inf) = Inf.<br>
+<br>
+ exp2(-Inf) = +0.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -834,7 +914,13 @@ Result is 2 raised to the <em>x</em> power; 2<sup><em>x</em></sup>.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Log2</strong><br>
 <br>
-Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation  <em>x</em> = 2<sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &#8804; 0.<br>
+Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which satisfies the equation  <em>x</em> = 2<sup><em>y</em></sup>. The resulting value is NaN if <em>x</em> &lt; 0.<br>
+<br>
+ log(Inf) = Inf.<br>
+<br>
+ log(1.0) = +0.<br>
+<br>
+ log(&#177;0) = -Inf.<br>
 <br>
  The operand <em>x</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -847,7 +933,7 @@ Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which s
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 88%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -856,7 +942,11 @@ Result is the base-2 logarithm of <em>x</em>, i.e., the value <em>y</em> which s
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>Sqrt</strong><br>
 <br>
-Result is the square root of <em>x</em>. The resulting value is undefined if <em>x</em> &lt; 0.<br>
+Result is the square root of <em>x</em>. The resulting value is NaN if <em>x</em> &lt; 0.<br>
+<br>
+ sqrt(Inf) = Inf.<br>
+<br>
+ sqrt(&#177;0) = &#177;0.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -869,7 +959,7 @@ Result is the square root of <em>x</em>. The resulting value is undefined if <em
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stripes-even" style="width: 91%;">
+<table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -878,7 +968,11 @@ Result is the square root of <em>x</em>. The resulting value is undefined if <em
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>InverseSqrt</strong><br>
 <br>
-Result is the reciprocal of <strong>sqrt</strong> <em>x</em>. The resulting value is undefined if <em>x</em> &#8804; 0.<br>
+Result is the reciprocal of <strong>sqrt</strong> <em>x</em>. The resulting value is NaN if <em>x</em> &lt; 0.<br>
+<br>
+ inversesqrt(Inf) = +0.<br>
+<br>
+ inversesqrt(&#177;0) = &#177;Inf.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -975,7 +1069,13 @@ The operand <em>i</em> must have a pointer type.<br>
 <br>
 Result is a structure containing both the fractional part of <em>x</em> and the whole number part of <em>x</em>.<br>
 <br>
-<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members. Member 0 holds the fractional part. Member 1 holds the whole number part. Both members get the same sign as <em>x</em>. These two members and <em>x</em> must all be the same type. Results are computed per component.<br>
+<em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members. Member 0 holds the fractional part. Member 1 holds the whole number part. Both members get the same sign as <em>x</em>.<br>
+<br>
+ modf(&#177;0) = { &#177;0, &#177;0 }.<br>
+<br>
+ modf(&#177;Inf) = { &#177;0, &#177;Inf }.<br>
+<br>
+ The two members of the returned struct and <em>x</em> must all be the same type. Results are computed per component.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.</p></td>
 </tr>
@@ -997,6 +1097,12 @@ Result is a structure containing both the fractional part of <em>x</em> and the 
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>FMin</strong><br>
 <br>
 Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
+<br>
+ fmin(-0, &#177;0) = -0.<br>
+<br>
+ fmin(-Inf, y) = -Inf.<br>
+<br>
+ fmin(Inf, y) = y.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1068,6 +1174,12 @@ Result is <em>y</em> if <em>y</em> &lt; <em>x</em>; otherwise result is <em>x</e
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>FMax</strong><br>
 <br>
 Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. Which operand is the result is undefined if one of the operands is a NaN.<br>
+<br>
+ fmax(+0, &#177;0) = +0.<br>
+<br>
+ fmax(-Inf, y) = y.<br>
+<br>
+ fmax(Inf, y) = Inf.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1387,7 +1499,7 @@ Result is a structure containing <em>x</em> split into a floating-point signific
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>Ldexp</strong><br>
 <br>
 Builds a floating-point number from <em>x</em> and the corresponding integral exponent of two in <em>exp</em>:<br></p>
-<p class="tableblock"><em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
+<p class="tableblock"><em>x</em> * 2<sup><em>exp</em></sup><br></p>
 <p class="tableblock">If this product is too large to be finitely represented in the floating-point type, the resulting value is undefined. If <em>exp</em> is greater than +128 (single precision) or +1024 (double precision), the resulting value is undefined. If <em>exp</em> is less than -126 (single precision) or -1022 (double precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
@@ -2058,6 +2170,12 @@ Use of this instruction requires declaration of the <strong>InterpolationFunctio
 <br>
 Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
 <br>
+ nmin(-0, &#177;0) = -0.<br>
+<br>
+ nmin(-Inf, y) = -Inf.<br>
+<br>
+ nmin(Inf, y) = y.<br>
+<br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
  <em>Result Type</em> and the type of all operands must be the same type. Results are computed per component.</p></td>
@@ -2082,6 +2200,12 @@ Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, either <em>x</em> or <em>y</
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>NMax</strong><br>
 <br>
 Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, either <em>x</em> or <em>y</em> if both <em>x</em> and <em>y</em> are zeros, otherwise <em>x</em>. If one operand is a NaN, the other operand is the result. If both operands are NaN, the result is a NaN.<br>
+<br>
+ nmax(+0, &#177;0) = +0.<br>
+<br>
+ nmax(-Inf, y) = y.<br>
+<br>
+ nmax(Inf, y) = Inf.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2347,13 +2471,23 @@ were historically disallowed, this is a backward compatible change.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_00_revision_13">3.16. Changes from Version 1.00, Revision 13</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Clarify behavior for <strong>Round</strong>, <strong>RoundEven</strong>, <strong>Trunc</strong>, <strong>FAbs</strong>, <strong>FSign</strong>, <strong>Floor</strong>, <strong>Ceil</strong>, <strong>Fract</strong>, <strong>Sin</strong>, <strong>Cos</strong>, <strong>Tan</strong>, <strong>Asin</strong>, <strong>Acos</strong>, <strong>Sinh</strong>, <strong>Cosh</strong>, <strong>Tanh</strong>, <strong>Asinh</strong>, <strong>Acosh</strong>, <strong>Exp</strong>, <strong>Log</strong>, <strong>Exp2</strong>, <strong>Log2</strong>, <strong>Sqrt</strong>, <strong>InverseSqrt</strong>, <strong>ModfStruct</strong>, <strong>FMin</strong>, <strong>FMax</strong>, <strong>NMin</strong>, <strong>NMax</strong> for special floating-point values (only observable when SPV_KHR_float_controls2 is used).</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2022-06-08 11:32:02 +0700
+Last updated 2024-07-02 09:34:12 UTC
 </div>
 </div>
 </body>
