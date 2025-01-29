@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <meta name="author" content="Lei Zhang, Google">
 <title>SPIR-V Machine-readable Grammar</title>
 <style>
@@ -33,6 +33,7 @@ em, b, strong {
 <li><a href="#_introduction">1. Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_goals_and_conventions">1.1. Goals and Conventions</a></li>
+<li><a href="#_alias_mechanism">1.2. Alias mechanism</a></li>
 </ul>
 </li>
 <li><a href="#_top_level_structure">2. Top Level Structure</a></li>
@@ -59,7 +60,7 @@ em, b, strong {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright (c) 2014-2017 The Khronos Group Inc.</p>
+<p>Copyright (c) 2014-2025 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -120,6 +121,23 @@ are in the <code>CamelCase</code> format.</p>
 tend to have the category name as the prefix.</p>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_alias_mechanism">1.2. Alias mechanism</h3>
+<div class="paragraph">
+<p><a href="#instruction">Instructions</a>, <a href="#bitenum-operand-kind">BitEnum operand kinds</a> and <a href="#valueenum-operand-kind">ValueEnum operand kind</a> can have aliases.
+An alias is introduced when an instruction or operand kind from an extension is reused in another extension or is integrated into the core specifications without a change in semantics.
+As the semantics do not change from the original extension,
+the new extension or core specifications will reuse the same opcode or value but change the name for consistency.
+This leads to instructions or operand kinds sharing the same value but having different names.</p>
+</div>
+<div class="paragraph">
+<p>Previous versions of the grammar dealt with this by duplicating the entry.
+This led to multiple entries sharing the same opcode or value, adding complexity for tooling.</p>
+</div>
+<div class="paragraph">
+<p>New versions of the grammar now bans the duplication of the opcode or operand kind in favor of the <code>aliases</code> field to keep track of the name evolution.</p>
 </div>
 </div>
 </div>
@@ -208,11 +226,13 @@ instruction. It has the following key-value pairs:</p>
 <dl>
 <dt class="hdlist1"><code>opname</code></dt>
 <dd>
-<p>A string. The name of this instruction, starting with <code>Op</code>.</p>
+<p>A string. The name of this instruction, starting with <code>Op</code>.
+Must be unique in all <code>opname</code> in <code>instructions</code>.</p>
 </dd>
 <dt class="hdlist1"><code>opcode</code></dt>
 <dd>
-<p>An integer. The opcode enumerant for this instruction.</p>
+<p>An integer. The opcode enumerant for this instruction.
+Must be unique in all <code>opcode</code> in <code>instructions</code>.</p>
 </dd>
 <dt class="hdlist1"><code>operands</code></dt>
 <dd>
@@ -241,8 +261,14 @@ or more times.</p>
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If existing, each string is the name of
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
 a required <a href="#capability">capability</a> for this instruction.</p>
+</dd>
+<dt class="hdlist1"><code>aliases</code></dt>
+<dd>
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is
+an alternative name for this instruction.
+Each name must appear exactly once and must not be equal to <code>opname</code>.</p>
 </dd>
 </dl>
 </div>
@@ -309,7 +335,8 @@ kind. It has the following key-value pairs:</p>
 </dd>
 <dt class="hdlist1"><code>kind</code></dt>
 <dd>
-<p>A string. The name of this operand kind.</p>
+<p>A string. The name of this operand kind.
+Must be unique in all <code>kind</code> in <code>operand_kinds</code>.</p>
 </dd>
 <dt class="hdlist1"><code>doc</code></dt>
 <dd>
@@ -354,15 +381,17 @@ kind:</p>
 <dl>
 <dt class="hdlist1"><code>enumerant</code></dt>
 <dd>
-<p>A string. The name of this bitflag.</p>
+<p>A string. The name of this bitflag.
+Must be unique in all <code>enumerant</code> in the <a href="#operand-kind">operand kind object</a>.</p>
 </dd>
 <dt class="hdlist1"><code>value</code></dt>
 <dd>
-<p>A string. The hexadecimal bit value of this bitflag.</p>
+<p>A string. The hexadecimal bit value of this bitflag.
+Must be unique in all <code>value</code> in the <a href="#operand-kind">operand kind object</a>.</p>
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If existing, each string is the name of
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
 a required <a href="#capability">capability</a> for this bitflag.</p>
 </dd>
 <dt class="hdlist1"><code>parameters</code></dt>
@@ -377,6 +406,12 @@ for this bitflag:</p>
 </dd>
 </dl>
 </div>
+</dd>
+<dt class="hdlist1"><code>aliases</code></dt>
+<dd>
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is
+an alternative name for this bitflag.
+Each name must appear exactly once and must not be equal to <code>enumerant</code>.</p>
 </dd>
 </dl>
 </div>
@@ -417,15 +452,17 @@ operand kind:</p>
 <dl>
 <dt class="hdlist1"><code>enumerant</code></dt>
 <dd>
-<p>A string. The name of this enumerant.</p>
+<p>A string. The name of this enumerant.
+Must be unique in all <code>enumerant</code> in the <a href="#operand-kind">operand kind object</a>.</p>
 </dd>
 <dt class="hdlist1"><code>value</code></dt>
 <dd>
-<p>An integer. The value of this enumerant.</p>
+<p>An integer. The value of this enumerant.
+Must be unique in all <code>value</code> in the <a href="#operand-kind">operand kind object</a>.</p>
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If existing, each string is the name of
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
 a required <a href="#capability">capability</a> for this enumerant.</p>
 </dd>
 <dt class="hdlist1"><code>extensions</code></dt>
@@ -445,6 +482,12 @@ for this enumerant:</p>
 </dd>
 </dl>
 </div>
+</dd>
+<dt class="hdlist1"><code>aliases</code></dt>
+<dd>
+<p>A list of strings. <em>Optional</em>. If this field exists, each string is
+an alternative name for this enumerant.
+Each name must appear exactly once  and must not be equal to <code>enumerant</code>.</p>
 </dd>
 </dl>
 </div>
@@ -563,7 +606,7 @@ for an example of how this grammar can be used.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-05 19:50:29 +0700
+Last updated 2025-01-24 21:59:44 UTC
 </div>
 </div>
 </body>
