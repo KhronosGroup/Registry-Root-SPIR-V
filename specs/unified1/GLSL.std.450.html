@@ -27,7 +27,7 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">John Kessenich, Google</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 15</span>
+<span id="revdate">Revision 16</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -53,6 +53,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_00_revision_12">3.15. Changes from Version 1.00, Revision 12</a></li>
 <li><a href="#_changes_from_version_1_00_revision_13">3.16. Changes from Version 1.00, Revision 13</a></li>
 <li><a href="#_changes_from_version_1_00_revision_14">3.17. Changes from Version 1.00, Revision 14</a></li>
+<li><a href="#_changes_from_version_1_00_revision_15">3.18. Changes from Version 1.00, Revision 15</a></li>
 </ul>
 </li>
 </ul>
@@ -1489,7 +1490,7 @@ Result is a structure containing <em>x</em> split into a floating-point signific
 <br>
 Builds a floating-point number from <em>x</em> and the corresponding integral exponent of two in <em>exp</em>:<br></p>
 <p class="tableblock"><em>x</em> * 2<sup><em>exp</em></sup><br></p>
-<p class="tableblock">If this product is too large to be finitely represented in the floating-point type, the resulting value is undefined. <em>exp</em> is interpreted as a signed integer. If <em>exp</em> is greater than +128 (single precision) or +1024 (double precision), the resulting value is undefined. If <em>exp</em> is less than -126 (single precision) or -1022 (double precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
+<p class="tableblock">If this product is too large to be finitely represented in the floating-point type, the resulting value is undefined. <em>exp</em> is interpreted as a signed integer. If <em>exp</em> is greater than +128 (single precision), +1024 (double precision) or +16 (half precision), the resulting value is undefined. If <em>exp</em> is less than -126 (single precision), -1022 (double precision) or -14 (half precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2484,13 +2485,23 @@ were historically disallowed, this is a backward compatible change.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_00_revision_15">3.18. Changes from Version 1.00, Revision 15</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Khronos SPIR-V Issue #855: Clarify exponent limits for half-precision floats in <strong>Ldexp</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2025-01-17 10:18:36 UTC
+Last updated 2025-05-05 20:40:32 UTC
 </div>
 </div>
 </body>
