@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="author" content="John Kessenich, Google">
 <title>SPIR-V Extended Instructions for GLSL</title>
 <style>
@@ -27,7 +27,7 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">John Kessenich, Google</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 16</span>
+<span id="revdate">Revision 17</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -54,6 +54,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_00_revision_13">3.16. Changes from Version 1.00, Revision 13</a></li>
 <li><a href="#_changes_from_version_1_00_revision_14">3.17. Changes from Version 1.00, Revision 14</a></li>
 <li><a href="#_changes_from_version_1_00_revision_15">3.18. Changes from Version 1.00, Revision 15</a></li>
+<li><a href="#_changes_from_version_1_00_revision_16">3.19. Changes from Version 1.00, Revision 16</a></li>
 </ul>
 </li>
 </ul>
@@ -73,76 +74,92 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>Copyright 2014-2025 The Khronos Group Inc.</p>
+<p>Copyright 2014-2026 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
-<p>This Specification is protected by copyright laws and contains material proprietary to Khronos.
-Except as described by these terms, it or any components may not be reproduced, republished,
-distributed, transmitted, displayed, broadcast or otherwise exploited in any manner without the
+<p>This Specification is protected by copyright laws and contains material
+proprietary to Khronos. Except as described by these terms, it or any
+components may not be reproduced, republished, distributed, transmitted,
+displayed, broadcast or otherwise exploited in any manner without the
 express prior written permission of Khronos.</p>
 </div>
 <div class="paragraph">
-<p>This Specification has been created under the Khronos Intellectual Property Rights
-Policy, which is Attachment A of the Khronos Group Membership Agreement available at
-www.khronos.org/files/member_agreement.pdf.</p>
-</div>
-<div class="paragraph">
 <p>Khronos grants a conditional copyright license to use and reproduce the
-unmodified Specification for any purpose, without fee or royalty, EXCEPT no licenses
-to any patent, trademark or other intellectual property rights are granted under these
-terms. Parties desiring to implement the Specification and make use of Khronos trademarks
-in relation to that implementation, and receive reciprocal patent license protection under
-the Khronos Intellectual Property Rights Policy must become Adopters and confirm the
-implementation as conformant under the process defined by Khronos for this Specification;
-see <a href="https://www.khronos.org/adopters" class="bare">https://www.khronos.org/adopters</a>.</p>
+unmodified Specification for any purpose, without fee or royalty, EXCEPT no
+licenses to any patent, trademark or other intellectual property rights are
+granted under these terms.</p>
 </div>
 <div class="paragraph">
-<p>Khronos makes no, and expressly disclaims any, representations or warranties,
-express or implied, regarding this Specification, including, without limitation:
-merchantability, fitness for a particular purpose, non-infringement of any
-intellectual property, correctness, accuracy, completeness, timeliness, and
-reliability. Under no circumstances will Khronos, or any of its Promoters,
-Contributors or Members, or their respective partners, officers, directors,
-employees, agents or representatives be liable for any damages, whether direct,
-indirect, special or consequential damages for lost revenues, lost profits, or
-otherwise, arising from or in connection with these materials.</p>
+<p>Khronos makes no, and expressly disclaims any, representations or
+warranties, express or implied, regarding this Specification, including,
+without limitation: merchantability, fitness for a particular purpose,
+non-infringement of any intellectual property, correctness, accuracy,
+completeness, timeliness, and reliability. Under no circumstances will
+Khronos, or any of its Promoters, Contributors or Members, or their
+respective partners, officers, directors, employees, agents or
+representatives be liable for any damages, whether direct, indirect, special
+or consequential damages for lost revenues, lost profits, or otherwise,
+arising from or in connection with these materials.</p>
 </div>
 <div class="paragraph">
-<p>This Specification contains substantially unmodified functionality from, and is a successor
-to, Khronos specifications including all versions of "The SPIR Specification",
-"The OpenGL Shading Language", "The OpenGL ES Shading Language", as well as all Khronos
-OpenCL API and OpenCL programming language specifications.</p>
+<p>This Specification has been created under the Khronos Intellectual Property
+Rights Policy, which is Attachment A of the Khronos Group Membership
+Agreement available at <a href="https://www.khronos.org/files/member_agreement.pdf" class="bare">https://www.khronos.org/files/member_agreement.pdf</a>.
+Parties desiring to implement the Specification and make use of Khronos
+trademarks in relation to that implementation, and receive reciprocal patent
+license protection under the Khronos Intellectual Property Rights Policy
+must become Adopters and confirm the implementation as conformant under the
+process defined by Khronos for this Specification; see
+<a href="https://www.khronos.org/adopters" class="bare">https://www.khronos.org/adopters</a>.</p>
 </div>
 <div class="paragraph">
-<p>The Khronos Intellectual Property Rights Policy defines the terms <em>Scope</em>, <em>Compliant Portion</em>,
-and <em>Necessary Patent Claims</em>.</p>
+<p>This Specification contains substantially unmodified functionality from, and
+is a successor to, Khronos specifications including all versions of &#8220;The
+SPIR Specification&#8221;, &#8220;The OpenGL Shading Language&#8221;, and &#8220;The OpenGL ES
+Shading Language&#8221;, as well as all Khronos OpenCL API and OpenCL programming
+language specifications.</p>
 </div>
 <div class="paragraph">
-<p>Where this Specification uses technical terminology, defined in the Glossary or otherwise,
-that refer to enabling technologies that are not expressly set forth in this Specification,
-those enabling technologies are EXCLUDED from the Scope of this Specification. For clarity,
-enabling technologies not disclosed with particularity in this Specification
-(e.g. semiconductor manufacturing technology, hardware architecture, processor architecture
-or microarchitecture, memory architecture, compiler technology, object oriented technology,
-basic operating system technology, compression technology, algorithms, and so on) are NOT
-to be considered expressly set forth; only those application program interfaces and data
-structures disclosed with particularity are included in the Scope of this Specification.</p>
+<p>The Khronos Intellectual Property Rights Policy defines the terms 'Scope',
+'Compliant Portion', and 'Necessary Patent Claims'.</p>
 </div>
 <div class="paragraph">
-<p>For purposes of the Khronos Intellectual Property Rights Policy as it relates to the
-definition of Necessary Patent Claims, all recommended or optional features, behaviors
-and functionality set forth in this Specification, if implemented, are considered to
-be included as Compliant Portions.</p>
+<p>Where this Specification uses technical terminology, defined in the Glossary
+or otherwise, that refer to enabling technologies that are not expressly set
+forth in this Specification, those enabling technologies are EXCLUDED from
+the Scope of this Specification. For clarity, enabling technologies not
+disclosed with particularity in this Specification (e.g. semiconductor
+manufacturing technology, hardware architecture, processor architecture or
+microarchitecture, memory architecture, compiler technology, object oriented
+technology, basic operating system technology, compression technology,
+algorithms, and so on) are NOT to be considered expressly set forth; only
+those application program interfaces and data structures disclosed with
+particularity are included in the Scope of this Specification.</p>
 </div>
 <div class="paragraph">
-<p>Khronos&#174; and Vulkan&#174; are registered trademarks, and ANARI&#8482;, WebGL&#8482;, glTF&#8482;, NNEF&#8482;, OpenVX&#8482;,  SPIR&#8482;,
-SPIR-V&#8482;, SYCL&#8482;, OpenVG&#8482;, Vulkan SC&#8482;, 3D Commerce&#8482; and Kamaros&#8482; are trademarks of The Khronos Group Inc.
-OpenXR&#8482; is a trademark owned by The Khronos Group Inc. and is registered as a trademark in
-China, the European Union, Japan and the United Kingdom. OpenCL&#8482; is a trademark of Apple Inc. used
-under license by Khronos. OpenGL&#174; is a registered trademark and the OpenGL ES&#8482; and OpenGL SC&#8482; logos
-are trademarks of Hewlett Packard Enterprise used under license by Khronos. ASTC is a trademark of
-ARM Holdings PLC. All other product names, trademarks, and/or company names are used solely
-for identification and belong to their respective owners.</p>
+<p>For purposes of the Khronos Intellectual Property Rights Policy as it
+relates to the definition of Necessary Patent Claims, all recommended or
+optional features, behaviors and functionality set forth in this
+Specification, if implemented, are considered to be included as Compliant
+Portions.</p>
+</div>
+<div class="paragraph">
+<p>Where this Specification identifies specific sections of external
+references, only those specifically identified sections define normative
+functionality. The Khronos Intellectual Property Rights Policy excludes
+external references to materials and associated enabling technology not
+created by Khronos from the Scope of this Specification, and any licenses
+that may be required to implement such referenced materials and associated
+technologies must be obtained separately and may involve royalty payments.</p>
+</div>
+<div class="paragraph">
+<p>Khronos and Vulkan are registered trademarks, and SPIR, SPIR-V, and SYCL are
+trademarks of The Khronos Group Inc. OpenCL is a trademark of Apple Inc.,
+used under license by Khronos. OpenGL is a registered trademark and the
+OpenGL ES logo is a trademark of Hewlett Packard Enterprise, used under
+license by Khronos. All other product names, trademarks, and/or company
+names are used solely for identification and belong to their respective
+owners.</p>
 </div>
 </div>
 </div>
@@ -157,6 +174,9 @@ for identification and belong to their respective owners.</p>
 </div>
 <div class="paragraph">
 <p>Where requirements are written in the form f(&#177;x) = &#177;y, this means that f(x) = y and f(-x) = -y.</p>
+</div>
+<div class="paragraph">
+<p>In this specification, a floating-point type is any <strong>OpTypeFloat</strong> using the IEEE 754 encoding.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -787,7 +807,7 @@ Arc hyperbolic tangent; result is the inverse of tanh. The resulting value is Na
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>Atan2</strong><br>
 <br>
-Arc tangent. Result is an angle, in radians, whose tangent is <em>y</em> / <em>x</em>. The signs of <em>x</em> and <em>y</em> are used to determine what quadrant the angle is in. The range of result values is  [-&#120587;, &#120587;]. The resulting value is undefined if <em>x</em> and <em>y</em> are both 0.<br>
+Arc tangent. Result is an angle, in radians, whose tangent is <em>y</em> / <em>x</em>. The signs of <em>x</em> and <em>y</em> are used to determine what quadrant the angle is in. The range of result values is  [-&#120587;, &#120587;]. The resulting value is <em>poison</em> if <em>x</em> and <em>y</em> are both 0.<br>
 <br>
  The operand <em>x</em> and <em>y</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -812,7 +832,7 @@ Arc tangent. Result is an angle, in radians, whose tangent is <em>y</em> / <em>x
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>Pow</strong><br>
 <br>
-Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></sup>. The resulting value is undefined if <em>x</em> &lt; 0. Result is undefined if <em>x</em> = 0 and <em>y</em> &#8804; 0.<br>
+Result is <em>x</em> raised to the <em>y</em> power; <em>x</em><sup><em>y</em></sup>. The resulting value is <em>poison</em> if <em>x</em> &lt; 0. Result is <em>poison</em> if <em>x</em> = 0 and <em>y</em> &#8804; 0.<br>
 <br>
  The operand <em>x</em> and <em>y</em> must be a              scalar or vector whose component type is 16-bit or 32-bit floating-point.<br>
 <br>
@@ -1018,7 +1038,7 @@ The operand <em>x</em> must be a square matrix.<br>
 <tr>
 <td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>MatrixInverse</strong><br>
 <br>
-Result is a matrix that is the inverse of <em>x</em>. The resulting values are undefined if <em>x</em> is singular or poorly conditioned (nearly singular).<br>
+Result is a matrix that is the inverse of <em>x</em>. The resulting values are <em>poison</em> if <em>x</em> is singular or poorly conditioned (nearly singular).<br>
 <br>
 The operand <em>x</em> must be a square matrix.<br>
 <br>
@@ -1098,7 +1118,7 @@ Result is a structure containing both the fractional part of <em>x</em> and the 
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>FMin</strong><br>
 <br>
-Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, otherwise <em>x</em>. -0 compares less than +0. Which operand is the result is undefined if one of the operands is a NaN.<br>
+Result is <em>y</em> if <em>y</em> &lt; <em>x</em>, otherwise <em>x</em>. -0 compares less than +0. Which operand is the result if one of the operands is a NaN is implementation-dependent.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1169,7 +1189,7 @@ Result is <em>y</em> if <em>y</em> &lt; <em>x</em>; otherwise result is <em>x</e
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>FMax</strong><br>
 <br>
-Result is <em>y</em> if <em>x</em> &lt; <em>y</em>. otherwise <em>x</em>. -0 compares less than +0. Which operand is the result is undefined if one of the operands is a NaN.<br>
+Result is <em>y</em> if <em>x</em> &lt; <em>y</em>. otherwise <em>x</em>. -0 compares less than +0. Which operand is the result if one of the operands is a NaN is implementation-dependent.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1241,7 +1261,7 @@ Result is <em>y</em> if <em>x</em> &lt; <em>y</em>; otherwise result is <em>x</e
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><strong>FClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of FMin and FMax.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is <em>poison</em> if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of FMin and FMax.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1269,7 +1289,7 @@ Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting 
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><strong>UClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as unsigned integers. The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as unsigned integers. The resulting value is <em>poison</em> if <em>minVal</em> &gt; <em>maxVal</em>.<br>
 <br>
  <em>Result Type</em> and the type of the operands must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.</p></td>
 </tr>
@@ -1295,7 +1315,7 @@ Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</e
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><strong>SClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as signed integers. The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>), where <em>x</em>, <em>minVal</em> and <em>maxVal</em> are interpreted as signed integers. The resulting value is <em>poison</em> if <em>minVal</em> &gt; <em>maxVal</em>.<br>
 <br>
  <em>Result Type</em> and the type of the operands must both be integer scalar or integer vector types. <em>Result Type</em> and operand types must have the same number of components with the same component width. Results are computed per component.</p></td>
 </tr>
@@ -1378,7 +1398,7 @@ Result is 0.0 if <em>x</em> &#8804; <em>edge0</em> and 1.0 if <em>x</em> &#8805;
 <br>
 <em>t</em> * <em>t</em> * (3 - 2 * <em>t</em>), where <em>t</em> = clamp ((<em>x</em> - <em>edge0</em>) / (<em>edge1</em> - <em>edge0</em>), 0, 1)<br>
 <br>
-The resulting value is undefined if <em>edge0</em> &#8805; <em>edge1</em>.<br>
+The resulting value is <em>poison</em> if <em>edge0</em> &#8805; <em>edge1</em>.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -1437,11 +1457,11 @@ Computes <em>a</em> * <em>b</em> + <em>c</em>.<br>
 <br>
 Splits <em>x</em> into a floating-point significand in the range (-1.0, 0.5] or [0.5, 1.0) and an integral exponent of 2, such that:<br></p>
 <p class="tableblock"><em>x</em> = <em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
-<p class="tableblock">The <em>significand</em> is the instruction result. An <em>x</em> of <em>-0.0</em> results in a significand <em>-0.0</em>, while an <em>x</em> of <em>0.0</em> results in <em>0.0</em>. For a floating-point value that is an infinity or is not a number, the significand is undefined.<br>
+<p class="tableblock">The <em>significand</em> is the instruction result. An <em>x</em> of <em>-0.0</em> results in a significand <em>-0.0</em>, while an <em>x</em> of <em>0.0</em> results in <em>0.0</em>. For a floating-point value that is an infinity or is not a number, the significand is <em>poison</em>.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
-The exponent is returned through the pointer-parameter <em>exp</em>. The <em>exp</em> operand must be a pointer to a scalar or vector with integer component type, with 32-bit component width. The number of components in <em>x</em> and what <em>exp</em> points to must be the same. If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is undefined.<br>
+The exponent is returned through the pointer-parameter <em>exp</em>. The <em>exp</em> operand must be a pointer to a scalar or vector with integer component type, with 32-bit component width. The number of components in <em>x</em> and what <em>exp</em> points to must be the same. If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is <em>poison</em>.<br>
 <br>
 <em>Result Type</em> must be the same type as the type of <em>x</em>. Results are computed per component.</p></td>
 </tr>
@@ -1465,7 +1485,7 @@ The exponent is returned through the pointer-parameter <em>exp</em>. The <em>exp
 <br>
 Result is a structure containing <em>x</em> split into a floating-point significand in the range (-1.0, 0.5] or [0.5, 1.0) and an integral exponent of 2, such that:<br></p>
 <p class="tableblock"><em>x</em> = <em>significand</em> * 2<sup><em>exponent</em></sup><br></p>
-<p class="tableblock">If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is undefined. If <em>x</em> is <em>0.0</em>, the significand is <em>0.0</em>. If <em>x</em> is <em>-0.0</em>, the significand is <em>-0.0</em><br>
+<p class="tableblock">If <em>x</em> is a zero, the exponent is 0.0. If <em>x</em> is an infinity or a NaN, the exponent is <em>poison</em>. If <em>x</em> is <em>0.0</em>, the significand is <em>0.0</em>. If <em>x</em> is <em>-0.0</em>, the significand is <em>-0.0</em><br>
 <br>
 <em>Result Type</em> must be an <strong>OpTypeStruct</strong> with two members.  Member 0 must have the same type as the type of <em>x</em>. Member 0 holds the significand. Member 1 must be a scalar or vector with integer component type, with 32-bit component width. Member 1 holds the exponent. These two members and <em>x</em> must have the same number of components.<br>
 <br>
@@ -1490,7 +1510,7 @@ Result is a structure containing <em>x</em> split into a floating-point signific
 <br>
 Builds a floating-point number from <em>x</em> and the corresponding integral exponent of two in <em>exp</em>:<br></p>
 <p class="tableblock"><em>x</em> * 2<sup><em>exp</em></sup><br></p>
-<p class="tableblock">If this product is too large to be finitely represented in the floating-point type, the resulting value is undefined. <em>exp</em> is interpreted as a signed integer. If <em>exp</em> is greater than +128 (single precision), +1024 (double precision) or +16 (half precision), the resulting value is undefined. If <em>exp</em> is less than -126 (single precision), -1022 (double precision) or -14 (half precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
+<p class="tableblock">If this product is too large to be finitely represented in the floating-point type, the resulting value is <em>poison</em>. <em>exp</em> is interpreted as a signed integer. If <em>exp</em> is greater than +128 (single precision), +1024 (double precision) or +16 (half precision), the resulting value is <em>poison</em>. If <em>exp</em> is less than -126 (single precision), -1022 (double precision) or -14 (half precision), the result may be flushed to zero. Additionally, splitting the value into a significand and exponent using <strong>frexp</strong> and then reconstructing a floating-point value using <strong>ldexp</strong> should yield the original input for zero and all finite non-denormalized values.<br>
 <br>
  The operand <em>x</em> must be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2102,7 +2122,7 @@ Use of this instruction requires declaration of the <strong>InterpolationFunctio
 <tr>
 <td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>InterpolateAtSample</strong><br>
 <br>
-Result is the value of the input <em>interpolant</em> variable at the location of sample number <em>sample</em>. If sample <em>sample</em> does not exist, the position used to interpolate the input variable is undefined.<br>
+Result is the value of the input <em>interpolant</em> variable at the location of sample number <em>sample</em>. If sample <em>sample</em> does not exist, the position used to interpolate the input variable is <em>poison</em>.<br>
 <br>
  The operand <em>interpolant</em> must be a pointer to the <strong>Input</strong> Storage Class.<br>
 <br>
@@ -2219,7 +2239,7 @@ Result is <em>y</em> if <em>x</em> &lt; <em>y</em>, otherwise <em>x</em>. -0 com
 <tr>
 <td class="tableblock halign-left valign-top" colspan="4"><p class="tableblock"><strong>NClamp</strong><br>
 <br>
-Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is undefined if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of NMin and NMax.<br>
+Result is min(max(<em>x</em>, <em>minVal</em>), <em>maxVal</em>). The resulting value is <em>poison</em> if <em>minVal</em> &gt; <em>maxVal</em>. The semantics used by min() and max() are those of NMin and NMax.<br>
 <br>
  The operands must all be a scalar or vector whose component type is floating-point.<br>
 <br>
@@ -2495,13 +2515,23 @@ were historically disallowed, this is a backward compatible change.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_00_revision_16">3.19. Changes from Version 1.00, Revision 16</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Khronos SPIR-V Issue #912: Clarify that a floating-point type in this specification is an <strong>OpTypeFloat</strong> using the IEEE 754 encoding.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2025-05-05 20:40:32 UTC
+Last updated 2026-03-09 18:29:29 UTC
 </div>
 </div>
 </body>

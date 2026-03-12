@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="author" content="Ben Ashbaugh, Intel">
 <title>OpenCL Extended Instruction Set Specification</title>
 <style>
@@ -27,22 +27,22 @@ em, b, strong {
 <div class="details">
 <span id="author" class="author">Ben Ashbaugh, Intel</span><br>
 <span id="revnumber">version 1.00,</span>
-<span id="revdate">Revision 8</span>
+<span id="revdate">Revision 9</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_binary_form">2. Binary Form</a>
+<li><a href="#Introduction">1. Introduction</a></li>
+<li><a href="#Binary">2. Binary Form</a>
 <ul class="sectlevel2">
-<li><a href="#_math_extended_instructions">2.1. Math extended instructions</a></li>
-<li><a href="#_integer_instructions">2.2. Integer instructions</a></li>
-<li><a href="#_common_instructions">2.3. Common instructions</a></li>
-<li><a href="#_geometric_instructions">2.4. Geometric instructions</a></li>
-<li><a href="#_relational_instructions">2.5. Relational instructions</a></li>
-<li><a href="#_vector_data_load_and_store_instructions">2.6. Vector Data Load and Store instructions</a></li>
-<li><a href="#_miscellaneous_vector_instructions">2.7. Miscellaneous Vector instructions</a></li>
-<li><a href="#_misc_instructions">2.8. Misc instructions</a></li>
+<li><a href="#Math">2.1. Math extended instructions</a></li>
+<li><a href="#Integer">2.2. Integer instructions</a></li>
+<li><a href="#Common">2.3. Common instructions</a></li>
+<li><a href="#Geometric">2.4. Geometric instructions</a></li>
+<li><a href="#Relational">2.5. Relational instructions</a></li>
+<li><a href="#Vector">2.6. Vector Data Load and Store instructions</a></li>
+<li><a href="#MiscVec">2.7. Miscellaneous Vector instructions</a></li>
+<li><a href="#Misc">2.8. Misc instructions</a></li>
 </ul>
 </li>
 <li><a href="#_appendix_a_changes_and_tbd">3. Appendix A: Changes and TBD</a>
@@ -57,6 +57,7 @@ em, b, strong {
 <li><a href="#_changes_from_version_1_0_revision_5">3.8. Changes from Version 1.0, Revision 5</a></li>
 <li><a href="#_changes_from_version_1_0_revision_6">3.9. Changes from Version 1.0, Revision 6</a></li>
 <li><a href="#_changes_from_version_1_0_revision_7">3.10. Changes from Version 1.0, Revision 7</a></li>
+<li><a href="#_changes_from_version_1_0_revision_8">3.11. Changes from Version 1.0, Revision 8</a></li>
 </ul>
 </li>
 </ul>
@@ -76,76 +77,92 @@ em, b, strong {
 </div>
 </div>
 <div class="paragraph">
-<p>Copyright 2014-2025 The Khronos Group Inc.</p>
+<p>Copyright 2014-2026 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
-<p>This Specification is protected by copyright laws and contains material proprietary to Khronos.
-Except as described by these terms, it or any components may not be reproduced, republished,
-distributed, transmitted, displayed, broadcast or otherwise exploited in any manner without the
+<p>This Specification is protected by copyright laws and contains material
+proprietary to Khronos. Except as described by these terms, it or any
+components may not be reproduced, republished, distributed, transmitted,
+displayed, broadcast or otherwise exploited in any manner without the
 express prior written permission of Khronos.</p>
 </div>
 <div class="paragraph">
-<p>This Specification has been created under the Khronos Intellectual Property Rights
-Policy, which is Attachment A of the Khronos Group Membership Agreement available at
-www.khronos.org/files/member_agreement.pdf.</p>
-</div>
-<div class="paragraph">
 <p>Khronos grants a conditional copyright license to use and reproduce the
-unmodified Specification for any purpose, without fee or royalty, EXCEPT no licenses
-to any patent, trademark or other intellectual property rights are granted under these
-terms. Parties desiring to implement the Specification and make use of Khronos trademarks
-in relation to that implementation, and receive reciprocal patent license protection under
-the Khronos Intellectual Property Rights Policy must become Adopters and confirm the
-implementation as conformant under the process defined by Khronos for this Specification;
-see <a href="https://www.khronos.org/adopters" class="bare">https://www.khronos.org/adopters</a>.</p>
+unmodified Specification for any purpose, without fee or royalty, EXCEPT no
+licenses to any patent, trademark or other intellectual property rights are
+granted under these terms.</p>
 </div>
 <div class="paragraph">
-<p>Khronos makes no, and expressly disclaims any, representations or warranties,
-express or implied, regarding this Specification, including, without limitation:
-merchantability, fitness for a particular purpose, non-infringement of any
-intellectual property, correctness, accuracy, completeness, timeliness, and
-reliability. Under no circumstances will Khronos, or any of its Promoters,
-Contributors or Members, or their respective partners, officers, directors,
-employees, agents or representatives be liable for any damages, whether direct,
-indirect, special or consequential damages for lost revenues, lost profits, or
-otherwise, arising from or in connection with these materials.</p>
+<p>Khronos makes no, and expressly disclaims any, representations or
+warranties, express or implied, regarding this Specification, including,
+without limitation: merchantability, fitness for a particular purpose,
+non-infringement of any intellectual property, correctness, accuracy,
+completeness, timeliness, and reliability. Under no circumstances will
+Khronos, or any of its Promoters, Contributors or Members, or their
+respective partners, officers, directors, employees, agents or
+representatives be liable for any damages, whether direct, indirect, special
+or consequential damages for lost revenues, lost profits, or otherwise,
+arising from or in connection with these materials.</p>
 </div>
 <div class="paragraph">
-<p>This Specification contains substantially unmodified functionality from, and is a successor
-to, Khronos specifications including all versions of "The SPIR Specification",
-"The OpenGL Shading Language", "The OpenGL ES Shading Language", as well as all Khronos
-OpenCL API and OpenCL programming language specifications.</p>
+<p>This Specification has been created under the Khronos Intellectual Property
+Rights Policy, which is Attachment A of the Khronos Group Membership
+Agreement available at <a href="https://www.khronos.org/files/member_agreement.pdf" class="bare">https://www.khronos.org/files/member_agreement.pdf</a>.
+Parties desiring to implement the Specification and make use of Khronos
+trademarks in relation to that implementation, and receive reciprocal patent
+license protection under the Khronos Intellectual Property Rights Policy
+must become Adopters and confirm the implementation as conformant under the
+process defined by Khronos for this Specification; see
+<a href="https://www.khronos.org/adopters" class="bare">https://www.khronos.org/adopters</a>.</p>
 </div>
 <div class="paragraph">
-<p>The Khronos Intellectual Property Rights Policy defines the terms <em>Scope</em>, <em>Compliant Portion</em>,
-and <em>Necessary Patent Claims</em>.</p>
+<p>This Specification contains substantially unmodified functionality from, and
+is a successor to, Khronos specifications including all versions of &#8220;The
+SPIR Specification&#8221;, &#8220;The OpenGL Shading Language&#8221;, and &#8220;The OpenGL ES
+Shading Language&#8221;, as well as all Khronos OpenCL API and OpenCL programming
+language specifications.</p>
 </div>
 <div class="paragraph">
-<p>Where this Specification uses technical terminology, defined in the Glossary or otherwise,
-that refer to enabling technologies that are not expressly set forth in this Specification,
-those enabling technologies are EXCLUDED from the Scope of this Specification. For clarity,
-enabling technologies not disclosed with particularity in this Specification
-(e.g. semiconductor manufacturing technology, hardware architecture, processor architecture
-or microarchitecture, memory architecture, compiler technology, object oriented technology,
-basic operating system technology, compression technology, algorithms, and so on) are NOT
-to be considered expressly set forth; only those application program interfaces and data
-structures disclosed with particularity are included in the Scope of this Specification.</p>
+<p>The Khronos Intellectual Property Rights Policy defines the terms 'Scope',
+'Compliant Portion', and 'Necessary Patent Claims'.</p>
 </div>
 <div class="paragraph">
-<p>For purposes of the Khronos Intellectual Property Rights Policy as it relates to the
-definition of Necessary Patent Claims, all recommended or optional features, behaviors
-and functionality set forth in this Specification, if implemented, are considered to
-be included as Compliant Portions.</p>
+<p>Where this Specification uses technical terminology, defined in the Glossary
+or otherwise, that refer to enabling technologies that are not expressly set
+forth in this Specification, those enabling technologies are EXCLUDED from
+the Scope of this Specification. For clarity, enabling technologies not
+disclosed with particularity in this Specification (e.g. semiconductor
+manufacturing technology, hardware architecture, processor architecture or
+microarchitecture, memory architecture, compiler technology, object oriented
+technology, basic operating system technology, compression technology,
+algorithms, and so on) are NOT to be considered expressly set forth; only
+those application program interfaces and data structures disclosed with
+particularity are included in the Scope of this Specification.</p>
 </div>
 <div class="paragraph">
-<p>Khronos&#174; and Vulkan&#174; are registered trademarks, and ANARI&#8482;, WebGL&#8482;, glTF&#8482;, NNEF&#8482;, OpenVX&#8482;,  SPIR&#8482;,
-SPIR-V&#8482;, SYCL&#8482;, OpenVG&#8482;, Vulkan SC&#8482;, 3D Commerce&#8482; and Kamaros&#8482; are trademarks of The Khronos Group Inc.
-OpenXR&#8482; is a trademark owned by The Khronos Group Inc. and is registered as a trademark in
-China, the European Union, Japan and the United Kingdom. OpenCL&#8482; is a trademark of Apple Inc. used
-under license by Khronos. OpenGL&#174; is a registered trademark and the OpenGL ES&#8482; and OpenGL SC&#8482; logos
-are trademarks of Hewlett Packard Enterprise used under license by Khronos. ASTC is a trademark of
-ARM Holdings PLC. All other product names, trademarks, and/or company names are used solely
-for identification and belong to their respective owners.</p>
+<p>For purposes of the Khronos Intellectual Property Rights Policy as it
+relates to the definition of Necessary Patent Claims, all recommended or
+optional features, behaviors and functionality set forth in this
+Specification, if implemented, are considered to be included as Compliant
+Portions.</p>
+</div>
+<div class="paragraph">
+<p>Where this Specification identifies specific sections of external
+references, only those specifically identified sections define normative
+functionality. The Khronos Intellectual Property Rights Policy excludes
+external references to materials and associated enabling technology not
+created by Khronos from the Scope of this Specification, and any licenses
+that may be required to implement such referenced materials and associated
+technologies must be obtained separately and may involve royalty payments.</p>
+</div>
+<div class="paragraph">
+<p>Khronos and Vulkan are registered trademarks, and SPIR, SPIR-V, and SYCL are
+trademarks of The Khronos Group Inc. OpenCL is a trademark of Apple Inc.,
+used under license by Khronos. OpenGL is a registered trademark and the
+OpenGL ES logo is a trademark of Hewlett Packard Enterprise, used under
+license by Khronos. All other product names, trademarks, and/or company
+names are used solely for identification and belong to their respective
+owners.</p>
 </div>
 <div style="page-break-after: always;"></div>
 <h3 id="_contributors_and_acknowledgments" class="float">Contributors and Acknowledgments</h3>
@@ -204,7 +221,7 @@ for identification and belong to their respective owners.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">1. <a id="Introduction"></a>Introduction</h2>
+<h2 id="Introduction">1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This is the specification of <strong>OpenCL.std</strong> extended instruction set.</p>
@@ -221,7 +238,7 @@ for identification and belong to their respective owners.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_binary_form">2. <a id="Binary"></a>Binary Form</h2>
+<h2 id="Binary">2. Binary Form</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section contains the semantics and exact form of execution of OpenCL extended instructions using the <strong>OpExtInst</strong> instruction.<br></p>
@@ -235,10 +252,10 @@ for identification and belong to their respective owners.</p>
 <p><em>void</em> denote an <strong>OpTypeVoid</strong>.<br></p>
 </li>
 <li>
-<p><em>half</em>, <em>float</em> and <em>double</em> denote an <strong>OpTypeFloat</strong> with  a width of 16, 32 and 64 bits respectively.<br></p>
+<p><em>half</em>, <em>float</em> and <em>double</em> denote an <strong>OpTypeFloat</strong> with a width of 16, 32 and 64 bits using the IEEE 754 encoding respectively.<br></p>
 </li>
 <li>
-<p><em>i8</em>, <em>i16</em>, <em>i32</em> and <em>i64</em> denote an <strong>OpTypeInt</strong> with  a width of 8, 16, 32 and 64 bits respectively.<br></p>
+<p><em>i8</em>, <em>i16</em>, <em>i32</em> and <em>i64</em> denote an <strong>OpTypeInt</strong> with a width of 8, 16, 32 and 64 bits respectively.<br></p>
 </li>
 <li>
 <p><em>bool</em> denotes an <strong>OpTypeBool</strong>.<br></p>
@@ -297,7 +314,7 @@ for identification and belong to their respective owners.</p>
 </div>
 <div style="page-break-after: always;"></div>
 <div class="sect2">
-<h3 id="_math_extended_instructions">2.1. <a id="Math"></a>Math extended instructions</h3>
+<h3 id="Math">2.1. Math extended instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of external math instructions. The external math instructions are categorized into the following:<br></p>
 </div>
@@ -2613,7 +2630,7 @@ Round <em>x</em> to integral value using the round to zero rounding mode.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="half_cos"></a><strong>half_cos</strong><br>
 <br>
-Compute cosine of <em>x</em> radians. The resulting value is undefined if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.ha
+Compute cosine of <em>x</em> radians. The resulting value is <em>poison</em> if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.ha
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>float</em> or <em>vector(2,3,4,8,16)</em> of <em>float</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -2974,7 +2991,7 @@ Compute the inverse square root of <em>x</em>.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="half_sin"></a><strong>half_sin</strong><br>
 <br>
-Compute the sine of <em>x</em> radians. The resulting value is undefined if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.
+Compute the sine of <em>x</em> radians. The resulting value is <em>poison</em> if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>float</em> or <em>vector(2,3,4,8,16)</em> of <em>float</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -3038,7 +3055,7 @@ Compute the square root of <em>x</em>.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="7"><p class="tableblock"><a id="half_tan"></a><strong>half_tan</strong><br>
 <br>
-Compute tangent value of <em>x</em> radians. The resulting values are undefined if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.
+Compute tangent value of <em>x</em> radians. The resulting values are <em>poison</em> if <em>x</em> is not in the range -2<sup>16</sup> &#8230;&#8203; +2<sup>16</sup>.
 <br></p>
 <p class="tableblock"><em>Result Type</em> and <em>x</em> must be <em>float</em> or <em>vector(2,3,4,8,16)</em> of <em>float</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -3530,7 +3547,7 @@ Compute tangent value of <em>x</em> radians over an implementation-defined range
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_integer_instructions">2.2. <a id="Integer"></a>Integer instructions</h3>
+<h3 id="Integer">2.2. Integer instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of integer instructions that take scalar or vector arguments. The vector versions of the integer instructions operate component-wise.  The description is per-component.<br></p>
 </div>
@@ -3829,7 +3846,7 @@ Returns the value of (<em>x</em> + <em>y</em> + 1) &gt;&gt; 1, where <em>x</em> 
 <tr>
 <td class="tableblock halign-left valign-top" colspan="9"><p class="tableblock"><a id="s_clamp"></a><strong>s_clamp</strong><br>
 <br>
-Returns <em>s_min</em>(<em>s_max</em>(<em>x</em>,<em>minval</em>),<em>maxval</em>), where <em>x</em>, <em>minval</em>, and <em>maxval</em> are treated as signed integers. The resulting values are undefined if <em>minval</em> &gt; <em>maxval</em>.
+Returns <em>s_min</em>(<em>s_max</em>(<em>x</em>,<em>minval</em>),<em>maxval</em>), where <em>x</em>, <em>minval</em>, and <em>maxval</em> are treated as signed integers. The resulting values are <em>poison</em> if <em>minval</em> &gt; <em>maxval</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em>, <em>minval</em> and <em>maxval</em> must be <em>integer</em> or <em>vector(2,3,4,8,16)</em> of <em>integer</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -3867,7 +3884,7 @@ Returns <em>s_min</em>(<em>s_max</em>(<em>x</em>,<em>minval</em>),<em>maxval</em
 <tr>
 <td class="tableblock halign-left valign-top" colspan="9"><p class="tableblock"><a id="u_clamp"></a><strong>u_clamp</strong><br>
 <br>
-Returns <em>u_min</em>(<em>u_max</em>(<em>x</em>,<em>minval</em>),<em>maxval</em>), where <em>x</em>, <em>minval</em>, and <em>maxval</em> are treated as unsigned integers. The resulting values are undefined if <em>minval</em> &gt; <em>maxval</em>.
+Returns <em>u_min</em>(<em>u_max</em>(<em>x</em>,<em>minval</em>),<em>maxval</em>), where <em>x</em>, <em>minval</em>, and <em>maxval</em> are treated as unsigned integers. The resulting values are <em>poison</em> if <em>minval</em> &gt; <em>maxval</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em>, <em>minval</em> and <em>maxval</em> must be <em>integer</em> or <em>vector(2,3,4,8,16)</em> of <em>integer</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -4764,7 +4781,7 @@ Returns <em>mul_hi</em>(<em>a</em>, <em>b</em>) + <em>c</em>, where <em>a</em>,<
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_common_instructions">2.3. <a id="Common"></a>Common instructions</h3>
+<h3 id="Common">2.3. Common instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of common instructions that take scalar or vector arguments. The vector versions of the integer instructions operate component-wise.  The description is per-component. The common instructions are implemented using the round to nearest even rounding mode.<br></p>
 </div>
@@ -4787,7 +4804,7 @@ Returns <em>mul_hi</em>(<em>a</em>, <em>b</em>) + <em>c</em>, where <em>a</em>,<
 <tr>
 <td class="tableblock halign-left valign-top" colspan="9"><p class="tableblock"><a id="fclamp"></a><strong>fclamp</strong><br>
 <br>
-Returns <em>fmin</em>(<em>fmax</em>(<em>x</em>, <em>minval</em>), <em>maxval</em>). The resulting values are undefined if <em>minval</em> &gt; <em>maxval</em>.
+Returns <em>fmin</em>(<em>fmax</em>(<em>x</em>, <em>minval</em>), <em>maxval</em>). The resulting values are <em>poison</em> if <em>minval</em> &gt; <em>maxval</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em>, <em>minval</em> and <em>maxval</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -4856,7 +4873,7 @@ Converts <em>radians</em> to degrees, i.e. (180 / &#120587;) * <em>radians</em>.
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="fmax_common"></a><strong>fmax_common</strong><br>
 <br>
-Returns <em>y</em> if <em>x</em> &lt; <em>y</em>, otherwise it returns <em>x</em>. If x or y are infinite or NaN, the resulting values are undefined.
+Returns <em>y</em> if <em>x</em> &lt; <em>y</em>, otherwise it returns <em>x</em>. If x or y are infinite or NaN, the resulting values are <em>poison</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em> and <em>y</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -4892,7 +4909,7 @@ Returns <em>y</em> if <em>x</em> &lt; <em>y</em>, otherwise it returns <em>x</em
 <tr>
 <td class="tableblock halign-left valign-top" colspan="8"><p class="tableblock"><a id="fmin_common"></a><strong>fmin_common</strong><br>
 <br>
-Returns <em>y</em> if <em>y</em> &lt; <em>x</em>, otherwise it returns <em>x</em>. If x or y are infinite or NaN, the resulting values are undefined.
+Returns <em>y</em> if <em>y</em> &lt; <em>x</em>, otherwise it returns <em>x</em>. If x or y are infinite or NaN, the resulting values are <em>poison</em>.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>x</em> and <em>y</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p></td>
@@ -5041,7 +5058,7 @@ Returns 0.0 if <em>x</em> &#8804; <em>edge<sub>0</sub></em> and 1.0 if <em>x</em
 <p class="tableblock"> t = <em>fclamp</em>((<em>x</em> - <em>edge<sub>0</sub></em>) / (<em>edge<sub>1</sub></em> - <em>edge<sub>0</sub></em>), 0, 1);<br></p>
 <p class="tableblock"> return t * t * (3 - 2 * t);<br>
 <br>
-The resulting values are undefined if <em>edge<sub>0</sub></em> &#8805; <em>edge<sub>1</sub></em> or if <em>x</em>, <em>edge<sub>0</sub></em> or <em>edge<sub>1</sub></em> is a NaN.
+The resulting values are <em>poison</em> if <em>edge<sub>0</sub></em> &#8805; <em>edge<sub>1</sub></em> or if <em>x</em>, <em>edge<sub>0</sub></em> or <em>edge<sub>1</sub></em> is a NaN.
 <br></p>
 <p class="tableblock"><em>Result Type</em>, <em>edge<sub>0</sub></em>, <em>edge<sub>1</sub></em> and <em>x</em> must be <em>floating-point</em> or <em>vector(2,3,4,8,16)</em> of <em>floating-point</em> values. <br></p>
 <p class="tableblock">All of the operands, including the <em>Result Type</em> operand, must be of the same type.<br></p>
@@ -5099,7 +5116,7 @@ Returns 1.0 if <em>x</em> &gt; 0, -0.0 if <em>x</em> = -0.0, +0.0 if <em>x</em> 
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_geometric_instructions">2.4. <a id="Geometric"></a>Geometric instructions</h3>
+<h3 id="Geometric">2.4. Geometric instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of geometric instructions. In this section <em>x</em>,<em>y</em>,<em>z</em> and <em>w</em> denote the first, second, third and fourth component respectively, of vectors with 3 and four components. The geometric instructions are implemented using the round to nearest even rounding mode.<br></p>
 </div>
@@ -5339,7 +5356,7 @@ The result shall be within 8192 ulps error from the infinitely precise result of
 <p class="tableblock">else {  result = <em>p</em> / <em>sqrt</em>(<em>p</em>.x<sup>2</sup> + <em>p</em>.y<sup>2</sup> + &#8230;&#8203;); }<br>
 <br>
 with the following exceptions :<br></p>
-<p class="tableblock">1) If the sum of squares is greater than FLT_MAX then the value of the floating-point values in the result vector are undefined.<br></p>
+<p class="tableblock">1) If the sum of squares is greater than FLT_MAX then the value of the floating-point values in the result vector are <em>poison</em>.<br></p>
 <p class="tableblock">2) If the sum of squares is less than FLT_MIN then the implementation may return back <em>p</em>.<br></p>
 <p class="tableblock">3) If the device is in "denorms are flushed to zero" mode, individual operand elements with magnitude less than <em>sqrt</em>(FLT_MIN) may be flushed to zero before proceeding with the calculation.
 <br></p>
@@ -5362,7 +5379,7 @@ with the following exceptions :<br></p>
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_relational_instructions">2.5. <a id="Relational"></a>Relational instructions</h3>
+<h3 id="Relational">2.5. Relational instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of relational instructions that take scalar or vector arguments. The vector versions of the integer instructions operate component-wise.  The description is per-component. <br></p>
 </div>
@@ -5448,7 +5465,7 @@ For a scalar type, the result is <em>a</em> if <em>c</em> is zero, otherwise it 
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_vector_data_load_and_store_instructions">2.6. <a id="Vector"></a>Vector Data Load and Store instructions</h3>
+<h3 id="Vector">2.6. Vector Data Load and Store instructions</h3>
 <div class="paragraph">
 <p>This section describes the list of instructions that allow reading and writing of vector types from a pointer to memory. <br></p>
 </div>
@@ -5930,7 +5947,7 @@ Converts the <em>data</em> vector of float or vector of double values to a vecto
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_miscellaneous_vector_instructions">2.7. <a id="MiscVec"></a>Miscellaneous Vector instructions</h3>
+<h3 id="MiscVec">2.7. Miscellaneous Vector instructions</h3>
 <div class="paragraph">
 <p>This section describes additional vector instructions. <br></p>
 </div>
@@ -6020,7 +6037,7 @@ Construct a permutation of components from <em>x</em> and <em>y</em> vector valu
 <div style="page-break-after: always;"></div>
 </div>
 <div class="sect2">
-<h3 id="_misc_instructions">2.8. <a id="Misc"></a>Misc instructions</h3>
+<h3 id="Misc">2.8. Misc instructions</h3>
 <div class="paragraph">
 <p>This section describes additional miscellaneous instructions. <br></p>
 </div>
@@ -6316,13 +6333,30 @@ vector data load/store instructions for environments that allow it.</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_changes_from_version_1_0_revision_8">3.11. Changes from Version 1.0, Revision 8</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fixed internal bugs:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Issue 912 - clarify that the floating-point types in this specification use the IEEE 754 encoding.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2025-01-17 10:18:36 UTC
+Last updated 2026-03-09 18:29:29 UTC
 </div>
 </div>
 </body>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="author" content="Lei Zhang, Google">
 <title>SPIR-V Machine-readable Grammar</title>
 <style>
@@ -60,7 +60,7 @@ em, b, strong {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright (c) 2014-2025 The Khronos Group Inc.</p>
+<p>Copyright 2014-2026 The Khronos Group Inc.</p>
 </div>
 <div class="paragraph">
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -192,7 +192,7 @@ Section for more details.</p>
 <dd>
 <p>A list of objects. Each object contains information about a specific
 operand kind, including its name, category, possible values, required
-capabilities, used in the operand layouts of <a href="#instruction">instruction</a>s. See the <a href="#operand-kind">JSON Objects for Operand Kinds</a>
+capabilities, used in the operand layouts of <a href="#instruction">instructions</a>. See the <a href="#operand-kind">JSON Objects for Operand Kinds</a>
 Section for more details.</p>
 </dd>
 </dl>
@@ -261,8 +261,8 @@ or more times.</p>
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
-a required <a href="#capability">capability</a> for this instruction.</p>
+<p>A list of strings. <em>Optional</em>. If this field exists, at least one of the named
+<a href="#capability">capabilities</a> must be declared to use this instruction.</p>
 </dd>
 <dt class="hdlist1"><code>aliases</code></dt>
 <dd>
@@ -391,8 +391,8 @@ Must be unique in all <code>value</code> in the <a href="#operand-kind">operand 
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
-a required <a href="#capability">capability</a> for this bitflag.</p>
+<p>A list of strings. <em>Optional</em>. If this field exists, at least one of the named
+<a href="#capability">capabilities</a> must be declared to use this bitflag.</p>
 </dd>
 <dt class="hdlist1"><code>parameters</code></dt>
 <dd>
@@ -462,8 +462,10 @@ Must be unique in all <code>value</code> in the <a href="#operand-kind">operand 
 </dd>
 <dt class="hdlist1"><code>capabilities</code></dt>
 <dd>
-<p>A list of strings. <em>Optional</em>. If this field exists, each string is the name of
-a required <a href="#capability">capability</a> for this enumerant.</p>
+<p>A list of strings. <em>Optional</em>. If this field exists, at least one of the named
+<a href="#capability">capabilities</a> must be declared to use this enumerant.
+For enumerants in the <a href="#capability"><strong>Capability</strong></a> operand kind, each string
+names a capability that is additionally declared when this capability is declared.</p>
 </dd>
 <dt class="hdlist1"><code>extensions</code></dt>
 <dd>
@@ -606,7 +608,7 @@ for an example of how this grammar can be used.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-24 21:59:44 UTC
+Last updated 2026-03-02 19:41:31 UTC
 </div>
 </div>
 </body>
