@@ -8,6 +8,11 @@
 <meta name="author" content="Alexey Sotkin, Intel">
 <title>OpenCL.DebugInfo.100 Information Extended Instruction Set Specification</title>
 <style>
+/*
+ * Copyright 2015-2026 The Khronos Group Inc.
+ * SPDX-License-Identifier: CC-BY-4.0
+ */
+
 @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";
 @import "https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css";
 
@@ -17,6 +22,13 @@ p {
 }
 em, b, strong {
     color: darkblue;
+}
+table.fixedtable {
+    table-layout:fixed
+}
+table.fixedtable td.tableblock>.content {
+    margin-bottom:1.25em;
+    word-wrap:break-word
 }
 
 </style>
@@ -217,7 +229,7 @@ owners.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This is the specification of the <strong>OpenCL.DebugInfo.100</strong> extended instruction
@@ -261,7 +273,7 @@ OpenCL C/C++ kernels</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_terms">1.1. Terms</h3>
+<h3 id="_terms"><a class="anchor" href="#_terms"></a>1.1. Terms</h3>
 <div class="paragraph">
 <p><a id="LexicalScope"></a><em>Lexical scope:</em> One of
 <a href="#DebugCompilationUnit"><strong>DebugCompilationUnit</strong></a>,
@@ -282,7 +294,7 @@ support source level debugging.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_binary_form">2. Binary Form</h2>
+<h2 id="_binary_form"><a class="anchor" href="#_binary_form"></a>2. Binary Form</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section contains the semantics of the debug info extended instructions
@@ -314,7 +326,7 @@ Debug info for source language opaque types is represented by
 must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </div>
 <div class="sect2">
-<h3 id="_removing_instructions">2.1. Removing Instructions</h3>
+<h3 id="_removing_instructions"><a class="anchor" href="#_removing_instructions"></a>2.1. Removing Instructions</h3>
 <div class="paragraph">
 <p>All instructions in this extended set have no semantic impact and can be
 safely removed. This is easily done if all debug instructions are removed
@@ -328,7 +340,7 @@ These can be replaced with the <em>Result &lt;id&gt;</em> of the
 </div>
 </div>
 <div class="sect2">
-<h3 id="_forward_references">2.2. Forward references</h3>
+<h3 id="_forward_references"><a class="anchor" href="#_forward_references"></a>2.2. Forward references</h3>
 <div class="paragraph">
 <p>Forward references (an operand <em>&lt;id&gt;</em> that appears before the <em>Result &lt;id&gt;</em>
 defining it) are generally not allowed, except for the following exceptions:</p>
@@ -351,10 +363,10 @@ reference to an <strong>OpFunction</strong>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_enumerations">3. Enumerations</h2>
+<h2 id="_enumerations"><a class="anchor" href="#_enumerations"></a>3. Enumerations</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="InstEnum">3.1. Instruction Enumeration</h3>
+<h3 id="InstEnum"><a class="anchor" href="#InstEnum"></a>3.1. Instruction Enumeration</h3>
 <table class="tableblock frame-all grid-all stripes-even" style="width: 50%;">
 <colgroup>
 <col style="width: 12.5%;">
@@ -516,7 +528,7 @@ reference to an <strong>OpFunction</strong>.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="DebugFlags">3.2. Debug Info Flags</h3>
+<h3 id="DebugFlags"><a class="anchor" href="#DebugFlags"></a>3.2. Debug Info Flags</h3>
 <table class="tableblock frame-all grid-all stripes-even" style="width: 50%;">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -605,7 +617,7 @@ reference to an <strong>OpFunction</strong>.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="BaseTypeAttributeEncoding">3.3. Base Type Attribute Encodings</h3>
+<h3 id="BaseTypeAttributeEncoding"><a class="anchor" href="#BaseTypeAttributeEncoding"></a>3.3. Base Type Attribute Encodings</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeBasic"><strong>DebugTypeBasic</strong></a><br></p>
 </div>
@@ -656,7 +668,7 @@ reference to an <strong>OpFunction</strong>.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="CompositeTypes">3.4. Composite Types</h3>
+<h3 id="CompositeTypes"><a class="anchor" href="#CompositeTypes"></a>3.4. Composite Types</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a><br></p>
 </div>
@@ -687,7 +699,7 @@ reference to an <strong>OpFunction</strong>.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="TypeQualifiers">3.5. Type Qualifiers</h3>
+<h3 id="TypeQualifiers"><a class="anchor" href="#TypeQualifiers"></a>3.5. Type Qualifiers</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeQualifier"><strong>DebugTypeQualifier</strong></a><br></p>
 </div>
@@ -722,7 +734,7 @@ reference to an <strong>OpFunction</strong>.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="Operation">3.6. Debug Operations</h3>
+<h3 id="Operation"><a class="anchor" href="#Operation"></a>3.6. Debug Operations</h3>
 <div class="paragraph">
 <p>These operations are used to form a DWARF expression.
 Such expressions provide information about the current location
@@ -817,7 +829,7 @@ Used by <a href="#DebugOperation"><strong>DebugOperation</strong></a><br></p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="ImportedEntities">3.7. Imported Entities</h3>
+<h3 id="ImportedEntities"><a class="anchor" href="#ImportedEntities"></a>3.7. Imported Entities</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugImportedEntity"><strong>DebugImportedEntity</strong></a><br></p>
 </div>
@@ -846,10 +858,10 @@ Used by <a href="#DebugOperation"><strong>DebugOperation</strong></a><br></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_instructions">4. Instructions</h2>
+<h2 id="_instructions"><a class="anchor" href="#_instructions"></a>4. Instructions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_missing_debugging_information">4.1. Missing Debugging Information</h3>
+<h3 id="_missing_debugging_information"><a class="anchor" href="#_missing_debugging_information"></a>4.1. Missing Debugging Information</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -881,7 +893,7 @@ unknown, not available, or not applicable.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_compilation_unit">4.2. Compilation Unit</h3>
+<h3 id="_compilation_unit"><a class="anchor" href="#_compilation_unit"></a>4.2. Compilation Unit</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 4.7619%;">
@@ -975,7 +987,7 @@ unknown, not available, or not applicable.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_type_instructions">4.3. Type instructions</h3>
+<h3 id="_type_instructions"><a class="anchor" href="#_type_instructions"></a>4.3. Type instructions</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 5.5555%;">
@@ -1624,7 +1636,7 @@ Describe the type of an object that is a pointer to a structure or class member.
 </table>
 </div>
 <div class="sect2">
-<h3 id="_templates">4.4. Templates</h3>
+<h3 id="_templates"><a class="anchor" href="#_templates"></a>4.4. Templates</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -1835,7 +1847,7 @@ Describe the expanded template parameter pack in a variadic template instantiati
 </table>
 </div>
 <div class="sect2">
-<h3 id="_global_variables">4.5. Global Variables</h3>
+<h3 id="_global_variables"><a class="anchor" href="#_global_variables"></a>4.5. Global Variables</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 2.5641%;">
@@ -1922,7 +1934,7 @@ If the source global variable represents a defining declaration
 </table>
 </div>
 <div class="sect2">
-<h3 id="_functions">4.6. Functions</h3>
+<h3 id="_functions"><a class="anchor" href="#_functions"></a>4.6. Functions</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 3.0303%;">
@@ -2078,7 +2090,7 @@ Describe a function or method definition. The <em>Result &lt;id&gt;</em> of this
 </table>
 </div>
 <div class="sect2">
-<h3 id="_location_information">4.7. Location Information</h3>
+<h3 id="_location_information"><a class="anchor" href="#_location_information"></a>4.7. Location Information</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 4.1666%;">
@@ -2303,7 +2315,7 @@ Declare to where instructions grouped together by a <a href="#DebugScope"><stron
 </table>
 </div>
 <div class="sect2">
-<h3 id="_local_variables">4.8. Local Variables</h3>
+<h3 id="_local_variables"><a class="anchor" href="#_local_variables"></a>4.8. Local Variables</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 3.0303%;">
@@ -2578,7 +2590,7 @@ Represent a DWARF operation that operates on a stack of values.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_macros">4.9. Macros</h3>
+<h3 id="_macros"><a class="anchor" href="#_macros"></a>4.9. Macros</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 4.7619%;">
@@ -2677,7 +2689,7 @@ Represent a DWARF operation that operates on a stack of values.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_imported_entities">4.10. Imported Entities</h3>
+<h3 id="_imported_entities"><a class="anchor" href="#_imported_entities"></a>4.10. Imported Entities</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 3.3333%;">
@@ -2745,7 +2757,7 @@ Represent a DWARF operation that operates on a stack of values.<br>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_validation_rules">5. Validation Rules</h2>
+<h2 id="_validation_rules"><a class="anchor" href="#_validation_rules"></a>5. Validation Rules</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>None.</p>
@@ -2753,7 +2765,7 @@ Represent a DWARF operation that operates on a stack of values.<br>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_issues">6. Issues</h2>
+<h2 id="_issues"><a class="anchor" href="#_issues"></a>6. Issues</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -2774,7 +2786,7 @@ somewhere else in the module?</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_revision_history">7. Revision History</h2>
+<h2 id="_revision_history"><a class="anchor" href="#_revision_history"></a>7. Revision History</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-rows stripes-even stretch">
 <colgroup>
@@ -2910,7 +2922,7 @@ somewhere else in the module?</p>
 <div id="footer">
 <div id="footer-text">
 Version 2.00<br>
-Last updated 2026-02-20 22:24:17 UTC
+Last updated 2026-07-15 13:47:15 -0400
 </div>
 </div>
 </body>

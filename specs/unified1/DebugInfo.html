@@ -8,6 +8,11 @@
 <meta name="author" content="Alexey Sotkin, Intel">
 <title>Debug Information Extended Instruction Set Specification</title>
 <style>
+/*
+ * Copyright 2015-2026 The Khronos Group Inc.
+ * SPDX-License-Identifier: CC-BY-4.0
+ */
+
 @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";
 @import "https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css";
 
@@ -17,6 +22,13 @@ p {
 }
 em, b, strong {
     color: darkblue;
+}
+table.fixedtable {
+    table-layout:fixed
+}
+table.fixedtable td.tableblock>.content {
+    margin-bottom:1.25em;
+    word-wrap:break-word
 }
 
 </style>
@@ -200,7 +212,7 @@ owners.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This is the specification of <strong>DebugInfo</strong> extended instruction set.</p>
@@ -244,7 +256,7 @@ kernels</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_binary_form">2. Binary Form</h2>
+<h2 id="_binary_form"><a class="anchor" href="#_binary_form"></a>2. Binary Form</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section contains the semantics of the debug info extended instructions
@@ -282,10 +294,10 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_enumerations">3. Enumerations</h2>
+<h2 id="_enumerations"><a class="anchor" href="#_enumerations"></a>3. Enumerations</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="InstEnum">3.1. Instruction Enumeration</h3>
+<h3 id="InstEnum"><a class="anchor" href="#InstEnum"></a>3.1. Instruction Enumeration</h3>
 <table class="tableblock frame-all grid-all stripes-even" style="width: 50%;">
 <colgroup>
 <col style="width: 12.5%;">
@@ -439,7 +451,7 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="DebugFlags">3.2. Debug Info Flags</h3>
+<h3 id="DebugFlags"><a class="anchor" href="#DebugFlags"></a>3.2. Debug Info Flags</h3>
 <table class="tableblock frame-all grid-all stripes-even" style="width: 50%;">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -516,7 +528,7 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="BaseTypeAttributeEncoding">3.3. Base Type Attribute Encodings</h3>
+<h3 id="BaseTypeAttributeEncoding"><a class="anchor" href="#BaseTypeAttributeEncoding"></a>3.3. Base Type Attribute Encodings</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeBasic"><strong>DebugTypeBasic</strong></a><br></p>
 </div>
@@ -567,7 +579,7 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="CompositeTypes">3.4. Composite Types</h3>
+<h3 id="CompositeTypes"><a class="anchor" href="#CompositeTypes"></a>3.4. Composite Types</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeComposite"><strong>DebugTypeComposite</strong></a><br></p>
 </div>
@@ -598,7 +610,7 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="TypeQualifiers">3.5. Type Qualifiers</h3>
+<h3 id="TypeQualifiers"><a class="anchor" href="#TypeQualifiers"></a>3.5. Type Qualifiers</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugTypeQualifier"><strong>DebugTypeQualifier</strong></a><br></p>
 </div>
@@ -629,7 +641,7 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="Operation">3.6. Debug Operations</h3>
+<h3 id="Operation"><a class="anchor" href="#Operation"></a>3.6. Debug Operations</h3>
 <div class="paragraph">
 <p>Used by <a href="#DebugExpression"><strong>DebugExpression</strong></a><br></p>
 </div>
@@ -697,10 +709,10 @@ must start with <em>@</em> symbol to avoid clashes with user defined names.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_instructions">4. Instructions</h2>
+<h2 id="_instructions"><a class="anchor" href="#_instructions"></a>4. Instructions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_absent_debugging_information">4.1. Absent Debugging Information</h3>
+<h3 id="_absent_debugging_information"><a class="anchor" href="#_absent_debugging_information"></a>4.1. Absent Debugging Information</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -732,7 +744,7 @@ unknown, not available or not applicable.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_compilation_unit">4.2. Compilation Unit</h3>
+<h3 id="_compilation_unit"><a class="anchor" href="#_compilation_unit"></a>4.2. Compilation Unit</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 5.5555%;">
@@ -776,7 +788,7 @@ unknown, not available or not applicable.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_type_instructions">4.3. Type instructions</h3>
+<h3 id="_type_instructions"><a class="anchor" href="#_type_instructions"></a>4.3. Type instructions</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 5.5555%;">
@@ -1396,7 +1408,7 @@ Describe a type of an object that is a pointer to a structure or class member<br
 </table>
 </div>
 <div class="sect2">
-<h3 id="_templates">4.4. Templates</h3>
+<h3 id="_templates"><a class="anchor" href="#_templates"></a>4.4. Templates</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 6.6666%;">
@@ -1600,7 +1612,7 @@ Describe expanded template parameter pack in a variadic template instantiation
 </table>
 </div>
 <div class="sect2">
-<h3 id="_global_variables">4.5. Global Variables</h3>
+<h3 id="_global_variables"><a class="anchor" href="#_global_variables"></a>4.5. Global Variables</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 2.5641%;">
@@ -1683,7 +1695,7 @@ If the global variable represents a defining declaration for C++ static data
 </table>
 </div>
 <div class="sect2">
-<h3 id="_functions">4.6. Functions</h3>
+<h3 id="_functions"><a class="anchor" href="#_functions"></a>4.6. Functions</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 3.0303%;">
@@ -1829,7 +1841,7 @@ Describe function or method definition or declaration.<br>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_location_information">4.7. Location Information</h3>
+<h3 id="_location_information"><a class="anchor" href="#_location_information"></a>4.7. Location Information</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 4.1666%;">
@@ -2043,7 +2055,7 @@ Represent source-level scope and line number for the range of inlined
 </table>
 </div>
 <div class="sect2">
-<h3 id="_local_variables">4.8. Local Variables</h3>
+<h3 id="_local_variables"><a class="anchor" href="#_local_variables"></a>4.8. Local Variables</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 3.3333%;">
@@ -2302,7 +2314,7 @@ Represent DWARF expressions, which describe how to compute a value or name
 </table>
 </div>
 <div class="sect2">
-<h3 id="_macros">4.9. Macros</h3>
+<h3 id="_macros"><a class="anchor" href="#_macros"></a>4.9. Macros</h3>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <colgroup>
 <col style="width: 4.7619%;">
@@ -2401,7 +2413,7 @@ Represent DWARF expressions, which describe how to compute a value or name
 </div>
 </div>
 <div class="sect1">
-<h2 id="_validation_rules">5. Validation Rules</h2>
+<h2 id="_validation_rules"><a class="anchor" href="#_validation_rules"></a>5. Validation Rules</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>None.</p>
@@ -2409,7 +2421,7 @@ Represent DWARF expressions, which describe how to compute a value or name
 </div>
 </div>
 <div class="sect1">
-<h2 id="_issues">6. Issues</h2>
+<h2 id="_issues"><a class="anchor" href="#_issues"></a>6. Issues</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -2430,7 +2442,7 @@ somewhere else in the module?</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_revision_history">7. Revision History</h2>
+<h2 id="_revision_history"><a class="anchor" href="#_revision_history"></a>7. Revision History</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-rows stripes-even stretch">
 <colgroup>
@@ -2534,7 +2546,7 @@ somewhere else in the module?</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.00<br>
-Last updated 2026-02-20 22:24:17 UTC
+Last updated 2026-07-15 13:47:15 -0400
 </div>
 </div>
 </body>

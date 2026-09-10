@@ -8,6 +8,11 @@
 <meta name="author" content="Lei Zhang, Google">
 <title>SPIR-V Machine-readable Grammar</title>
 <style>
+/*
+ * Copyright 2015-2026 The Khronos Group Inc.
+ * SPDX-License-Identifier: CC-BY-4.0
+ */
+
 @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";
 @import "https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css";
 
@@ -17,6 +22,13 @@ p {
 }
 em, b, strong {
     color: darkblue;
+}
+table.fixedtable {
+    table-layout:fixed
+}
+table.fixedtable td.tableblock>.content {
+    margin-bottom:1.25em;
+    word-wrap:break-word
 }
 
 </style>
@@ -91,7 +103,7 @@ IN THE MATERIALS.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document defines the schema used by the machine-readable JSON grammar file
@@ -99,7 +111,7 @@ for SPIR-V. This document is <strong>not</strong> the SPIR-V specification fully
 SPIR-V itself.</p>
 </div>
 <div class="sect2">
-<h3 id="_goals_and_conventions">1.1. Goals and Conventions</h3>
+<h3 id="_goals_and_conventions"><a class="anchor" href="#_goals_and_conventions"></a>1.1. Goals and Conventions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -124,7 +136,7 @@ tend to have the category name as the prefix.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alias_mechanism">1.2. Alias mechanism</h3>
+<h3 id="_alias_mechanism"><a class="anchor" href="#_alias_mechanism"></a>1.2. Alias mechanism</h3>
 <div class="paragraph">
 <p><a href="#instruction">Instructions</a>, <a href="#bitenum-operand-kind">BitEnum operand kinds</a> and <a href="#valueenum-operand-kind">ValueEnum operand kind</a> can have aliases.
 An alias is introduced when an instruction or operand kind from an extension is reused in another extension or is integrated into the core specifications without a change in semantics.
@@ -143,7 +155,7 @@ This led to multiple entries sharing the same opcode or value, adding complexity
 </div>
 </div>
 <div class="sect1">
-<h2 id="_top_level_structure">2. Top Level Structure</h2>
+<h2 id="_top_level_structure"><a class="anchor" href="#_top_level_structure"></a>2. Top Level Structure</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The whole JSON grammar file consists of a single JSON object containing the
@@ -200,10 +212,10 @@ Section for more details.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_grammar_objects">3. Grammar Objects</h2>
+<h2 id="_grammar_objects"><a class="anchor" href="#_grammar_objects"></a>3. Grammar Objects</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="instruction">3.1. JSON objects for instructions</h3>
+<h3 id="instruction"><a class="anchor" href="#instruction"></a>3.1. JSON objects for instructions</h3>
 <div class="paragraph">
 <p>This kind of JSON object contains the information about a specific SPIR-V
 instruction. It has the following key-value pairs:</p>
@@ -274,7 +286,7 @@ Each name must appear exactly once and must not be equal to <code>opname</code>.
 </div>
 </div>
 <div class="sect2">
-<h3 id="operand-category">3.2. Operand categories</h3>
+<h3 id="operand-category"><a class="anchor" href="#operand-category"></a>3.2. Operand categories</h3>
 <div class="paragraph">
 <p>Operand kinds are grouped into categories according to their possible values.
 Right now, there are only five categories:</p>
@@ -312,7 +324,7 @@ operand values from the above categories. See the <a href="#composite-operand-ki
 </div>
 </div>
 <div class="sect2">
-<h3 id="operand-kind">3.3. JSON objects for operand kinds</h3>
+<h3 id="operand-kind"><a class="anchor" href="#operand-kind"></a>3.3. JSON objects for operand kinds</h3>
 <div class="paragraph">
 <p>This kind of JSON object contains the information about a specific operand
 kind. It has the following key-value pairs:</p>
@@ -349,7 +361,7 @@ Must be unique in all <code>kind</code> in <code>operand_kinds</code>.</p>
 pairs as explained in the following subsections.</p>
 </div>
 <div class="sect3">
-<h4 id="bitenum-operand-kind">3.3.1. The BitEnum operand kind</h4>
+<h4 id="bitenum-operand-kind"><a class="anchor" href="#bitenum-operand-kind"></a>3.3.1. The BitEnum operand kind</h4>
 <div class="paragraph">
 <p>Apart from the general key-value pairs, this kind of JSON object additionally
 has:</p>
@@ -420,7 +432,7 @@ Each name must appear exactly once and must not be equal to <code>enumerant</cod
 </div>
 </div>
 <div class="sect3">
-<h4 id="valueenum-operand-kind">3.3.2. The ValueEnum operand kind</h4>
+<h4 id="valueenum-operand-kind"><a class="anchor" href="#valueenum-operand-kind"></a>3.3.2. The ValueEnum operand kind</h4>
 <div class="paragraph">
 <p>Apart from the general key-value pairs, this kind of JSON object additionally
 has:</p>
@@ -497,7 +509,7 @@ Each name must appear exactly once  and must not be equal to <code>enumerant</co
 </dl>
 </div>
 <div class="sect4">
-<h5 id="capability">The Capability operand kind</h5>
+<h5 id="capability"><a class="anchor" href="#capability"></a>The Capability operand kind</h5>
 <div class="paragraph">
 <p>For example, capabilities are represented as a <strong>ValueEnum</strong> operand kind:</p>
 </div>
@@ -537,21 +549,21 @@ Each name must appear exactly once  and must not be equal to <code>enumerant</co
 </div>
 </div>
 <div class="sect3">
-<h4 id="id-operand-kind">3.3.3. The Id operand kind</h4>
+<h4 id="id-operand-kind"><a class="anchor" href="#id-operand-kind"></a>3.3.3. The Id operand kind</h4>
 <div class="paragraph">
 <p>This kind of JSON object has no additional key-value pairs. All the kinds in
 this category are prefixed with <code>Id</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="literal-operand-kind">3.3.4. The Literal operand kind</h4>
+<h4 id="literal-operand-kind"><a class="anchor" href="#literal-operand-kind"></a>3.3.4. The Literal operand kind</h4>
 <div class="paragraph">
 <p>This kind of JSON object has no additional key-value pairs. All the kinds in
 this category are prefixed with <code>Literal</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="composite-operand-kind">3.3.5. The Composite operand kind</h4>
+<h4 id="composite-operand-kind"><a class="anchor" href="#composite-operand-kind"></a>3.3.5. The Composite operand kind</h4>
 <div class="paragraph">
 <p>This kind of JSON object additionally contains:</p>
 </div>
@@ -597,7 +609,7 @@ kind.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_example_usage">4. Example Usage</h2>
+<h2 id="_example_usage"><a class="anchor" href="#_example_usage"></a>4. Example Usage</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Please see the <a href="https://github.com/KhronosGroup/SPIRV-Tools">SPIRV-Tools</a> project
@@ -608,7 +620,7 @@ for an example of how this grammar can be used.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-02 19:41:31 UTC
+Last updated 2026-07-15 13:47:15 -0400
 </div>
 </div>
 </body>
